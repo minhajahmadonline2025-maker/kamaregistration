@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAMA Arts Fest — Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0B0C10;
+    --bg-panel: #1F2833;
+    --bg-input: #12161A;
+    --bg-sidebar: #0D1115;
+    --gold: #66FCF1;
+    --gold-soft: rgba(102, 252, 241, 0.08);
+    --gold-border: rgba(102, 252, 241, 0.3);
+    --line: rgba(255, 255, 255, 0.1);
+    --text: #C5C6C7;
+    --text-muted: #8A909D;
+    --error: #FF6B6B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ============ Login Overlay ============ */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1.5rem;
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .login-title {
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .login-divider {
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--gold);
+    margin: 1rem auto;
+  }
+
+  .login-subtitle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+
+  .login-field {
+    margin-bottom: 1.25rem;
+    text-align: left;
+  }
+
+  .login-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .login-input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    color: #fff;
+    padding: 0.85rem 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .login-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-soft);
+  }
+
+  .login-btn {
+    width: 100%;
+    margin-top: 1rem;
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .login-btn:hover { background: #45E6DB; box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); }
+
+  .login-error {
+    color: var(--error);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    min-height: 1rem;
+  }
+
+  /* ============ Layout ============ */
+  .admin-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+  }
+
+  .sidebar-logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-align: center;
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.6;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-item {
+    background: none;
+    border: none;
+    text-align: left;
+    color: var(--text-muted);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1.1rem 1.5rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .nav-item:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .nav-item.active {
+    color: var(--gold);
+    border-left-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
+  .sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .logout-btn {
+    width: 100%;
+    background: none;
+    border: 2px solid var(--gold-border);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .logout-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
+  /* ============ Main Content ============ */
+  .main-content {
+    flex: 1;
+    padding: 2.5rem 2.5rem 4rem;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 720px) {
+    .admin-layout { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    .sidebar-logo { border-bottom: none; padding: 0; border-right: 1px solid var(--line); padding-right: 1rem; }
+    .sidebar-nav { flex-direction: row; padding-top: 0; overflow-x: auto;}
+    .nav-item { border-left: none; border-bottom: 2px solid transparent; padding: 0.6rem 1rem; white-space: nowrap; }
+    .nav-item.active { border-left: none; border-bottom-color: var(--gold); }
+    .sidebar-footer { border-top: none; padding: 0; margin-left: auto; }
+    .logout-btn { padding: 0.6rem 1rem; white-space: nowrap; }
+    .main-content { padding: 1.5rem 1.25rem 3rem; }
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ============ Stat Cards ============ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-panel);
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .stat-card.highlight {
+    border: 2px solid var(--gold-border);
+    background: rgba(102, 252, 241, 0.03);
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-value {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--gold);
+  }
+
+  .section-breakdown {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-panel);
+    overflow: hidden;
+  }
+
+  .breakdown-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+
+  .breakdown-row:last-child { border-bottom: none; }
+
+  .breakdown-row .b-label { color: var(--text-muted); font-weight: 500; }
+  .breakdown-row .b-value { color: #fff; font-weight: 700; }
+
+  /* ============ Filters Bar ============ */
+  .filters-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .filters-bar input,
+  .filters-bar select {
+    background: var(--bg-input);
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    color: #fff;
+    padding: 0.85rem 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .filters-bar input:focus,
+  .filters-bar select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  #searchInput { flex: 1; min-width: 180px; }
+  .filters-bar select { min-width: 160px; cursor: pointer; }
+
+  .export-btn {
+    background: transparent;
+    border: 2px solid var(--gold-border);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .export-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
+  .btn-danger {
+    color: var(--error);
+    border-color: rgba(255, 107, 107, 0.4);
+  }
+
+  .btn-danger:hover {
+    border-color: var(--error);
+    background: rgba(255, 107, 107, 0.1);
+  }
+
+  .results-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  /* ============ Table ============ */
+  .table-wrapper {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow-x: auto;
+    background: var(--bg-panel);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 980px;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid var(--gold-border);
+    white-space: nowrap;
+    background: rgba(102, 252, 241, 0.02);
+  }
+
+  tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .ref-link {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-border);
+    font-size: 0.8rem;
+  }
+
+  .ref-link:hover { border-bottom-color: var(--gold); }
+
+  .delete-btn {
+    background: none;
+    border: 1px solid rgba(255, 107, 107, 0.4);
+    border-radius: 4px;
+    color: var(--error);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .delete-btn:hover {
+    border-color: var(--error);
+    background: rgba(255, 107, 107, 0.1);
+  }
+
+  .empty-row td {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 3rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .muted { color: var(--text-muted); }
+
+  /* ============ Modal ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal-box {
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-panel);
+    border: 2px solid var(--gold-border);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .modal-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .modal-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .modal-cancel {
+    background: transparent;
+    border: 2px solid var(--line);
+    color: var(--text-muted);
+  }
+
+  .modal-cancel:hover { border-color: var(--text); color: var(--text); }
+
+  .modal-confirm {
+    background: var(--error);
+    border: 2px solid var(--error);
+    color: var(--bg);
+  }
+
+  .modal-confirm:hover { background: #ff8787; border-color: #ff8787; }
+
+</style>
+</head>
+<body>
+
+  <!-- ============ LOGIN OVERLAY ============ -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <div class="login-title">KAMA Arts Fest</div>
+      <div class="login-divider"></div>
+      <div class="login-subtitle">Admin Dashboard</div>
+
+      <div class="login-field">
+        <label class="login-label" for="loginUser">Username</label>
+        <input type="text" id="loginUser" class="login-input" autocomplete="username">
+      </div>
+
+      <div class="login-field">
+        <label class="login-label" for="loginPass">Password</label>
+        <input type="password" id="loginPass" class="login-input" autocomplete="current-password">
+      </div>
+
+      <button class="login-btn" id="loginBtn">Secure Login</button>
+      <p class="login-error" id="loginError"></p>
+    </div>
+  </div>
+
+  <!-- ============ ADMIN LAYOUT ============ -->
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">KAMA<br>ARTS FEST</div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard">Dashboard</button>
+        <button class="nav-item" data-tab="table">Registrations</button>
+        <button class="nav-item" data-tab="master">Master Data</button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- DASHBOARD TAB -->
+      <div class="tab-content active" id="dashboardTab">
+        <div class="page-eyebrow">Overview</div>
+        <div class="page-title">House Dashboard</div>
+
+        <div class="stats-grid">
+          <div class="stat-card highlight">
+            <div class="stat-label">Total Entries</div>
+            <div class="stat-value" id="statTotal">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Hormuz</div>
+            <div class="stat-value" id="statHormuz">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Bosphorus</div>
+            <div class="stat-value" id="statBosphorus">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Malacca</div>
+            <div class="stat-value" id="statMalacca">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Gibraltar</div>
+            <div class="stat-value" id="statGibraltar">0</div>
+          </div>
+        </div>
+
+        <div class="section-breakdown">
+          <div class="breakdown-header">Registrations by Section</div>
+          <div id="sectionBreakdown"></div>
+        </div>
+      </div>
+
+      <!-- TABLE TAB (Registrations) -->
+      <div class="tab-content" id="tableTab">
+        <div class="page-eyebrow">All Entries</div>
+        <div class="page-title">House Registrations</div>
+
+        <div class="filters-bar">
+          <input type="text" id="searchInput" placeholder="Search by name, chest no, ID or topic...">
+          <select id="teamFilter">
+            <option value="">All Houses</option>
+            <option value="Hormuz">Hormuz</option>
+            <option value="Bosphorus">Bosphorus</option>
+            <option value="Malacca">Malacca</option>
+            <option value="Gibraltar">Gibraltar</option>
+          </select>
+          <select id="sectionFilter">
+            <option value="">All Sections</option>
+            <option value="BIDĀYAH">BIDĀYAH</option>
+            <option value="ʾŪLĀ">ʾŪLĀ</option>
+            <option value="THĀNIYAH">THĀNIYAH</option>
+            <option value="THĀNAWIYYAH">THĀNAWIYYAH</option>
+            <option value="ʿĀLIYAH">ʿĀLIYAH</option>
+          </select>
+          <button class="export-btn" id="exportBtn">Export to CSV</button>
+        </div>
+
+        <p class="results-count" id="resultsCount"></p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Reg. ID</th>
+                <th>Chest No.</th>
+                <th>Participant</th>
+                <th>House</th>
+                <th>Section</th>
+                <th>Program</th>
+                <th>Topic / Title</th>
+                <th>Reference</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="empty-row"><td colspan="10">Loading registrations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MASTER DATA TAB -->
+      <div class="tab-content" id="masterTab">
+        <div class="page-eyebrow">Participant Auto-fill Data</div>
+        <div class="page-title">Master Candidate List</div>
+
+        <div class="filters-bar">
+          <input type="file" id="csvFileInput" accept=".csv" style="display:none;">
+          <button class="export-btn" id="importMasterBtn">Import Master CSV</button>
+          <button class="export-btn" id="exportMasterBtn" style="border-color: var(--gold); background: var(--gold-soft);">Export Master CSV Template</button>
+          <button class="export-btn btn-danger" id="clearMasterBtn">Clear All Data</button>
+        </div>
+
+        <p class="results-count">
+          <strong>How to use this feature:</strong><br>
+          1. Click <strong>"Export Master CSV Template"</strong>. The system will automatically generate a template perfectly matched to all Programs, Categories, and your 4 Houses.<br>
+          2. Open the file in Excel. You will see columns for: <strong style="color:var(--gold);">House (Team), Category, Program Name, Chest No, Name</strong>. Fill out the Chest No & Names, and Save.<br>
+          3. Use <strong>"Clear All Data"</strong> to remove old database entries, then click <strong>"Import Master CSV"</strong> to upload your finished file.
+        </p>
+
+        <div class="table-wrapper">
+          <table style="min-width: 100%;">
+            <thead>
+              <tr>
+                <th>House</th>
+                <th>Category</th>
+                <th>Program Name</th>
+                <th>Chest No.</th>
+                <th>Participant Name</th>
+                <th style="width: 80px;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="masterTableBody">
+              <tr class="empty-row"><td colspan="6">Loading master data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ============ DELETE CONFIRMATION MODAL ============ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-box">
+      <div class="modal-title">Confirm Deletion</div>
+      <p class="modal-text">
+        Are you sure you want to permanently delete this record? This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button class="modal-cancel" id="cancelDeleteBtn">Cancel</button>
+        <button class="modal-confirm" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    /* ============ Firebase Setup ============ */
+    const firebaseConfig = {
+      apiKey: "AIzaSyAMd9or0SMQHcxMxb0q7KvvXJqHR61GUy0",
+      authDomain: "registration-e5924.firebaseapp.com",
+      projectId: "registration-e5924",
+      storageBucket: "registration-e5924.firebasestorage.app",
+      messagingSenderId: "46603846930",
+      appId: "1:46603846930:web:91f98dec97c6b81a6b5fcb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    /* ============ Constants ============ */
+    const TEAMS = ['Hormuz', 'Bosphorus', 'Malacca', 'Gibraltar'];
+    const SECTIONS = ['BIDĀYAH', 'ʾŪLĀ', 'THĀNIYAH', 'THĀNAWIYYAH', 'ʿĀLIYAH'];
+    
+    const PROGRAMS = {
+      "BIDĀYAH": ["GROUP SONG", "KADHAKADHANAM", "SONG ARB", "SONG MALAYALAM"],
+      "ʾŪLĀ": ["GROUP SONG", "SONG MLM", "SONG ENGLISH", "SONG URDU", "SONG ARB", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM", "STORY NARRATION ENGLISH"],
+      "THĀNIYAH": ["HISTORY TALK ENGLISH", "BHAKTHI GANAM", "SONG ARABIC", "SONG ENGLISH", "SONG URDU", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM"],
+      "THĀNAWIYYAH": ["PADAPPATTU", "NASHĪD ARB", "SONG URD", "SPEECH & SONG URDU", "INSPIRING TALK", "TADRIS MLM"],
+      "ʿĀLIYAH": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
+    };
+
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'kama2025';
+
+    /* ============ State ============ */
+    let allRegistrations = [];
+    let masterParticipants = [];
+    let pendingDeleteId = null;
+    let pendingDeleteType = null;
+    let unsubscribeRegs = null;
+    let unsubscribeMaster = null;
+
+    /* ============ Login ============ */
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+
+    function attemptLogin() {
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value;
+
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        sessionStorage.setItem('kamaAdminAuth', 'true');
+        loginOverlay.style.display = 'none';
+        initDashboard();
+      } else {
+        loginError.textContent = 'Invalid username or password.';
+      }
+    }
+
+    loginBtn.addEventListener('click', attemptLogin);
+    document.getElementById('loginPass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') attemptLogin();
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('kamaAdminAuth');
+      if (unsubscribeRegs) unsubscribeRegs();
+      if (unsubscribeMaster) unsubscribeMaster();
+      location.reload();
+    });
+
+    if (sessionStorage.getItem('kamaAdminAuth') === 'true') {
+      loginOverlay.style.display = 'none';
+      initDashboard();
+    }
+
+    /* ============ Sidebar Navigation ============ */
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(item.dataset.tab + 'Tab').classList.add('active');
+      });
+    });
+
+    /* ============ Init: Real-time Listeners ============ */
+    function initDashboard() {
+      // Listen to Registrations
+      unsubscribeRegs = db.collection('registrations')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+          allRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderStats();
+          renderTable();
+        }, err => {
+          document.getElementById('tableBody').innerHTML =
+            `<tr class="empty-row"><td colspan="10">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+        });
+        
+      // Listen to Master Participants Database
+      unsubscribeMaster = db.collection('participants')
+        .onSnapshot(snapshot => {
+          masterParticipants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderMasterTable();
+        }, err => {
+          document.getElementById('masterTableBody').innerHTML = 
+            `<tr class="empty-row"><td colspan="6">Error loading master data: ${escapeHtml(err.message)}</td></tr>`;
+        });
+    }
+
+    /* ============ Dashboard Stats ============ */
+    function renderStats() {
+      const total = allRegistrations.length;
+      document.getElementById('statTotal').textContent = total;
+
+      TEAMS.forEach(team => {
+        const count = allRegistrations.filter(r => r.team === team).length;
+        const el = document.getElementById('stat' + team);
+        if (el) el.textContent = count;
+      });
+
+      const breakdownEl = document.getElementById('sectionBreakdown');
+      breakdownEl.innerHTML = '';
+
+      SECTIONS.forEach(section => {
+        const count = allRegistrations.filter(r => r.section === section).length;
+        const row = document.createElement('div');
+        row.className = 'breakdown-row';
+        row.innerHTML = `
+          <span class="b-label">${escapeHtml(section)}</span>
+          <span class="b-value">${count}</span>
+        `;
+        breakdownEl.appendChild(row);
+      });
+    }
+
+    /* ============ Table: Registrations Filtering ============ */
+    const searchInput = document.getElementById('searchInput');
+    const teamFilter = document.getElementById('teamFilter');
+    const sectionFilter = document.getElementById('sectionFilter');
+
+    searchInput.addEventListener('input', renderTable);
+    teamFilter.addEventListener('change', renderTable);
+    sectionFilter.addEventListener('change', renderTable);
+
+    function getFilteredData() {
+      const search = searchInput.value.trim().toLowerCase();
+      const team = teamFilter.value;
+      const section = sectionFilter.value;
+
+      return allRegistrations.filter(r => {
+        if (team && r.team !== team) return false;
+        if (section && r.section !== section) return false;
+
+        if (search) {
+          const haystack = [
+            r.registrationId, r.participantName, r.chestNumber,
+            r.topicTitle, r.program
+          ].join(' ').toLowerCase();
+
+          if (!haystack.includes(search)) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function renderTable() {
+      const data = getFilteredData();
+      const tbody = document.getElementById('tableBody');
+      const resultsCount = document.getElementById('resultsCount');
+
+      resultsCount.textContent = `Showing ${data.length} of ${allRegistrations.length} registrations.`;
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="10">No registrations found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+
+      data.forEach(r => {
+        const tr = document.createElement('tr');
+
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
+          ? r.timestamp.toDate().toLocaleString()
+          : '—';
+
+        const refCell = r.referenceLink
+          ? `<a href="${escapeHtml(r.referenceLink)}" target="_blank" rel="noopener noreferrer" class="ref-link">View</a>`
+          : '<span class="muted">—</span>';
+
+        tr.innerHTML = `
+          <td>${escapeHtml(r.registrationId || '—')}</td>
+          <td>${escapeHtml(r.chestNumber || '—')}</td>
+          <td>${escapeHtml(r.participantName || '—')}</td>
+          <td>${escapeHtml(r.team || '—')}</td>
+          <td>${escapeHtml(r.section || '—')}</td>
+          <td>${escapeHtml(r.program || '—')}</td>
+          <td>${escapeHtml(r.topicTitle || '—')}</td>
+          <td>${refCell}</td>
+          <td>${escapeHtml(dateStr)}</td>
+          <td><button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Delete</button></td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ============ Master Data Tab Logic ============ */
+    
+    // 1. Render Master Table
+    function renderMasterTable() {
+      const tbody = document.getElementById('masterTableBody');
+      
+      if(masterParticipants.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No master data imported yet. Export the template, fill it out, and import it here.</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = '';
+      masterParticipants.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(p.team || '—')}</td>
+          <td>${escapeHtml(p.category || '—')}</td>
+          <td>${escapeHtml(p.program || '—')}</td>
+          <td>${escapeHtml(p.chestNo || '—')}</td>
+          <td>${escapeHtml(p.name || '—')}</td>
+          <td><button class="delete-btn" onclick="openDeleteModal('${p.id}', 'master')">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 2. Import CSV Logic
+    document.getElementById('importMasterBtn').addEventListener('click', () => {
+      document.getElementById('csvFileInput').click();
+    });
+
+    document.getElementById('csvFileInput').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if(!file) return;
+
+      const text = await file.text();
+      const lines = text.split(/\r?\n/);
+
+      const batch = db.batch();
+      let count = 0;
+
+      // Ensure mapping follows: Team, Category, Program Name, Chest No, Name
+      for(let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if(!line) continue;
+
+        const cols = line.split(',');
+        
+        const team = cols[0] ? cols[0].trim() : '';
+        const category = cols[1] ? cols[1].trim() : '';
+        const program = cols[2] ? cols[2].trim() : '';
+        const chestNo = cols[3] ? cols[3].trim() : '';
+        const name = cols[4] ? cols[4].trim() : '';
+
+        // Only save rows that have a chest number and a name. Empty template rows are ignored.
+        if(team && category && program && chestNo && name) {
+          const ref = db.collection('participants').doc();
+          batch.set(ref, { team, category, program, chestNo, name });
+          count++;
+        }
+      }
+
+      if(count > 0) {
+        try {
+          await batch.commit();
+          alert(`Success! Imported ${count} valid participant rows.`);
+        } catch(err) {
+          alert('Error saving to database: ' + err.message);
+        }
+      } else {
+        alert('No valid records found. Did you fill out the Chest No and Name columns for each Team?');
+      }
+      
+      e.target.value = ''; // Reset input
+    });
+
+    // 3. Export Smart Master Template Logic (NOW INCLUDES TEAM COL)
+    document.getElementById('exportMasterBtn').addEventListener('click', () => {
+      const headers = ['Team', 'Category', 'Program Name', 'Chest No', 'Name'];
+      const rows = [];
+      
+      TEAMS.forEach(team => {
+        SECTIONS.forEach(category => {
+          const progs = PROGRAMS[category] || [];
+          progs.forEach(programName => {
+            
+            const existing = masterParticipants.filter(p => p.team === team && p.category === category && p.program === programName);
+            
+            if(existing.length > 0) {
+              // Export the ones that are already filled out
+              existing.forEach(p => {
+                rows.push([team, category, programName, p.chestNo || '', p.name || '']);
+              });
+            } else {
+              // If empty, generate 1 blank row for this team-program combination
+              rows.push([team, category, programName, '', '']);
+            }
+          });
+        });
+      });
+      
+      let csv = headers.map(csvEscape).join(',') + '\r\n';
+      rows.forEach(row => {
+        csv += row.map(csvEscape).join(',') + '\r\n';
+      });
+
+      downloadCSV(csv, `KAMA_Master_Template_${new Date().toISOString().slice(0, 10)}.csv`);
+    });
+
+    // 4. Clear Master Data Logic
+    document.getElementById('clearMasterBtn').addEventListener('click', async () => {
+      if(masterParticipants.length === 0) {
+        alert("No master data to clear.");
+        return;
+      }
+      
+      const confirmed = confirm("Are you sure you want to delete ALL Master Data rows? Do this before re-importing an updated Excel file.");
+      if(confirmed) {
+        try {
+          const batch = db.batch();
+          masterParticipants.forEach(p => {
+             const ref = db.collection('participants').doc(p.id);
+             batch.delete(ref);
+          });
+          await batch.commit();
+          alert("All Master Data has been successfully cleared.");
+        } catch(err) {
+          alert("Error clearing data: " + err.message);
+        }
+      }
+    });
+
+    /* ============ Delete Modal ============ */
+    const deleteModal = document.getElementById('deleteModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+    function openDeleteModal(id, type) {
+      pendingDeleteId = id;
+      pendingDeleteType = type;
+      deleteModal.classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      pendingDeleteId = null;
+      pendingDeleteType = null;
+      deleteModal.classList.remove('active');
+    }
+
+    cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+    deleteModal.addEventListener('click', e => {
+      if (e.target === deleteModal) closeDeleteModal();
+    });
+
+    confirmDeleteBtn.addEventListener('click', async () => {
+      if (!pendingDeleteId) return;
+
+      const id = pendingDeleteId;
+      const type = pendingDeleteType;
+      
+      confirmDeleteBtn.disabled = true;
+      confirmDeleteBtn.textContent = 'Deleting...';
+
+      try {
+        const collectionName = (type === 'registration') ? 'registrations' : 'participants';
+        await db.collection(collectionName).doc(id).delete();
+      } catch (err) {
+        alert('Failed to delete: ' + err.message);
+      } finally {
+        confirmDeleteBtn.disabled = false;
+        confirmDeleteBtn.textContent = 'Delete';
+        closeDeleteModal();
+      }
+    });
+
+    /* ============ Export Registrations to CSV ============ */
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const data = getFilteredData();
+
+      if (data.length === 0) {
+        alert('No data available to export.');
+        return;
+      }
+
+      const headers = [
+        'Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Reference Link', 'Submitted At'
+      ];
+
+      const rows = data.map(r => {
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
+          ? r.timestamp.toDate().toISOString()
+          : '';
+
+        return [
+          r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', r.referenceLink || '', dateStr
+        ];
+      });
+
+      let csv = headers.map(csvEscape).join(',') + '\r\n';
+      rows.forEach(row => {
+        csv += row.map(csvEscape).join(',') + '\r\n';
+      });
+
+      downloadCSV(csv, `KAMA_House_Registrations_${new Date().toISOString().slice(0, 10)}.csv`);
+    });
+
+    function csvEscape(value) {
+      const str = String(value ?? '');
+      if (/[",\n\r]/.test(str)) {
+        return '"' + str.replace(/"/g, '""') + '"';
+      }
+      return str;
+    }
+    
+    function downloadCSV(csvString, filename) {
+      const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    /* ============ Helpers ============ */
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  </script>
+
+</body>
+</html>
