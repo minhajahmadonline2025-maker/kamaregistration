@@ -166,6 +166,56 @@
     .form-card { padding: 2rem 1.25rem; }
   }
 
+  /* ===== Logged-In House Badge ===== */
+  .house-badge {
+    background: rgba(102, 252, 241, 0.05);
+    border: 1px solid var(--gold-border);
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .logout-house-btn {
+    background: transparent;
+    border: 1px solid var(--error);
+    color: var(--error);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+  }
+
+  .logout-house-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+  }
+
+  .demo-sm-btn {
+    background: transparent;
+    border: 1px dashed var(--text-muted);
+    color: var(--text-muted);
+    padding: 0.35rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .demo-sm-btn:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
   .step-content { display: none; animation: fadeIn 0.4s ease; }
   .step-content.active { display: block; }
 
@@ -243,32 +293,6 @@
   }
 
   .option-card.selected .option-title { color: var(--gold); }
-
-  .demo-option {
-    border: 2px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(255,255,255,0.02);
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-
-  .demo-option:hover {
-    border-color: rgba(255, 255, 255, 0.4);
-    background: rgba(255,255,255,0.05);
-  }
-
-  .demo-option.selected {
-    border-color: var(--text);
-    background: rgba(255,255,255,0.1);
-  }
-
-  .demo-option .option-title {
-    color: var(--text);
-    font-size: 0.95rem;
-  }
 
   .empty-note {
     font-size: 0.85rem;
@@ -568,6 +592,7 @@
     text-transform: uppercase;
     color: #4A505C;
   }
+
 </style>
 </head>
 <body>
@@ -601,6 +626,7 @@
 
     <div class="form-card">
       
+      <!-- LOADING OVERLAY -->
       <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingTextStatus">Submitting Registration...</div>
@@ -609,14 +635,27 @@
         </div>
       </div>
 
-      <div class="step-content active" id="step1">
-        <div class="step-eyebrow">Step 1 of 4</div>
-        <div class="step-heading">Select Your House</div>
-        <p class="step-desc">Choose the House you belong to for this entry.</p>
-
-        <div class="demo-option" onclick="selectTeam(this, 'Demo')">
-          <div class="option-title">TEST / DEMO MODE</div>
+      <!-- HOUSE BADGE (Shows when logged in on Steps 2-4) -->
+      <div id="houseBadge" class="house-badge" style="display:none;">
+        <div>
+          <span style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Active House</span><br>
+          <strong id="houseNameDisplay" style="color:var(--gold); font-size:1rem; letter-spacing: 0.05em;">Hormuz</strong>
         </div>
+        <button onclick="logoutHouse()" class="logout-house-btn">Change House / Logout</button>
+      </div>
+
+      <!-- STEP 1: TEAM -->
+      <div class="step-content active" id="step1">
+        
+        <!-- Header with embedded small Demo Button -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+          <div>
+            <div class="step-eyebrow">Step 1 of 4</div>
+            <div class="step-heading">Select Your House</div>
+          </div>
+          <button onclick="enableDemoMode()" class="demo-sm-btn">Test / Demo Mode</button>
+        </div>
+        <p class="step-desc">Choose the House you belong to for this entry.</p>
 
         <div class="options-grid">
           <div class="option-card" onclick="selectTeam(this, 'Hormuz')">
@@ -633,6 +672,7 @@
           </div>
         </div>
 
+        <!-- Security Passcode -->
         <div class="passcode-wrapper" id="passcodeWrapper">
           <label class="field-label" for="housePasscode">House Passcode <span class="req">*</span></label>
           <input type="password" id="housePasscode" class="field-input" placeholder="Enter 6-digit passcode">
@@ -640,6 +680,7 @@
         </div>
       </div>
 
+      <!-- STEP 2: SECTION -->
       <div class="step-content" id="step2">
         <div class="step-eyebrow">Step 2 of 4</div>
         <div class="step-heading">Select Section</div>
@@ -664,6 +705,7 @@
         </div>
       </div>
 
+      <!-- STEP 3: PROGRAM -->
       <div class="step-content" id="step3">
         <div class="step-eyebrow">Step 3 of 4</div>
         <div class="step-heading">Select Program</div>
@@ -672,6 +714,7 @@
         <div class="options-grid" id="programOptions"></div>
       </div>
 
+      <!-- STEP 4: DETAILS -->
       <div class="step-content" id="step4">
         <div class="step-eyebrow">Step 4 of 4</div>
         <div class="step-heading">Participant Details</div>
@@ -700,6 +743,7 @@
         <p class="error-text" id="formError"></p>
       </div>
 
+      <!-- SUCCESS SCREEN -->
       <div class="step-content" id="successScreen">
         <div class="success-screen">
           <div class="success-icon">✓</div>
@@ -713,10 +757,12 @@
             <span class="reg-id-value" id="successRegId">—</span>
           </div>
 
-          <button class="btn btn-primary" id="newRegBtn" onclick="resetForm()" style="width: 100%; margin-top: 1rem;">Register Another Entry</button>
+          <!-- Register Another button triggers resetForm(false) to skip passcode -->
+          <button class="btn btn-primary" id="newRegBtn" onclick="resetForm(false)" style="width: 100%; margin-top: 1rem;">Register Another Entry</button>
         </div>
       </div>
 
+      <!-- NAV BUTTONS -->
       <div class="nav-buttons" id="navButtons">
         <button class="btn" id="backBtn" onclick="goBack()">Back</button>
         <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>Next Step</button>
@@ -729,6 +775,7 @@
     KAMA Arts Fest © 2026 — Secure Registration Portal
   </footer>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -785,7 +832,16 @@
 
       updateProgressBar(step);
 
-      backBtn.style.visibility = (step === 1) ? 'hidden' : 'visible';
+      // Handle House Badge Visibility
+      if(step > 1) {
+        document.getElementById('houseBadge').style.display = 'flex';
+        document.getElementById('houseNameDisplay').textContent = (state.team === 'Demo') ? 'TEST / DEMO MODE' : state.team;
+      } else {
+        document.getElementById('houseBadge').style.display = 'none';
+      }
+
+      // Hide back button on Step 1 AND Step 2 (to lock the house selection)
+      backBtn.style.visibility = (step <= 2) ? 'hidden' : 'visible';
 
       if (step === 1) {
         nextBtn.textContent = 'Next Step';
@@ -813,8 +869,21 @@
       });
     }
 
+    function enableDemoMode() {
+      state.team = 'Demo';
+      document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('housePasscode').value = '';
+      currentStep = 2; // Bypass next logic directly to Step 2
+      showStep(2);
+    }
+
+    function logoutHouse() {
+      state.team = null;
+      resetForm(true); // true means full reset, dropping back to Step 1
+    }
+
     function goNext() {
-      // Step 1: Passcode Validation (Skip if Demo)
+      // Step 1: Passcode Validation
       if (currentStep === 1 && state.team !== 'Demo') {
         const inputCode = document.getElementById('housePasscode').value.trim();
         if (inputCode !== PASSCODES[state.team]) {
@@ -833,7 +902,7 @@
     }
 
     function goBack() {
-      if (currentStep === 1) return;
+      if (currentStep <= 2) return; // Prevent going back to Step 1 from anywhere
       currentStep--;
       showStep(currentStep);
     }
@@ -847,23 +916,16 @@
 
     /* ============ Step 1: Team Selection ============ */
     function selectTeam(el, team) {
-      // Clear selections on regular cards and demo option
-      document.querySelectorAll('#step1 .option-card, #step1 .demo-option').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
       state.team = team;
       
-      // Reveal or Hide Passcode Input
-      if(team === 'Demo') {
-        document.getElementById('passcodeWrapper').classList.remove('active');
-      } else {
-        document.getElementById('passcodeWrapper').classList.add('active');
-        document.getElementById('housePasscode').value = '';
-      }
+      document.getElementById('passcodeWrapper').classList.add('active');
+      document.getElementById('housePasscode').value = '';
       
       nextBtn.disabled = false;
     }
 
-    // Enter key submits passcode
     document.getElementById('housePasscode').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') goNext();
     });
@@ -933,7 +995,6 @@
     async function loadCandidates() {
       const selectEl = document.getElementById('candidateSelect');
       
-      // Fake candidates if Demo mode
       if (state.team === 'Demo') {
         selectEl.innerHTML = '<option value="" selected>-- Select Demo Candidate --</option>' +
                              '<option value=\'{"chestNo":"000", "name":"John Doe (Demo)"}\'>Chest No: 000 — John Doe (Demo)</option>' +
@@ -1020,7 +1081,6 @@
         referenceLink
       };
 
-      // Handle Demo Mode Submission (Fake it)
       if (state.team === 'Demo') {
         nextBtn.disabled = true;
         backBtn.disabled = true;
@@ -1035,7 +1095,6 @@
         return;
       }
 
-      // Handle Real Submission
       nextBtn.disabled = true;
       backBtn.disabled = true;
       nextBtn.textContent = 'Submitting...';
@@ -1087,15 +1146,20 @@
     }
 
     /* ============ Reset ============ */
-    function resetForm() {
-      state.team = null;
+    // If fullReset is true, goes to Step 1 (logs out). If false, goes to Step 2 (keeps house).
+    function resetForm(fullReset = false) {
       state.section = null;
       state.program = null;
-      currentStep = 1;
+      currentStep = fullReset ? 1 : 2;
 
-      document.querySelectorAll('.option-card, .demo-option').forEach(c => c.classList.remove('selected'));
-      document.getElementById('passcodeWrapper').classList.remove('active');
-      document.getElementById('housePasscode').value = '';
+      if(fullReset) {
+        state.team = null;
+        document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById('passcodeWrapper').classList.remove('active');
+        document.getElementById('housePasscode').value = '';
+      }
+
+      document.querySelectorAll('#step2 .option-card, #step3 .option-card').forEach(c => c.classList.remove('selected'));
       document.getElementById('candidateSelect').innerHTML = '<option value="">Loading candidates...</option>';
       document.getElementById('topicTitle').value = '';
       document.getElementById('referenceLink').value = '';
@@ -1107,7 +1171,7 @@
       backBtn.disabled = false;
       nextBtn.disabled = false;
 
-      showStep(1);
+      showStep(currentStep);
     }
 
     /* ============ Helpers ============ */
