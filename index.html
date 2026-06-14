@@ -39,7 +39,6 @@
     flex-direction: column;
   }
 
-  /* ===== Header ===== */
   .site-header {
     text-align: center;
     padding: 3rem 1.5rem 1.5rem;
@@ -69,7 +68,6 @@
     color: var(--text-muted);
   }
 
-  /* ===== Layout ===== */
   .container {
     flex: 1;
     width: 100%;
@@ -78,7 +76,6 @@
     padding: 1.5rem 1.25rem 4rem;
   }
 
-  /* ===== Progress Bar ===== */
   .progress-bar {
     display: flex;
     margin-bottom: 2.5rem;
@@ -152,7 +149,6 @@
     color: var(--text);
   }
 
-  /* ===== Form Card ===== */
   .form-card {
     background: var(--bg-card);
     border-radius: 12px;
@@ -166,7 +162,6 @@
     .form-card { padding: 2rem 1.25rem; }
   }
 
-  /* ===== Logged-In House Badge ===== */
   .house-badge {
     background: rgba(102, 252, 241, 0.05);
     border: 1px solid var(--gold-border);
@@ -249,7 +244,6 @@
     line-height: 1.6;
   }
 
-  /* ===== Option Grid ===== */
   .options-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -302,7 +296,6 @@
     border: 1px dashed var(--line);
   }
 
-  /* ===== Passcode Section ===== */
   .passcode-wrapper {
     margin-top: 1.5rem;
     display: none;
@@ -317,7 +310,231 @@
     display: block;
   }
 
-  /* ===== Step 4: Form Fields ===== */
+  /* ===== VIEW MY REGISTRATIONS button on Step 1 ===== */
+  .view-regs-wrapper {
+    display: none;
+    margin-top: 1.25rem;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .view-regs-wrapper.active {
+    display: block;
+  }
+
+  .btn-view-regs {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    border: 2px solid var(--gold-border);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-view-regs:hover {
+    border-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
+  /* ===== REGISTRATIONS VIEW SCREEN ===== */
+  #viewRegsScreen {
+    display: none;
+  }
+
+  #viewRegsScreen.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .regs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .regs-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-pill {
+    background: rgba(102, 252, 241, 0.06);
+    border: 1px solid var(--gold-border);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .stat-pill span {
+    color: #fff;
+    margin-left: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-select {
+    flex: 1;
+    min-width: 140px;
+    background: var(--bg-input);
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 0.6rem 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem top 50%;
+    background-size: 0.6rem auto;
+    padding-right: 2rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  /* Table */
+  .regs-table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+
+  .regs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    min-width: 520px;
+  }
+
+  .regs-table thead tr {
+    background: rgba(102, 252, 241, 0.06);
+    border-bottom: 1px solid var(--gold-border);
+  }
+
+  .regs-table th {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .regs-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s ease;
+  }
+
+  .regs-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .regs-table tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+  }
+
+  .regs-table td {
+    padding: 0.85rem 1rem;
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .regs-table td.reg-id-cell {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .regs-table td.chest-cell {
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .section-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    background: rgba(102, 252, 241, 0.08);
+    border: 1px solid var(--gold-border);
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .loading-regs {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .spinner-sm {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--line);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .no-regs-msg {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+  }
+
+  .no-regs-msg .no-regs-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.4;
+  }
+
+  /* Summary box */
   .summary-box {
     background: rgba(0,0,0,0.2);
     border-radius: 8px;
@@ -410,7 +627,6 @@
     min-height: 1.2rem;
   }
 
-  /* ===== Nav Buttons ===== */
   .nav-buttons {
     display: flex;
     justify-content: space-between;
@@ -458,11 +674,6 @@
     box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3);
   }
 
-  .btn-ghost {
-    visibility: visible;
-  }
-
-  /* ===== Loading Overlay ===== */
   .loading-overlay {
     position: absolute;
     inset: 0;
@@ -520,7 +731,6 @@
     transition: width 0.2s ease;
   }
 
-  /* ===== Success Screen ===== */
   .success-screen {
     text-align: center;
     padding: 1rem 0;
@@ -582,7 +792,6 @@
     word-break: break-all;
   }
 
-  /* ===== Footer ===== */
   .site-footer {
     text-align: center;
     padding: 2rem 1rem;
@@ -647,7 +856,6 @@
       <!-- STEP 1: TEAM -->
       <div class="step-content active" id="step1">
         
-        <!-- Header with embedded small Demo Button -->
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
           <div>
             <div class="step-eyebrow">Step 1 of 4</div>
@@ -677,6 +885,14 @@
           <label class="field-label" for="housePasscode">House Passcode <span class="req">*</span></label>
           <input type="password" id="housePasscode" class="field-input" placeholder="Enter 6-digit passcode">
           <p class="help-text">Please enter your secure House Passcode to verify identity.</p>
+        </div>
+
+        <!-- View My Registrations Button (shows after house selected) -->
+        <div class="view-regs-wrapper" id="viewRegsWrapper">
+          <button class="btn-view-regs" onclick="openViewRegistrations()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            View My House Registrations
+          </button>
         </div>
       </div>
 
@@ -757,8 +973,39 @@
             <span class="reg-id-value" id="successRegId">—</span>
           </div>
 
-          <!-- Register Another button triggers resetForm(false) to skip passcode -->
           <button class="btn btn-primary" id="newRegBtn" onclick="resetForm(false)" style="width: 100%; margin-top: 1rem;">Register Another Entry</button>
+        </div>
+      </div>
+
+      <!-- ===== VIEW REGISTRATIONS SCREEN ===== -->
+      <div id="viewRegsScreen">
+        <div class="regs-header">
+          <div>
+            <div class="step-eyebrow">Read-Only View</div>
+            <div class="step-heading" id="viewRegsTitle">My Registrations</div>
+            <p class="step-desc" style="margin-bottom:0;">All entries registered under your House.</p>
+          </div>
+          <button class="btn" onclick="closeViewRegistrations()" style="flex-shrink:0;">← Back</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="regs-stats" id="regsStats"></div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <select class="filter-select" id="filterSection" onchange="applyFilters()">
+            <option value="">All Sections</option>
+          </select>
+          <select class="filter-select" id="filterProgram" onchange="applyFilters()">
+            <option value="">All Programs</option>
+          </select>
+        </div>
+
+        <!-- Table / States -->
+        <div id="regsTableContainer">
+          <div class="loading-regs">
+            <span class="spinner-sm"></span> Loading registrations...
+          </div>
         </div>
       </div>
 
@@ -818,6 +1065,7 @@
 
     let currentStep = 1;
     const TOTAL_STEPS = 4;
+    let allRegistrations = []; // cache for view screen
 
     const nextBtn = document.getElementById('nextBtn');
     const backBtn = document.getElementById('backBtn');
@@ -828,11 +1076,12 @@
     function showStep(step) {
       errorEl.textContent = ''; 
       document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+      document.getElementById('viewRegsScreen').classList.remove('active');
+      document.getElementById('viewRegsScreen').style.display = 'none';
       document.getElementById('step' + step).classList.add('active');
 
       updateProgressBar(step);
 
-      // Handle House Badge Visibility
       if(step > 1) {
         document.getElementById('houseBadge').style.display = 'flex';
         document.getElementById('houseNameDisplay').textContent = (state.team === 'Demo') ? 'TEST / DEMO MODE' : state.team;
@@ -840,8 +1089,9 @@
         document.getElementById('houseBadge').style.display = 'none';
       }
 
-      // Hide back button on Step 1 AND Step 2 (to lock the house selection)
       backBtn.style.visibility = (step <= 2) ? 'hidden' : 'visible';
+      navButtons.style.display = 'flex';
+      document.getElementById('progressBar').style.display = 'flex';
 
       if (step === 1) {
         nextBtn.textContent = 'Next Step';
@@ -873,17 +1123,18 @@
       state.team = 'Demo';
       document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
       document.getElementById('housePasscode').value = '';
-      currentStep = 2; // Bypass next logic directly to Step 2
+      document.getElementById('passcodeWrapper').classList.remove('active');
+      document.getElementById('viewRegsWrapper').classList.remove('active');
+      currentStep = 2;
       showStep(2);
     }
 
     function logoutHouse() {
       state.team = null;
-      resetForm(true); // true means full reset, dropping back to Step 1
+      resetForm(true);
     }
 
     function goNext() {
-      // Step 1: Passcode Validation
       if (currentStep === 1 && state.team !== 'Demo') {
         const inputCode = document.getElementById('housePasscode').value.trim();
         if (inputCode !== PASSCODES[state.team]) {
@@ -902,7 +1153,7 @@
     }
 
     function goBack() {
-      if (currentStep <= 2) return; // Prevent going back to Step 1 from anywhere
+      if (currentStep <= 2) return;
       currentStep--;
       showStep(currentStep);
     }
@@ -922,6 +1173,8 @@
       
       document.getElementById('passcodeWrapper').classList.add('active');
       document.getElementById('housePasscode').value = '';
+      // Show the View Registrations button only after passcode entered — actually show it immediately, validation happens on click
+      document.getElementById('viewRegsWrapper').classList.add('active');
       
       nextBtn.disabled = false;
     }
@@ -1029,6 +1282,154 @@
       }
     }
 
+    /* ============ VIEW REGISTRATIONS ============ */
+    function openViewRegistrations() {
+      // Validate passcode first
+      if (state.team !== 'Demo') {
+        const inputCode = document.getElementById('housePasscode').value.trim();
+        if (!inputCode) {
+          alert('Please enter your House Passcode first to view registrations.');
+          document.getElementById('housePasscode').focus();
+          return;
+        }
+        if (inputCode !== PASSCODES[state.team]) {
+          alert('Incorrect House Passcode. Please contact your captain.');
+          return;
+        }
+      }
+
+      // Hide all step content and nav
+      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+      navButtons.style.display = 'none';
+      document.getElementById('progressBar').style.display = 'none';
+      document.getElementById('houseBadge').style.display = 'none';
+
+      // Show view screen
+      const screen = document.getElementById('viewRegsScreen');
+      screen.style.display = 'block';
+      requestAnimationFrame(() => screen.classList.add('active'));
+
+      document.getElementById('viewRegsTitle').textContent =
+        (state.team === 'Demo') ? 'Demo House Registrations' : state.team + ' — Registrations';
+
+      fetchAndRenderRegistrations();
+    }
+
+    function closeViewRegistrations() {
+      const screen = document.getElementById('viewRegsScreen');
+      screen.classList.remove('active');
+      screen.style.display = 'none';
+      navButtons.style.display = 'flex';
+      document.getElementById('progressBar').style.display = 'flex';
+      showStep(1);
+    }
+
+    async function fetchAndRenderRegistrations() {
+      const container = document.getElementById('regsTableContainer');
+      container.innerHTML = '<div class="loading-regs"><span class="spinner-sm"></span> Loading registrations...</div>';
+      document.getElementById('regsStats').innerHTML = '';
+
+      // Demo mode: show dummy data
+      if (state.team === 'Demo') {
+        allRegistrations = [
+          { registrationId: 'DEMO-111111', section: 'BIDĀYAH', program: 'GROUP SONG', chestNumber: '000', participantName: 'John Doe (Demo)', topicTitle: 'Sample Song Title', timestamp: null },
+          { registrationId: 'DEMO-222222', section: 'ʾŪLĀ', program: 'SONG MLM', chestNumber: '999', participantName: 'Jane Smith (Demo)', topicTitle: 'Another Demo Topic', timestamp: null },
+        ];
+        renderRegsTable(allRegistrations);
+        return;
+      }
+
+      try {
+        const snapshot = await db.collection('registrations').where('team', '==', state.team).orderBy('timestamp', 'desc').get();
+        allRegistrations = snapshot.docs.map(d => d.data());
+        renderRegsTable(allRegistrations);
+      } catch (err) {
+        // Try without orderBy in case index not set up
+        try {
+          const snapshot2 = await db.collection('registrations').where('team', '==', state.team).get();
+          allRegistrations = snapshot2.docs.map(d => d.data());
+          renderRegsTable(allRegistrations);
+        } catch(err2) {
+          container.innerHTML = `<div class="no-regs-msg"><div class="no-regs-icon">⚠️</div>Error loading registrations.<br><small style="color:var(--error)">${escapeHtml(err2.message)}</small></div>`;
+        }
+      }
+    }
+
+    function renderRegsTable(data) {
+      const container = document.getElementById('regsTableContainer');
+      const statsEl = document.getElementById('regsStats');
+
+      // Stats
+      statsEl.innerHTML = `
+        <div class="stat-pill">Total Entries <span>${data.length}</span></div>
+        <div class="stat-pill">Sections <span>${[...new Set(data.map(r => r.section))].length}</span></div>
+        <div class="stat-pill">Programs <span>${[...new Set(data.map(r => r.program))].length}</span></div>
+      `;
+
+      // Populate filters
+      const secFilter = document.getElementById('filterSection');
+      const progFilter = document.getElementById('filterProgram');
+      const sections = [...new Set(allRegistrations.map(r => r.section))].filter(Boolean);
+      const programs = [...new Set(allRegistrations.map(r => r.program))].filter(Boolean);
+
+      secFilter.innerHTML = '<option value="">All Sections</option>' + sections.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+      progFilter.innerHTML = '<option value="">All Programs</option>' + programs.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
+
+      buildTable(data, container);
+    }
+
+    function buildTable(data, container) {
+      if (data.length === 0) {
+        container.innerHTML = `
+          <div class="no-regs-msg">
+            <div class="no-regs-icon">📋</div>
+            No registrations found for the selected filters.
+          </div>`;
+        return;
+      }
+
+      const rows = data.map((r, i) => {
+        const ts = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
+        return `
+          <tr>
+            <td class="reg-id-cell">${escapeHtml(r.registrationId || '—')}</td>
+            <td><span class="section-badge">${escapeHtml(r.section || '—')}</span></td>
+            <td>${escapeHtml(r.program || '—')}</td>
+            <td class="chest-cell">${escapeHtml(r.chestNumber || '—')}</td>
+            <td>${escapeHtml(r.participantName || '—')}</td>
+            <td>${escapeHtml(r.topicTitle || '—')}</td>
+            <td style="color:var(--text-muted); font-size:0.75rem; white-space:nowrap;">${ts}</td>
+          </tr>`;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="regs-table-wrapper">
+          <table class="regs-table">
+            <thead>
+              <tr>
+                <th>Reg ID</th>
+                <th>Section</th>
+                <th>Program</th>
+                <th>Chest No</th>
+                <th>Participant</th>
+                <th>Topic / Title</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function applyFilters() {
+      const sec = document.getElementById('filterSection').value;
+      const prog = document.getElementById('filterProgram').value;
+      let filtered = allRegistrations;
+      if (sec) filtered = filtered.filter(r => r.section === sec);
+      if (prog) filtered = filtered.filter(r => r.program === prog);
+      buildTable(filtered, document.getElementById('regsTableContainer'));
+    }
+
     /* ============ Loading UI & Submission ============ */
     function animateLoadingBar(durationMs, isDemo = false) {
       const overlay = document.getElementById('loadingOverlay');
@@ -1036,13 +1437,10 @@
       const text = document.getElementById('loadingTextStatus');
       
       text.textContent = isDemo ? "Testing Submission Flow..." : "Submitting Registration...";
-
       overlay.classList.add('active');
       fill.style.transition = 'none';
       fill.style.width = '0%';
-      
       void fill.offsetWidth; 
-      
       fill.style.transition = `width ${durationMs}ms ease-in-out`;
       fill.style.width = '90%'; 
     }
@@ -1051,7 +1449,6 @@
       const fill = document.getElementById('loadingBarFill');
       fill.style.transition = `width 0.3s ease-out`;
       fill.style.width = '100%';
-      
       setTimeout(() => {
         document.getElementById('loadingOverlay').classList.remove('active');
       }, 400);
@@ -1085,7 +1482,6 @@
         nextBtn.disabled = true;
         backBtn.disabled = true;
         animateLoadingBar(1000, true);
-        
         setTimeout(() => {
           stopLoadingBar();
           setTimeout(() => {
@@ -1105,11 +1501,9 @@
       try {
         await db.collection('registrations').add(payload);
         stopLoadingBar();
-        
         setTimeout(() => {
           showSuccess(payload.registrationId, payload, false);
         }, 400);
-        
       } catch (err) {
         stopLoadingBar();
         setTimeout(() => {
@@ -1146,7 +1540,6 @@
     }
 
     /* ============ Reset ============ */
-    // If fullReset is true, goes to Step 1 (logs out). If false, goes to Step 2 (keeps house).
     function resetForm(fullReset = false) {
       state.section = null;
       state.program = null;
@@ -1156,6 +1549,7 @@
         state.team = null;
         document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
         document.getElementById('passcodeWrapper').classList.remove('active');
+        document.getElementById('viewRegsWrapper').classList.remove('active');
         document.getElementById('housePasscode').value = '';
       }
 
