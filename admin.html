@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAMA Arts Fest — Admin Dashboard</title>
+<title>KAMA Arts Fest — Admin & House Dashboard</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +22,7 @@
     --text: #C5C6C7;
     --text-muted: #8A909D;
     --error: #FF6B6B;
+    --success: #45B69C;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -346,6 +347,60 @@
   .breakdown-row .b-label { color: var(--text-muted); font-weight: 500; }
   .breakdown-row .b-value { color: #fff; font-weight: 700; }
 
+  /* ===== House Specific Progress Bar ===== */
+  .house-progress-container {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .hp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .hp-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .hp-percent {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--success);
+  }
+
+  .hp-bar-bg {
+    width: 100%;
+    height: 14px;
+    background: var(--bg-input);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .hp-bar-fill {
+    height: 100%;
+    background: var(--success);
+    width: 0%;
+    transition: width 1s ease-in-out;
+  }
+
+  .hp-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
   /* ============ Filters Bar ============ */
   .filters-bar {
     display: flex;
@@ -462,6 +517,28 @@
 
   .ref-link:hover { border-bottom-color: var(--gold); }
 
+  .action-btns {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .edit-btn {
+    background: none;
+    border: 1px solid var(--gold-border);
+    border-radius: 4px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .edit-btn:hover { background: var(--gold-soft); border-color: var(--gold); }
+
   .delete-btn {
     background: none;
     border: 1px solid rgba(255, 107, 107, 0.4);
@@ -469,13 +546,12 @@
     color: var(--error);
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    white-space: nowrap;
   }
 
   .delete-btn:hover {
@@ -536,6 +612,7 @@
   .modal-actions {
     display: flex;
     gap: 1rem;
+    margin-top: 1.5rem;
   }
 
   .modal-actions button {
@@ -567,19 +644,26 @@
 
   .modal-confirm:hover { background: #ff8787; border-color: #ff8787; }
 
+  .modal-save {
+    background: var(--gold);
+    border: 2px solid var(--gold);
+    color: var(--bg);
+  }
+
+  .modal-save:hover { background: #45E6DB; border-color: #45E6DB; }
+
 </style>
 </head>
 <body>
 
-  <!-- ============ LOGIN OVERLAY ============ -->
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
       <div class="login-title">KAMA Arts Fest</div>
       <div class="login-divider"></div>
-      <div class="login-subtitle">Admin Dashboard</div>
+      <div class="login-subtitle">Secure Login</div>
 
       <div class="login-field">
-        <label class="login-label" for="loginUser">Username</label>
+        <label class="login-label" for="loginUser">Username (House / Admin)</label>
         <input type="text" id="loginUser" class="login-input" autocomplete="username">
       </div>
 
@@ -588,68 +672,87 @@
         <input type="password" id="loginPass" class="login-input" autocomplete="current-password">
       </div>
 
-      <button class="login-btn" id="loginBtn">Secure Login</button>
+      <button class="login-btn" id="loginBtn">Login</button>
       <p class="login-error" id="loginError"></p>
     </div>
   </div>
 
-  <!-- ============ ADMIN LAYOUT ============ -->
   <div class="admin-layout">
     <aside class="sidebar">
       <div class="sidebar-logo">KAMA<br>ARTS FEST</div>
       <nav class="sidebar-nav">
         <button class="nav-item active" data-tab="dashboard">Dashboard</button>
         <button class="nav-item" data-tab="table">Registrations</button>
-        <button class="nav-item" data-tab="master">Master Data</button>
+        <button class="nav-item" id="navMasterData" data-tab="master">Master Data</button>
       </nav>
       <div class="sidebar-footer">
+        <div style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin-bottom:1rem;">Logged in as: <span id="loginRoleDisplay" style="color:var(--gold); font-weight:bold;"></span></div>
         <button class="logout-btn" id="logoutBtn">Logout</button>
       </div>
     </aside>
 
     <main class="main-content">
 
-      <!-- DASHBOARD TAB -->
       <div class="tab-content active" id="dashboardTab">
         <div class="page-eyebrow">Overview</div>
-        <div class="page-title">House Dashboard</div>
+        <div class="page-title" id="dashboardTitle">Dashboard</div>
 
-        <div class="stats-grid">
-          <div class="stat-card highlight">
-            <div class="stat-label">Total Entries</div>
-            <div class="stat-value" id="statTotal">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Hormuz</div>
-            <div class="stat-value" id="statHormuz">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Bosphorus</div>
-            <div class="stat-value" id="statBosphorus">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Malacca</div>
-            <div class="stat-value" id="statMalacca">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Gibraltar</div>
-            <div class="stat-value" id="statGibraltar">0</div>
+        <div id="houseDashboardView" style="display:none;">
+          <div class="house-progress-container">
+            <div class="hp-header">
+              <div class="hp-title">Registration Progress</div>
+              <div class="hp-percent" id="hpPercent">0%</div>
+            </div>
+            <div class="hp-bar-bg">
+              <div class="hp-bar-fill" id="hpBarFill"></div>
+            </div>
+            <div class="hp-details">
+              <span>Total Slots: <strong id="hpTotal" style="color:#fff;">0</strong></span>
+              <span>Registered: <strong id="hpReg" style="color:#fff;">0</strong></span>
+              <span>Remaining: <strong id="hpRem" style="color:var(--error);">0</strong></span>
+            </div>
           </div>
         </div>
 
-        <div class="section-breakdown">
-          <div class="breakdown-header">Registrations by Section</div>
-          <div id="sectionBreakdown"></div>
+        <div id="adminDashboardView" style="display:none;">
+          <div class="stats-grid">
+            <div class="stat-card highlight">
+              <div class="stat-label">Total Entries</div>
+              <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Hormuz</div>
+              <div class="stat-value" id="statHormuz">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Bosphorus</div>
+              <div class="stat-value" id="statBosphorus">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Malacca</div>
+              <div class="stat-value" id="statMalacca">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Gibraltar</div>
+              <div class="stat-value" id="statGibraltar">0</div>
+            </div>
+          </div>
+
+          <div class="section-breakdown">
+            <div class="breakdown-header">Registrations by Section</div>
+            <div id="sectionBreakdown"></div>
+          </div>
         </div>
+
       </div>
 
-      <!-- TABLE TAB (Registrations) -->
       <div class="tab-content" id="tableTab">
         <div class="page-eyebrow">All Entries</div>
-        <div class="page-title">House Registrations</div>
+        <div class="page-title">Registrations</div>
 
         <div class="filters-bar">
           <input type="text" id="searchInput" placeholder="Search by name, chest no, ID or topic...">
+          
           <select id="teamFilter">
             <option value="">All Houses</option>
             <option value="Hormuz">Hormuz</option>
@@ -657,6 +760,7 @@
             <option value="Malacca">Malacca</option>
             <option value="Gibraltar">Gibraltar</option>
           </select>
+
           <select id="sectionFilter">
             <option value="">All Sections</option>
             <option value="BIDĀYAH">BIDĀYAH</option>
@@ -681,19 +785,17 @@
                 <th>Section</th>
                 <th>Program</th>
                 <th>Topic / Title</th>
-                <th>Reference</th>
                 <th>Submitted</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody id="tableBody">
-              <tr class="empty-row"><td colspan="10">Loading registrations...</td></tr>
+              <tr class="empty-row"><td colspan="9">Loading registrations...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- MASTER DATA TAB -->
       <div class="tab-content" id="masterTab">
         <div class="page-eyebrow">Participant Auto-fill Data</div>
         <div class="page-title">Master Candidate List</div>
@@ -706,10 +808,8 @@
         </div>
 
         <p class="results-count">
-          <strong>How to use this feature:</strong><br>
-          1. Click <strong>"Export Master CSV Template"</strong>. The system will automatically generate a template perfectly matched to all Programs, Categories, and your 4 Houses.<br>
-          2. Open the file in Excel. You will see columns for: <strong style="color:var(--gold);">House (Team), Category, Program Name, Chest No, Name</strong>. Fill out the Chest No & Names, and Save.<br>
-          3. Use <strong>"Clear All Data"</strong> to remove old database entries, then click <strong>"Import Master CSV"</strong> to upload your finished file.
+          <strong>Admin Note:</strong><br>
+          Export the template, fill out the Chest Numbers and Names, Clear the old database, and Import your finished CSV to enable Dropdown Selection for Houses.
         </p>
 
         <div class="table-wrapper">
@@ -734,7 +834,31 @@
     </main>
   </div>
 
-  <!-- ============ DELETE CONFIRMATION MODAL ============ -->
+  <div class="modal-overlay" id="editRegModal">
+    <div class="modal-box" style="text-align: left;">
+      <div class="modal-title" style="text-align: center;">Edit Registration</div>
+      <input type="hidden" id="editRegId">
+      
+      <div class="login-field">
+        <label class="login-label">Chest Number</label>
+        <input type="text" id="editRegChest" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Participant Name</label>
+        <input type="text" id="editRegName" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Topic / Title</label>
+        <input type="text" id="editRegTopic" class="login-input">
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-cancel" id="cancelEditBtn">Cancel</button>
+        <button class="modal-save" id="saveEditBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="deleteModal">
     <div class="modal-box">
       <div class="modal-title">Confirm Deletion</div>
@@ -748,7 +872,6 @@
     </div>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -766,7 +889,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    /* ============ Constants ============ */
+    /* ============ Constants & Users ============ */
     const TEAMS = ['Hormuz', 'Bosphorus', 'Malacca', 'Gibraltar'];
     const SECTIONS = ['BIDĀYAH', 'ʾŪLĀ', 'THĀNIYAH', 'THĀNAWIYYAH', 'ʿĀLIYAH'];
     
@@ -778,29 +901,40 @@
       "ʿĀLIYAH": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
     };
 
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'kama2025';
+    // User Logins mapping
+    const USERS = {
+      'admin': { role: 'admin', pass: 'kama2025', team: 'Admin' },
+      'hormuz': { role: 'house', pass: '794325', team: 'Hormuz' },
+      'bosphorus': { role: 'house', pass: '542809', team: 'Bosphorus' },
+      'malacca': { role: 'house', pass: '437527', team: 'Malacca' },
+      'gibraltar': { role: 'house', pass: '102355', team: 'Gibraltar' }
+    };
 
     /* ============ State ============ */
-    let allRegistrations = [];
+    let currentUser = null;
+    let rawRegistrations = []; // All data from DB
+    let allRegistrations = []; // Filtered for current user
     let masterParticipants = [];
+    
     let pendingDeleteId = null;
     let pendingDeleteType = null;
     let unsubscribeRegs = null;
     let unsubscribeMaster = null;
 
-    /* ============ Login ============ */
+    /* ============ Authentication ============ */
     const loginOverlay = document.getElementById('loginOverlay');
     const loginBtn = document.getElementById('loginBtn');
     const loginError = document.getElementById('loginError');
 
     function attemptLogin() {
-      const user = document.getElementById('loginUser').value.trim();
+      const user = document.getElementById('loginUser').value.trim().toLowerCase();
       const pass = document.getElementById('loginPass').value;
 
-      if (user === ADMIN_USER && pass === ADMIN_PASS) {
-        sessionStorage.setItem('kamaAdminAuth', 'true');
+      if (USERS[user] && USERS[user].pass === pass) {
+        currentUser = USERS[user];
+        sessionStorage.setItem('kamaAuthUser', JSON.stringify(currentUser));
         loginOverlay.style.display = 'none';
+        setupUserEnvironment();
         initDashboard();
       } else {
         loginError.textContent = 'Invalid username or password.';
@@ -813,15 +947,43 @@
     });
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      sessionStorage.removeItem('kamaAdminAuth');
+      sessionStorage.removeItem('kamaAuthUser');
       if (unsubscribeRegs) unsubscribeRegs();
       if (unsubscribeMaster) unsubscribeMaster();
       location.reload();
     });
 
-    if (sessionStorage.getItem('kamaAdminAuth') === 'true') {
+    // Check existing session
+    const savedSession = sessionStorage.getItem('kamaAuthUser');
+    if (savedSession) {
+      currentUser = JSON.parse(savedSession);
       loginOverlay.style.display = 'none';
+      setupUserEnvironment();
       initDashboard();
+    }
+
+    function setupUserEnvironment() {
+      document.getElementById('loginRoleDisplay').textContent = currentUser.team;
+
+      if(currentUser.role === 'house') {
+        // Hide Master Data from Sidebar
+        document.getElementById('navMasterData').style.display = 'none';
+        
+        // Setup House Dashboard
+        document.getElementById('adminDashboardView').style.display = 'none';
+        document.getElementById('houseDashboardView').style.display = 'block';
+        document.getElementById('dashboardTitle').textContent = currentUser.team + ' Dashboard';
+
+        // Lock Team filter to their own team
+        const teamFilter = document.getElementById('teamFilter');
+        teamFilter.value = currentUser.team;
+        teamFilter.disabled = true;
+      } else {
+        // Setup Admin Dashboard
+        document.getElementById('adminDashboardView').style.display = 'block';
+        document.getElementById('houseDashboardView').style.display = 'none';
+        document.getElementById('dashboardTitle').textContent = 'Admin Dashboard';
+      }
     }
 
     /* ============ Sidebar Navigation ============ */
@@ -836,53 +998,74 @@
 
     /* ============ Init: Real-time Listeners ============ */
     function initDashboard() {
+      // Listen to Master Participants Database (Needed for House Stats calculation)
+      unsubscribeMaster = db.collection('participants')
+        .onSnapshot(snapshot => {
+          masterParticipants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          if(currentUser.role === 'admin') renderMasterTable();
+          updateDashboardStats(); // Recalculate if master data changes
+        }, err => {
+          if(currentUser.role === 'admin') {
+            document.getElementById('masterTableBody').innerHTML = 
+              `<tr class="empty-row"><td colspan="6">Error loading master data: ${escapeHtml(err.message)}</td></tr>`;
+          }
+        });
+
       // Listen to Registrations
       unsubscribeRegs = db.collection('registrations')
         .orderBy('timestamp', 'desc')
         .onSnapshot(snapshot => {
-          allRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          renderStats();
+          rawRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          
+          // If House, only keep their registrations locally
+          if(currentUser.role === 'house') {
+            allRegistrations = rawRegistrations.filter(r => r.team === currentUser.team);
+          } else {
+            allRegistrations = [...rawRegistrations];
+          }
+
+          updateDashboardStats();
           renderTable();
         }, err => {
           document.getElementById('tableBody').innerHTML =
-            `<tr class="empty-row"><td colspan="10">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
-        });
-        
-      // Listen to Master Participants Database
-      unsubscribeMaster = db.collection('participants')
-        .onSnapshot(snapshot => {
-          masterParticipants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          renderMasterTable();
-        }, err => {
-          document.getElementById('masterTableBody').innerHTML = 
-            `<tr class="empty-row"><td colspan="6">Error loading master data: ${escapeHtml(err.message)}</td></tr>`;
+            `<tr class="empty-row"><td colspan="9">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
         });
     }
 
-    /* ============ Dashboard Stats ============ */
-    function renderStats() {
-      const total = allRegistrations.length;
-      document.getElementById('statTotal').textContent = total;
+    /* ============ Dashboard Stats (Dynamic) ============ */
+    function updateDashboardStats() {
+      if(currentUser.role === 'admin') {
+        // Admin View
+        document.getElementById('statTotal').textContent = allRegistrations.length;
+        TEAMS.forEach(team => {
+          const count = allRegistrations.filter(r => r.team === team).length;
+          const el = document.getElementById('stat' + team);
+          if (el) el.textContent = count;
+        });
 
-      TEAMS.forEach(team => {
-        const count = allRegistrations.filter(r => r.team === team).length;
-        const el = document.getElementById('stat' + team);
-        if (el) el.textContent = count;
-      });
+        const breakdownEl = document.getElementById('sectionBreakdown');
+        breakdownEl.innerHTML = '';
+        SECTIONS.forEach(section => {
+          const count = allRegistrations.filter(r => r.section === section).length;
+          const row = document.createElement('div');
+          row.className = 'breakdown-row';
+          row.innerHTML = `<span class="b-label">${escapeHtml(section)}</span><span class="b-value">${count}</span>`;
+          breakdownEl.appendChild(row);
+        });
 
-      const breakdownEl = document.getElementById('sectionBreakdown');
-      breakdownEl.innerHTML = '';
+      } else {
+        // House View
+        const houseTotalSlots = masterParticipants.filter(p => p.team === currentUser.team).length;
+        const houseRegs = allRegistrations.length; // Already filtered for this house
+        const houseRem = Math.max(0, houseTotalSlots - houseRegs);
+        const percent = houseTotalSlots > 0 ? Math.round((houseRegs / houseTotalSlots) * 100) : 0;
 
-      SECTIONS.forEach(section => {
-        const count = allRegistrations.filter(r => r.section === section).length;
-        const row = document.createElement('div');
-        row.className = 'breakdown-row';
-        row.innerHTML = `
-          <span class="b-label">${escapeHtml(section)}</span>
-          <span class="b-value">${count}</span>
-        `;
-        breakdownEl.appendChild(row);
-      });
+        document.getElementById('hpTotal').textContent = houseTotalSlots;
+        document.getElementById('hpReg').textContent = houseRegs;
+        document.getElementById('hpRem').textContent = houseRem;
+        document.getElementById('hpPercent').textContent = percent + '%';
+        document.getElementById('hpBarFill').style.width = percent + '%';
+      }
     }
 
     /* ============ Table: Registrations Filtering ============ */
@@ -911,7 +1094,6 @@
 
           if (!haystack.includes(search)) return false;
         }
-
         return true;
       });
     }
@@ -924,7 +1106,7 @@
       resultsCount.textContent = `Showing ${data.length} of ${allRegistrations.length} registrations.`;
 
       if (data.length === 0) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="10">No registrations found.</td></tr>';
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No registrations found.</td></tr>';
         return;
       }
 
@@ -932,14 +1114,9 @@
 
       data.forEach(r => {
         const tr = document.createElement('tr');
-
         const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
           ? r.timestamp.toDate().toLocaleString()
           : '—';
-
-        const refCell = r.referenceLink
-          ? `<a href="${escapeHtml(r.referenceLink)}" target="_blank" rel="noopener noreferrer" class="ref-link">View</a>`
-          : '<span class="muted">—</span>';
 
         tr.innerHTML = `
           <td>${escapeHtml(r.registrationId || '—')}</td>
@@ -949,20 +1126,68 @@
           <td>${escapeHtml(r.section || '—')}</td>
           <td>${escapeHtml(r.program || '—')}</td>
           <td>${escapeHtml(r.topicTitle || '—')}</td>
-          <td>${refCell}</td>
           <td>${escapeHtml(dateStr)}</td>
-          <td><button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Delete</button></td>
+          <td>
+            <div class="action-btns">
+              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit</button>
+              <button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Del</button>
+            </div>
+          </td>
         `;
 
         tbody.appendChild(tr);
       });
     }
 
-    /* ============ Master Data Tab Logic ============ */
+    /* ============ EDIT REGISTRATION Logic ============ */
+    const editRegModal = document.getElementById('editRegModal');
     
-    // 1. Render Master Table
+    function openEditRegModal(id) {
+      const reg = allRegistrations.find(r => r.id === id);
+      if(!reg) return;
+
+      document.getElementById('editRegId').value = reg.id;
+      document.getElementById('editRegChest').value = reg.chestNumber || '';
+      document.getElementById('editRegName').value = reg.participantName || '';
+      document.getElementById('editRegTopic').value = reg.topicTitle || '';
+      
+      editRegModal.classList.add('active');
+    }
+
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      editRegModal.classList.remove('active');
+    });
+
+    document.getElementById('saveEditBtn').addEventListener('click', async () => {
+      const id = document.getElementById('editRegId').value;
+      const chestNumber = document.getElementById('editRegChest').value.trim();
+      const participantName = document.getElementById('editRegName').value.trim();
+      const topicTitle = document.getElementById('editRegTopic').value.trim();
+
+      const btn = document.getElementById('saveEditBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      try {
+        await db.collection('registrations').doc(id).update({
+          chestNumber,
+          participantName,
+          topicTitle
+        });
+        editRegModal.classList.remove('active');
+      } catch(err) {
+        alert("Failed to update: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Changes';
+      }
+    });
+
+    /* ============ Master Data Tab Logic (ADMIN ONLY) ============ */
+    
     function renderMasterTable() {
       const tbody = document.getElementById('masterTableBody');
+      if(!tbody) return;
       
       if(masterParticipants.length === 0) {
         tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No master data imported yet. Export the template, fill it out, and import it here.</td></tr>';
@@ -978,117 +1203,102 @@
           <td>${escapeHtml(p.program || '—')}</td>
           <td>${escapeHtml(p.chestNo || '—')}</td>
           <td>${escapeHtml(p.name || '—')}</td>
-          <td><button class="delete-btn" onclick="openDeleteModal('${p.id}', 'master')">Delete</button></td>
+          <td><button class="delete-btn" onclick="openDeleteModal('${p.id}', 'master')">Del</button></td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // 2. Import CSV Logic
-    document.getElementById('importMasterBtn').addEventListener('click', () => {
-      document.getElementById('csvFileInput').click();
-    });
+    // Import
+    if(document.getElementById('importMasterBtn')) {
+      document.getElementById('importMasterBtn').addEventListener('click', () => document.getElementById('csvFileInput').click());
+      document.getElementById('csvFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
 
-    document.getElementById('csvFileInput').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if(!file) return;
+        const text = await file.text();
+        const lines = text.split(/\r?\n/);
+        const batch = db.batch();
+        let count = 0;
 
-      const text = await file.text();
-      const lines = text.split(/\r?\n/);
+        for(let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if(!line) continue;
 
-      const batch = db.batch();
-      let count = 0;
+          const cols = line.split(',');
+          const team = cols[0] ? cols[0].trim() : '';
+          const category = cols[1] ? cols[1].trim() : '';
+          const program = cols[2] ? cols[2].trim() : '';
+          const chestNo = cols[3] ? cols[3].trim() : '';
+          const name = cols[4] ? cols[4].trim() : '';
 
-      // Ensure mapping follows: Team, Category, Program Name, Chest No, Name
-      for(let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if(!line) continue;
+          if(team && category && program && chestNo && name) {
+            const ref = db.collection('participants').doc();
+            batch.set(ref, { team, category, program, chestNo, name });
+            count++;
+          }
+        }
 
-        const cols = line.split(',');
+        if(count > 0) {
+          try {
+            await batch.commit();
+            alert(`Success! Imported ${count} valid participant rows.`);
+          } catch(err) {
+            alert('Error saving to database: ' + err.message);
+          }
+        } else {
+          alert('No valid records found. Did you fill out the Chest No and Name columns for each Team?');
+        }
+        e.target.value = '';
+      });
+    }
+
+    // Export Smart Master Template Logic
+    if(document.getElementById('exportMasterBtn')) {
+      document.getElementById('exportMasterBtn').addEventListener('click', () => {
+        const headers = ['Team', 'Category', 'Program Name', 'Chest No', 'Name'];
+        const rows = [];
         
-        const team = cols[0] ? cols[0].trim() : '';
-        const category = cols[1] ? cols[1].trim() : '';
-        const program = cols[2] ? cols[2].trim() : '';
-        const chestNo = cols[3] ? cols[3].trim() : '';
-        const name = cols[4] ? cols[4].trim() : '';
-
-        // Only save rows that have a chest number and a name. Empty template rows are ignored.
-        if(team && category && program && chestNo && name) {
-          const ref = db.collection('participants').doc();
-          batch.set(ref, { team, category, program, chestNo, name });
-          count++;
-        }
-      }
-
-      if(count > 0) {
-        try {
-          await batch.commit();
-          alert(`Success! Imported ${count} valid participant rows.`);
-        } catch(err) {
-          alert('Error saving to database: ' + err.message);
-        }
-      } else {
-        alert('No valid records found. Did you fill out the Chest No and Name columns for each Team?');
-      }
-      
-      e.target.value = ''; // Reset input
-    });
-
-    // 3. Export Smart Master Template Logic (NOW INCLUDES TEAM COL)
-    document.getElementById('exportMasterBtn').addEventListener('click', () => {
-      const headers = ['Team', 'Category', 'Program Name', 'Chest No', 'Name'];
-      const rows = [];
-      
-      TEAMS.forEach(team => {
-        SECTIONS.forEach(category => {
-          const progs = PROGRAMS[category] || [];
-          progs.forEach(programName => {
-            
-            const existing = masterParticipants.filter(p => p.team === team && p.category === category && p.program === programName);
-            
-            if(existing.length > 0) {
-              // Export the ones that are already filled out
-              existing.forEach(p => {
-                rows.push([team, category, programName, p.chestNo || '', p.name || '']);
-              });
-            } else {
-              // If empty, generate 1 blank row for this team-program combination
-              rows.push([team, category, programName, '', '']);
-            }
+        TEAMS.forEach(team => {
+          SECTIONS.forEach(category => {
+            const progs = PROGRAMS[category] || [];
+            progs.forEach(programName => {
+              const existing = masterParticipants.filter(p => p.team === team && p.category === category && p.program === programName);
+              if(existing.length > 0) {
+                existing.forEach(p => rows.push([team, category, programName, p.chestNo || '', p.name || '']));
+              } else {
+                rows.push([team, category, programName, '', '']);
+              }
+            });
           });
         });
+        
+        let csv = headers.map(csvEscape).join(',') + '\r\n';
+        rows.forEach(row => { csv += row.map(csvEscape).join(',') + '\r\n'; });
+        downloadCSV(csv, `KAMA_Master_Template_${new Date().toISOString().slice(0, 10)}.csv`);
       });
-      
-      let csv = headers.map(csvEscape).join(',') + '\r\n';
-      rows.forEach(row => {
-        csv += row.map(csvEscape).join(',') + '\r\n';
-      });
+    }
 
-      downloadCSV(csv, `KAMA_Master_Template_${new Date().toISOString().slice(0, 10)}.csv`);
-    });
-
-    // 4. Clear Master Data Logic
-    document.getElementById('clearMasterBtn').addEventListener('click', async () => {
-      if(masterParticipants.length === 0) {
-        alert("No master data to clear.");
-        return;
-      }
-      
-      const confirmed = confirm("Are you sure you want to delete ALL Master Data rows? Do this before re-importing an updated Excel file.");
-      if(confirmed) {
-        try {
-          const batch = db.batch();
-          masterParticipants.forEach(p => {
-             const ref = db.collection('participants').doc(p.id);
-             batch.delete(ref);
-          });
-          await batch.commit();
-          alert("All Master Data has been successfully cleared.");
-        } catch(err) {
-          alert("Error clearing data: " + err.message);
+    // Clear Master Data Logic
+    if(document.getElementById('clearMasterBtn')) {
+      document.getElementById('clearMasterBtn').addEventListener('click', async () => {
+        if(masterParticipants.length === 0) { alert("No master data to clear."); return; }
+        const confirmed = confirm("Are you sure you want to delete ALL Master Data rows? Do this before re-importing an updated Excel file.");
+        if(confirmed) {
+          try {
+            const batch = db.batch();
+            masterParticipants.forEach(p => {
+               const ref = db.collection('participants').doc(p.id);
+               batch.delete(ref);
+            });
+            await batch.commit();
+            alert("All Master Data has been successfully cleared.");
+          } catch(err) {
+            alert("Error clearing data: " + err.message);
+          }
         }
-      }
-    });
+      });
+    }
 
     /* ============ Delete Modal ============ */
     const deleteModal = document.getElementById('deleteModal');
@@ -1109,22 +1319,15 @@
 
     cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
-    deleteModal.addEventListener('click', e => {
-      if (e.target === deleteModal) closeDeleteModal();
-    });
-
     confirmDeleteBtn.addEventListener('click', async () => {
       if (!pendingDeleteId) return;
-
-      const id = pendingDeleteId;
-      const type = pendingDeleteType;
       
       confirmDeleteBtn.disabled = true;
       confirmDeleteBtn.textContent = 'Deleting...';
 
       try {
-        const collectionName = (type === 'registration') ? 'registrations' : 'participants';
-        await db.collection(collectionName).doc(id).delete();
+        const collectionName = (pendingDeleteType === 'registration') ? 'registrations' : 'participants';
+        await db.collection(collectionName).doc(pendingDeleteId).delete();
       } catch (err) {
         alert('Failed to delete: ' + err.message);
       } finally {
@@ -1144,7 +1347,7 @@
       }
 
       const headers = [
-        'Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Reference Link', 'Submitted At'
+        'Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Submitted At'
       ];
 
       const rows = data.map(r => {
@@ -1153,7 +1356,8 @@
           : '';
 
         return [
-          r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', r.referenceLink || '', dateStr
+          r.registrationId || '', r.team || '', r.section || '', r.program || '', 
+          r.chestNumber || '', r.participantName || '', r.topicTitle || '', dateStr
         ];
       });
 
@@ -1176,7 +1380,6 @@
     function downloadCSV(csvString, filename) {
       const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-
       const link = document.createElement('a');
       link.href = url;
       link.download = filename;
