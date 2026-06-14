@@ -3,18 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAMA Arts Fest — Registration</title>
+<title>KAMA Arts Fest — Admin & House Dashboard</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
     --bg: #0B0C10;
-    --bg-card: #1F2833;
+    --bg-panel: #1F2833;
     --bg-input: #12161A;
-    --gold: #66FCF1; 
+    --bg-sidebar: #0D1115;
+    --gold: #66FCF1;
     --gold-soft: rgba(102, 252, 241, 0.08);
     --gold-border: rgba(102, 252, 241, 0.3);
     --line: rgba(255, 255, 255, 0.1);
@@ -31,996 +32,854 @@
     color: var(--text);
     font-family: 'Montserrat', sans-serif;
     -webkit-font-smoothing: antialiased;
-  }
-
-  body {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
   }
 
-  .site-header {
-    text-align: center;
-    padding: 3rem 1.5rem 1.5rem;
-  }
-
-  .site-title {
-    font-weight: 700;
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-transform: uppercase;
-  }
-
-  .title-divider {
-    width: 60px;
-    height: 3px;
-    background: var(--gold);
-    margin: 1rem auto;
-    border-radius: 2px;
-  }
-
-  .site-subtitle {
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .container {
-    flex: 1;
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 1.5rem 1.25rem 4rem;
-  }
-
-  .progress-bar {
-    display: flex;
-    margin-bottom: 2.5rem;
-  }
-
-  .step-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-
-  .step-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 17px;
-    left: 50%;
-    width: 100%;
-    height: 2px;
-    background: var(--line);
-    z-index: 0;
-    transition: background 0.3s ease;
-  }
-
-  .step-item.completed:not(:last-child)::after {
-    background: var(--gold);
-  }
-
-  .step-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--line);
+  /* ============ Login Overlay ============ */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
     background: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    z-index: 1;
-    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 1.5rem;
   }
 
-  .step-item.active .step-circle {
-    border-color: var(--gold);
-    color: var(--gold);
-    box-shadow: 0 0 10px var(--gold-soft);
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel);
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   }
 
-  .step-item.completed .step-circle {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--bg);
-  }
-
-  .step-label {
-    margin-top: 0.75rem;
-    font-size: 0.65rem;
-    font-weight: 600;
+  .login-title {
+    font-weight: 700;
+    font-size: 1.4rem;
     letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .login-divider {
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--gold);
+    margin: 1rem auto;
+  }
+
+  .login-subtitle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-muted);
-    transition: color 0.3s ease;
-    text-align: center;
-  }
-
-  .step-item.active .step-label,
-  .step-item.completed .step-label {
-    color: var(--text);
-  }
-
-  .form-card {
-    background: var(--bg-card);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    padding: 2.5rem 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  @media (max-width: 540px) {
-    .form-card { padding: 2rem 1.25rem; }
-  }
-
-  .house-badge {
-    background: rgba(102, 252, 241, 0.05);
-    border: 1px solid var(--gold-border);
-    padding: 0.8rem 1.2rem;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 2rem;
   }
 
-  .logout-house-btn {
-    background: transparent;
-    border: 1px solid var(--error);
-    color: var(--error);
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.2s ease;
+  .login-field {
+    margin-bottom: 1.25rem;
+    text-align: left;
   }
 
-  .logout-house-btn:hover {
-    background: rgba(255, 107, 107, 0.1);
-  }
-
-  .demo-sm-btn {
-    background: transparent;
-    border: 1px dashed var(--text-muted);
-    color: var(--text-muted);
-    padding: 0.35rem 0.7rem;
-    border-radius: 4px;
-    font-size: 0.65rem;
+  .login-label {
+    display: block;
+    font-size: 0.75rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .login-input {
+    width: 100%;
+    background: var(--bg-input);
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    color: #fff;
+    padding: 0.85rem 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .login-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-soft);
+  }
+
+  .login-btn {
+    width: 100%;
+    margin-top: 1rem;
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
-  .demo-sm-btn:hover {
+  .login-btn:hover { background: #45E6DB; box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); }
+
+  .login-error {
+    color: var(--error);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    min-height: 1rem;
+  }
+
+  /* ============ Layout ============ */
+  .admin-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+  }
+
+  .sidebar-logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
     color: var(--gold);
+    text-align: center;
+    padding: 0 1.5rem 2rem;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.6;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-item {
+    background: none;
+    border: none;
+    text-align: left;
+    color: var(--text-muted);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1.1rem 1.5rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .nav-item:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .nav-item.active {
+    color: var(--gold);
+    border-left-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
+  .sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .logout-btn {
+    width: 100%;
+    background: none;
+    border: 2px solid var(--gold-border);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .logout-btn:hover {
     border-color: var(--gold);
     background: var(--gold-soft);
   }
 
-  .step-content { display: none; animation: fadeIn 0.4s ease; }
-  .step-content.active { display: block; }
+  /* ============ Main Content ============ */
+  .main-content {
+    flex: 1;
+    padding: 2.5rem 2.5rem 4rem;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 720px) {
+    .admin-layout { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    .sidebar-logo { border-bottom: none; padding: 0; border-right: 1px solid var(--line); padding-right: 1rem; }
+    .sidebar-nav { flex-direction: row; padding-top: 0; overflow-x: auto;}
+    .nav-item { border-left: none; border-bottom: 2px solid transparent; padding: 0.6rem 1rem; white-space: nowrap; }
+    .nav-item.active { border-left: none; border-bottom-color: var(--gold); }
+    .sidebar-footer { border-top: none; padding: 0; margin-left: auto; }
+    .logout-btn { padding: 0.6rem 1rem; white-space: nowrap; }
+    .main-content { padding: 1.5rem 1.25rem 3rem; }
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .step-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.5rem;
-  }
-
-  .step-heading {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #fff;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .step-desc {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-
-  .options-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  @media (max-width: 540px) {
-    .options-grid { grid-template-columns: 1fr; }
-  }
-
-  .option-card {
-    border: 2px solid var(--line);
-    border-radius: 8px;
-    padding: 1.5rem 1.2rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(255,255,255,0.02);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .option-card:hover {
-    border-color: var(--gold-border);
-    background: var(--gold-soft);
-  }
-
-  .option-card.selected {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  .option-title {
-    font-weight: 600;
-    font-size: 1.05rem;
-    letter-spacing: 0.05em;
-    color: #fff;
-    transition: color 0.2s ease;
-    margin: 0;
-  }
-
-  .option-card.selected .option-title { color: var(--gold); }
-
-  .empty-note {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    padding: 1.5rem 0;
-    text-align: center;
-    border: 1px dashed var(--line);
-  }
-
-  .passcode-wrapper {
-    margin-top: 1.5rem;
-    display: none;
-    animation: fadeIn 0.3s ease;
-    background: rgba(0,0,0,0.2);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--line);
-  }
-
-  .passcode-wrapper.active {
-    display: block;
-  }
-
-  /* ===== VIEW MY REGISTRATIONS button on Step 1 ===== */
-  .view-regs-wrapper {
-    display: none;
-    margin-top: 1.25rem;
-    animation: fadeIn 0.3s ease;
-  }
-
-  .view-regs-wrapper.active {
-    display: block;
-  }
-
-  .btn-view-regs {
-    width: 100%;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-size: 0.78rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: 6px;
-    border: 2px solid var(--gold-border);
-    background: transparent;
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .btn-view-regs:hover {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  /* ===== REGISTRATIONS VIEW SCREEN ===== */
-  #viewRegsScreen {
-    display: none;
-  }
-
-  #viewRegsScreen.active {
-    display: block;
-    animation: fadeIn 0.4s ease;
-  }
-
-  .regs-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .regs-stats {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-  }
-
-  .stat-pill {
-    background: rgba(102, 252, 241, 0.06);
-    border: 1px solid var(--gold-border);
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-
-  .stat-pill span {
-    color: #fff;
-    margin-left: 0.4rem;
-    font-size: 0.9rem;
-  }
-
-  /* Filter bar */
-  .filter-bar {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-select {
-    flex: 1;
-    min-width: 140px;
-    background: var(--bg-input);
-    border: 2px solid var(--line);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 0.6rem 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.8rem top 50%;
-    background-size: 0.6rem auto;
-    padding-right: 2rem;
-    transition: border-color 0.2s ease;
-  }
-
-  .filter-select:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
-
-  /* Table */
-  .regs-table-wrapper {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid var(--line);
-  }
-
-  .regs-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.82rem;
-    min-width: 520px;
-  }
-
-  .regs-table thead tr {
-    background: rgba(102, 252, 241, 0.06);
-    border-bottom: 1px solid var(--gold-border);
-  }
-
-  .regs-table th {
-    padding: 0.8rem 1rem;
-    text-align: left;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    white-space: nowrap;
-  }
-
-  .regs-table tbody tr {
-    border-bottom: 1px solid var(--line);
-    transition: background 0.15s ease;
-  }
-
-  .regs-table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .regs-table tbody tr:hover {
-    background: rgba(255,255,255,0.03);
-  }
-
-  .regs-table td {
-    padding: 0.85rem 1rem;
-    color: var(--text);
-    vertical-align: middle;
-  }
-
-  .regs-table td.reg-id-cell {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-  }
-
-  .regs-table td.chest-cell {
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .section-badge {
-    display: inline-block;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    background: rgba(102, 252, 241, 0.08);
-    border: 1px solid var(--gold-border);
-    color: var(--gold);
-    white-space: nowrap;
-  }
-
-  .loading-regs {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-
-  .spinner-sm {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--line);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-right: 0.5rem;
-    vertical-align: middle;
-  }
-
-  .no-regs-msg {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    border: 1px dashed var(--line);
-    border-radius: 8px;
-  }
-
-  .no-regs-msg .no-regs-icon {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-    opacity: 0.4;
-  }
-
-  /* Summary box */
-  .summary-box {
-    background: rgba(0,0,0,0.2);
-    border-radius: 8px;
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    border: 1px solid var(--line);
-  }
-
-  @media (max-width: 540px) {
-    .summary-box { grid-template-columns: 1fr; }
-  }
-
-  .summary-item .summary-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.4rem;
-  }
-
-  .summary-item .summary-value {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--gold);
-  }
-
-  .field-group { margin-bottom: 1.5rem; position: relative; }
-
-  .field-label {
-    display: block;
+  .page-eyebrow {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--text);
-    margin-bottom: 0.6rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
   }
 
-  .field-label .req { color: var(--error); }
-  .field-label .opt { font-weight: 400; font-style: italic; text-transform: none; letter-spacing: 0; color: var(--text-muted); }
-
-  .field-input {
-    width: 100%;
-    background: var(--bg-input);
-    border: 2px solid var(--line);
-    border-radius: 6px;
+  .page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     color: #fff;
-    padding: 0.9rem 1.2rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-  
-  select.field-input {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1.2rem top 50%;
-    background-size: 0.65rem auto;
-    padding-right: 2.5rem;
-  }
-
-  .field-input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px var(--gold-soft);
-  }
-
-  .field-input::placeholder { color: #4A505C; }
-
-  .help-text {
-    font-size: 0.7rem; 
-    font-weight: 500;
-    color: var(--text-muted); 
-    margin-top: 0.5rem;
-    line-height: 1.4;
-  }
-
-  .error-text {
-    color: var(--error);
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-top: 1rem;
-    min-height: 1.2rem;
-  }
-
-  .nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .btn {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-size: 0.8rem;
-    padding: 0.9rem 2rem;
-    border-radius: 6px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ============ Stat Cards ============ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-panel);
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .stat-card.highlight {
     border: 2px solid var(--gold-border);
-    background: transparent;
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.2s ease;
+    background: rgba(102, 252, 241, 0.03);
   }
 
-  .btn:hover:not(:disabled) {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  .btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .btn-primary {
-    background: var(--gold);
-    color: var(--bg);
-    border-color: var(--gold);
-  }
-
-  .btn-primary:hover:not(:disabled) {
-    background: #45E6DB;
-    border-color: #45E6DB;
-    color: var(--bg);
-    box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3);
-  }
-
-  .loading-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--bg-card);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    border-radius: 12px;
-  }
-
-  .loading-overlay.active {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid var(--line);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1.5rem;
-  }
-
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-
-  .loading-text {
+  .stat-label {
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #fff;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
   }
 
-  .loading-bar-wrapper {
-    width: 200px;
-    height: 6px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 3px;
+  .stat-value {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--gold);
+  }
+
+  .section-breakdown {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-panel);
     overflow: hidden;
   }
 
-  .loading-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--gold);
-    border-radius: 3px;
-    transition: width 0.2s ease;
-  }
-
-  .success-screen {
-    text-align: center;
-    padding: 1rem 0;
-  }
-
-  .success-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(69, 182, 156, 0.1);
-    color: var(--success);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    margin: 0 auto 1.5rem;
-  }
-
-  .success-heading {
-    font-size: 1.8rem;
+  .breakdown-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--line);
     font-weight: 700;
-    letter-spacing: 0.05em;
-    color: #fff;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .success-text {
     font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 460px;
-    margin: 0 auto 2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
   }
 
-  .reg-id-box {
-    background: rgba(102, 252, 241, 0.05);
-    border: 2px dashed var(--gold);
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+
+  .breakdown-row:last-child { border-bottom: none; }
+
+  .breakdown-row .b-label { color: var(--text-muted); font-weight: 500; }
+  .breakdown-row .b-value { color: #fff; font-weight: 700; }
+
+  /* ===== House Specific Progress Bar ===== */
+  .house-progress-container {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 1.5rem 1rem;
+    padding: 2rem;
     margin-bottom: 2rem;
   }
 
-  .reg-id-label {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
+  .hp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
   }
 
-  .reg-id-value {
+  .hp-title {
+    font-size: 1.1rem;
     font-weight: 700;
-    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .hp-percent {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--success);
+  }
+
+  .hp-bar-bg {
+    width: 100%;
+    height: 14px;
+    background: var(--bg-input);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .hp-bar-fill {
+    height: 100%;
+    background: var(--success);
+    width: 0%;
+    transition: width 1s ease-in-out;
+  }
+
+  .hp-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ============ Filters Bar ============ */
+  .filters-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .filters-bar input,
+  .filters-bar select {
+    background: var(--bg-input);
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    color: #fff;
+    padding: 0.85rem 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .filters-bar input:focus,
+  .filters-bar select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  #searchInput { flex: 1; min-width: 180px; }
+  .filters-bar select { min-width: 160px; cursor: pointer; }
+
+  .export-btn {
+    background: transparent;
+    border: 2px solid var(--gold-border);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .export-btn:hover {
+    border-color: var(--gold);
+    background: var(--gold-soft);
+  }
+
+  .btn-danger {
+    color: var(--error);
+    border-color: rgba(255, 107, 107, 0.4);
+  }
+
+  .btn-danger:hover {
+    border-color: var(--error);
+    background: rgba(255, 107, 107, 0.1);
+  }
+
+  .results-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  /* ============ Table ============ */
+  .table-wrapper {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow-x: auto;
+    background: var(--bg-panel);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 980px;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid var(--gold-border);
+    white-space: nowrap;
+    background: rgba(102, 252, 241, 0.02);
+  }
+
+  tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .ref-link {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-border);
+    font-size: 0.8rem;
+  }
+
+  .ref-link:hover { border-bottom-color: var(--gold); }
+
+  .action-btns {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .edit-btn {
+    background: none;
+    border: 1px solid var(--gold-border);
+    border-radius: 4px;
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .edit-btn:hover { background: var(--gold-soft); border-color: var(--gold); }
+
+  .delete-btn {
+    background: none;
+    border: 1px solid rgba(255, 107, 107, 0.4);
+    border-radius: 4px;
+    color: var(--error);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .delete-btn:hover {
+    border-color: var(--error);
+    background: rgba(255, 107, 107, 0.1);
+  }
+
+  .empty-row td {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 3rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .muted { color: var(--text-muted); }
+
+  /* ============ Modal ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal-box {
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-panel);
+    border: 2px solid var(--gold-border);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .modal-title {
+    font-weight: 700;
+    font-size: 1.2rem;
     letter-spacing: 0.1em;
     color: var(--gold);
-    word-break: break-all;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
   }
 
-  .site-footer {
-    text-align: center;
-    padding: 2rem 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #4A505C;
+  .modal-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
   }
+
+  .modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .modal-actions button {
+    flex: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .modal-cancel {
+    background: transparent;
+    border: 2px solid var(--line);
+    color: var(--text-muted);
+  }
+
+  .modal-cancel:hover { border-color: var(--text); color: var(--text); }
+
+  .modal-confirm {
+    background: var(--error);
+    border: 2px solid var(--error);
+    color: var(--bg);
+  }
+
+  .modal-confirm:hover { background: #ff8787; border-color: #ff8787; }
+
+  .modal-save {
+    background: var(--gold);
+    border: 2px solid var(--gold);
+    color: var(--bg);
+  }
+
+  .modal-save:hover { background: #45E6DB; border-color: #45E6DB; }
 
 </style>
 </head>
 <body>
 
-  <header class="site-header">
-    <h1 class="site-title">KAMA Arts Fest</h1>
-    <div class="title-divider"></div>
-    <p class="site-subtitle">Official Registration Portal</p>
-  </header>
+  <!-- ============ LOGIN OVERLAY ============ -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <div class="login-title">KAMA Arts Fest</div>
+      <div class="login-divider"></div>
+      <div class="login-subtitle">Secure Login</div>
 
-  <div class="container">
-
-    <div class="progress-bar" id="progressBar">
-      <div class="step-item" data-step="1">
-        <div class="step-circle">1</div>
-        <div class="step-label">House</div>
-      </div>
-      <div class="step-item" data-step="2">
-        <div class="step-circle">2</div>
-        <div class="step-label">Section</div>
-      </div>
-      <div class="step-item" data-step="3">
-        <div class="step-circle">3</div>
-        <div class="step-label">Program</div>
-      </div>
-      <div class="step-item" data-step="4">
-        <div class="step-circle">4</div>
-        <div class="step-label">Details</div>
-      </div>
-    </div>
-
-    <div class="form-card">
-      
-      <!-- LOADING OVERLAY -->
-      <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingTextStatus">Submitting Registration...</div>
-        <div class="loading-bar-wrapper">
-          <div class="loading-bar-fill" id="loadingBarFill"></div>
-        </div>
+      <div class="login-field">
+        <label class="login-label" for="loginUser">Username (House / Admin)</label>
+        <input type="text" id="loginUser" class="login-input" autocomplete="username">
       </div>
 
-      <!-- HOUSE BADGE (Shows when logged in on Steps 2-4) -->
-      <div id="houseBadge" class="house-badge" style="display:none;">
-        <div>
-          <span style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Active House</span><br>
-          <strong id="houseNameDisplay" style="color:var(--gold); font-size:1rem; letter-spacing: 0.05em;">Hormuz</strong>
-        </div>
-        <button onclick="logoutHouse()" class="logout-house-btn">Change House / Logout</button>
+      <div class="login-field">
+        <label class="login-label" for="loginPass">Password</label>
+        <input type="password" id="loginPass" class="login-input" autocomplete="current-password">
       </div>
 
-      <!-- STEP 1: TEAM -->
-      <div class="step-content active" id="step1">
-        
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-          <div>
-            <div class="step-eyebrow">Step 1 of 4</div>
-            <div class="step-heading">Select Your House</div>
-          </div>
-          <button onclick="enableDemoMode()" class="demo-sm-btn">Test / Demo Mode</button>
-        </div>
-        <p class="step-desc">Choose the House you belong to for this entry.</p>
-
-        <div class="options-grid">
-          <div class="option-card" onclick="selectTeam(this, 'Hormuz')">
-            <div class="option-title">Hormuz</div>
-          </div>
-          <div class="option-card" onclick="selectTeam(this, 'Bosphorus')">
-            <div class="option-title">Bosphorus</div>
-          </div>
-          <div class="option-card" onclick="selectTeam(this, 'Malacca')">
-            <div class="option-title">Malacca</div>
-          </div>
-          <div class="option-card" onclick="selectTeam(this, 'Gibraltar')">
-            <div class="option-title">Gibraltar</div>
-          </div>
-        </div>
-
-        <!-- Security Passcode -->
-        <div class="passcode-wrapper" id="passcodeWrapper">
-          <label class="field-label" for="housePasscode">House Passcode <span class="req">*</span></label>
-          <input type="password" id="housePasscode" class="field-input" placeholder="Enter 6-digit passcode">
-          <p class="help-text">Please enter your secure House Passcode to verify identity.</p>
-        </div>
-
-        <!-- View My Registrations Button (shows after house selected) -->
-        <div class="view-regs-wrapper" id="viewRegsWrapper">
-          <button class="btn-view-regs" onclick="openViewRegistrations()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View My House Registrations
-          </button>
-        </div>
-      </div>
-
-      <!-- STEP 2: SECTION -->
-      <div class="step-content" id="step2">
-        <div class="step-eyebrow">Step 2 of 4</div>
-        <div class="step-heading">Select Section</div>
-        <p class="step-desc">Choose the category section applicable to the participant.</p>
-
-        <div class="options-grid">
-          <div class="option-card" onclick="selectSection(this, 'bidayah')">
-            <div class="option-title">bidayah</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'Ula')">
-            <div class="option-title">Ula</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'thaniya')">
-            <div class="option-title">thaniya</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'thanawiyya')">
-            <div class="option-title">thanawiyya</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'aliyah')">
-            <div class="option-title">aliyah</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- STEP 3: PROGRAM -->
-      <div class="step-content" id="step3">
-        <div class="step-eyebrow">Step 3 of 4</div>
-        <div class="step-heading">Select Program</div>
-        <p class="step-desc">Available programs for the section you selected.</p>
-
-        <div class="options-grid" id="programOptions"></div>
-      </div>
-
-      <!-- STEP 4: DETAILS -->
-      <div class="step-content" id="step4">
-        <div class="step-eyebrow">Step 4 of 4</div>
-        <div class="step-heading">Participant Details</div>
-        <p class="step-desc">Review your selection and complete the participant information.</p>
-
-        <div class="summary-box" id="summaryBox"></div>
-
-        <div class="field-group">
-          <label class="field-label" for="candidateSelect">Select Candidate <span class="req">*</span></label>
-          <select id="candidateSelect" class="field-input">
-            <option value="">Loading candidates...</option>
-          </select>
-          <p class="help-text">Dropdown populates automatically based on your House, Category, and Program choice.</p>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="topicTitle">Topic / Title <span class="req">*</span></label>
-          <input type="text" id="topicTitle" class="field-input" placeholder="Title of the entry / topic chosen">
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="referenceLink">Reference Link <span class="opt">(optional)</span></label>
-          <input type="url" id="referenceLink" class="field-input" placeholder="https://...">
-        </div>
-
-        <p class="error-text" id="formError"></p>
-      </div>
-
-      <!-- SUCCESS SCREEN -->
-      <div class="step-content" id="successScreen">
-        <div class="success-screen">
-          <div class="success-icon">✓</div>
-          <h2 class="success-heading" id="successTitleText">Registration Confirmed</h2>
-          <p class="success-text" id="successSubText">
-            The entry has been successfully recorded in the Master Database. Please save the Registration ID below for future reference.
-          </p>
-
-          <div class="reg-id-box">
-            <span class="reg-id-label">Registration ID</span>
-            <span class="reg-id-value" id="successRegId">—</span>
-          </div>
-
-          <button class="btn btn-primary" id="newRegBtn" onclick="resetForm(false)" style="width: 100%; margin-top: 1rem;">Register Another Entry</button>
-        </div>
-      </div>
-
-      <!-- ===== VIEW REGISTRATIONS SCREEN ===== -->
-      <div id="viewRegsScreen">
-        <div class="regs-header">
-          <div>
-            <div class="step-eyebrow">Read-Only View</div>
-            <div class="step-heading" id="viewRegsTitle">My Registrations</div>
-            <p class="step-desc" style="margin-bottom:0;">All entries registered under your House.</p>
-          </div>
-          <button class="btn" onclick="closeViewRegistrations()" style="flex-shrink:0;">← Back</button>
-        </div>
-
-        <!-- Stats -->
-        <div class="regs-stats" id="regsStats"></div>
-
-        <!-- Filter Bar -->
-        <div class="filter-bar">
-          <select class="filter-select" id="filterSection" onchange="applyFilters()">
-            <option value="">All Sections</option>
-          </select>
-          <select class="filter-select" id="filterProgram" onchange="applyFilters()">
-            <option value="">All Programs</option>
-          </select>
-        </div>
-
-        <!-- Table / States -->
-        <div id="regsTableContainer">
-          <div class="loading-regs">
-            <span class="spinner-sm"></span> Loading registrations...
-          </div>
-        </div>
-      </div>
-
-      <!-- NAV BUTTONS -->
-      <div class="nav-buttons" id="navButtons">
-        <button class="btn" id="backBtn" onclick="goBack()">Back</button>
-        <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>Next Step</button>
-      </div>
-
+      <button class="login-btn" id="loginBtn">Login</button>
+      <p class="login-error" id="loginError"></p>
     </div>
   </div>
 
-  <footer class="site-footer">
-    KAMA Arts Fest © 2026 — Secure Registration Portal
-  </footer>
+  <!-- ============ ADMIN LAYOUT ============ -->
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">KAMA<br>ARTS FEST</div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard">Dashboard</button>
+        <button class="nav-item" data-tab="table">Registrations</button>
+        <button class="nav-item" id="navMasterData" data-tab="master">Master Data</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin-bottom:1rem;">Logged in as: <span id="loginRoleDisplay" style="color:var(--gold); font-weight:bold;"></span></div>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- DASHBOARD TAB -->
+      <div class="tab-content active" id="dashboardTab">
+        <div class="page-eyebrow">Overview</div>
+        <div class="page-title" id="dashboardTitle">Dashboard</div>
+
+        <!-- ONLY FOR HOUSE LOGIN -->
+        <div id="houseDashboardView" style="display:none;">
+          <div class="house-progress-container">
+            <div class="hp-header">
+              <div class="hp-title">Registration Progress</div>
+              <div class="hp-percent" id="hpPercent">0%</div>
+            </div>
+            <div class="hp-bar-bg">
+              <div class="hp-bar-fill" id="hpBarFill"></div>
+            </div>
+            <div class="hp-details">
+              <span>Total Slots: <strong id="hpTotal" style="color:#fff;">0</strong></span>
+              <span>Registered: <strong id="hpReg" style="color:#fff;">0</strong></span>
+              <span>Remaining: <strong id="hpRem" style="color:var(--error);">0</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ONLY FOR ADMIN LOGIN -->
+        <div id="adminDashboardView" style="display:none;">
+          <div class="stats-grid">
+            <div class="stat-card highlight">
+              <div class="stat-label">Total Entries</div>
+              <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Hormuz</div>
+              <div class="stat-value" id="statHormuz">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Bosphorus</div>
+              <div class="stat-value" id="statBosphorus">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Malacca</div>
+              <div class="stat-value" id="statMalacca">0</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Gibraltar</div>
+              <div class="stat-value" id="statGibraltar">0</div>
+            </div>
+          </div>
+
+          <div class="section-breakdown">
+            <div class="breakdown-header">Registrations by Section</div>
+            <div id="sectionBreakdown"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABLE TAB (Registrations) -->
+      <div class="tab-content" id="tableTab">
+        <div class="page-eyebrow">All Entries</div>
+        <div class="page-title">Registrations</div>
+
+        <div class="filters-bar">
+          <input type="text" id="searchInput" placeholder="Search by name, chest no, ID or topic...">
+          
+          <select id="teamFilter">
+            <option value="">All Houses</option>
+            <option value="Hormuz">Hormuz</option>
+            <option value="Bosphorus">Bosphorus</option>
+            <option value="Malacca">Malacca</option>
+            <option value="Gibraltar">Gibraltar</option>
+          </select>
+
+          <select id="sectionFilter">
+            <option value="">All Sections</option>
+            <option value="bidayah">bidayah</option>
+            <option value="Ula">Ula</option>
+            <option value="thaniya">thaniya</option>
+            <option value="thanawiyya">thanawiyya</option>
+            <option value="aliyah">aliyah</option>
+          </select>
+          <button class="export-btn" id="exportBtn">Export to CSV</button>
+        </div>
+
+        <p class="results-count" id="resultsCount"></p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Reg. ID</th>
+                <th>Chest No.</th>
+                <th>Participant</th>
+                <th>House</th>
+                <th>Section</th>
+                <th>Program</th>
+                <th>Topic / Title</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr class="empty-row"><td colspan="9">Loading registrations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MASTER DATA TAB (Admin Only) -->
+      <div class="tab-content" id="masterTab">
+        <div class="page-eyebrow">Participant Auto-fill Data</div>
+        <div class="page-title">Master Candidate List</div>
+
+        <div class="filters-bar">
+          <input type="file" id="csvFileInput" accept=".csv" style="display:none;">
+          <button class="export-btn" id="importMasterBtn">Import Master CSV</button>
+          <button class="export-btn" id="exportMasterBtn" style="border-color: var(--gold); background: var(--gold-soft);">Export Master CSV Template</button>
+          <button class="export-btn btn-danger" id="clearMasterBtn">Clear All Data</button>
+        </div>
+
+        <p class="results-count">
+          <strong>Admin Note:</strong><br>
+          Export the template, fill out the Chest Numbers and Names, Clear the old database, and Import your finished CSV to enable Dropdown Selection for Houses.
+        </p>
+
+        <div class="table-wrapper">
+          <table style="min-width: 100%;">
+            <thead>
+              <tr>
+                <th>House</th>
+                <th>Category</th>
+                <th>Program Name</th>
+                <th>Chest No.</th>
+                <th>Participant Name</th>
+                <th style="width: 80px;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="masterTableBody">
+              <tr class="empty-row"><td colspan="6">Loading master data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ============ EDIT REGISTRATION MODAL ============ -->
+  <div class="modal-overlay" id="editRegModal">
+    <div class="modal-box" style="text-align: left;">
+      <div class="modal-title" style="text-align: center;">Edit Registration</div>
+      <input type="hidden" id="editRegId">
+      
+      <div class="login-field">
+        <label class="login-label">Chest Number</label>
+        <input type="text" id="editRegChest" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Participant Name</label>
+        <input type="text" id="editRegName" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Topic / Title</label>
+        <input type="text" id="editRegTopic" class="login-input">
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-cancel" id="cancelEditBtn">Cancel</button>
+        <button class="modal-save" id="saveEditBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DELETE CONFIRMATION MODAL ============ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-box">
+      <div class="modal-title">Confirm Deletion</div>
+      <p class="modal-text">
+        Are you sure you want to permanently delete this record? This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button class="modal-cancel" id="cancelDeleteBtn">Cancel</button>
+        <button class="modal-confirm" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1040,14 +899,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    /* ============ Data & Passcodes ============ */
-    const PASSCODES = {
-      "Hormuz": "794325",
-      "Bosphorus": "542809",
-      "Malacca": "437527",
-      "Gibraltar": "102355"
-    };
-
+    /* ============ Constants & Users ============ */
+    const TEAMS = ['Hormuz', 'Bosphorus', 'Malacca', 'Gibraltar'];
+    const SECTIONS = ['bidayah', 'Ula', 'thaniya', 'thanawiyya', 'aliyah'];
+    
     const PROGRAMS = {
       "bidayah": ["GROUP SONG", "KADHAKADHANAM", "SONG ARB", "SONG MALAYALAM"],
       "Ula": ["GROUP SONG", "SONG MLM", "SONG ENGLISH", "SONG URDU", "SONG ARB", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM", "STORY NARRATION ENGLISH"],
@@ -1056,516 +911,492 @@
       "aliyah": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
     };
 
-    /* ============ State ============ */
-    const state = {
-      team: null,
-      section: null,
-      program: null
+    // User Logins mapping
+    const USERS = {
+      'admin': { role: 'admin', pass: 'kama2025', team: 'Admin' },
+      'hormuz': { role: 'house', pass: '794325', team: 'Hormuz' },
+      'bosphorus': { role: 'house', pass: '542809', team: 'Bosphorus' },
+      'malacca': { role: 'house', pass: '437527', team: 'Malacca' },
+      'gibraltar': { role: 'house', pass: '102355', team: 'Gibraltar' }
     };
 
-    let currentStep = 1;
-    const TOTAL_STEPS = 4;
-    let allRegistrations = []; // cache for view screen
+    /* ============ State ============ */
+    let currentUser = null;
+    let rawRegistrations = []; // All data from DB
+    let allRegistrations = []; // Filtered for current user
+    let masterParticipants = [];
+    
+    let pendingDeleteId = null;
+    let pendingDeleteType = null;
+    let unsubscribeRegs = null;
+    let unsubscribeMaster = null;
 
-    const nextBtn = document.getElementById('nextBtn');
-    const backBtn = document.getElementById('backBtn');
-    const navButtons = document.getElementById('navButtons');
-    const errorEl = document.getElementById('formError');
+    /* ============ Authentication ============ */
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
 
-    /* ============ Step Navigation ============ */
-    function showStep(step) {
-      errorEl.textContent = ''; 
-      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-      document.getElementById('viewRegsScreen').classList.remove('active');
-      document.getElementById('viewRegsScreen').style.display = 'none';
-      document.getElementById('step' + step).classList.add('active');
+    function attemptLogin() {
+      const user = document.getElementById('loginUser').value.trim().toLowerCase();
+      const pass = document.getElementById('loginPass').value;
 
-      updateProgressBar(step);
-
-      if(step > 1) {
-        document.getElementById('houseBadge').style.display = 'flex';
-        document.getElementById('houseNameDisplay').textContent = (state.team === 'Demo') ? 'TEST / DEMO MODE' : state.team;
+      if (USERS[user] && USERS[user].pass === pass) {
+        currentUser = USERS[user];
+        sessionStorage.setItem('kamaAuthUser', JSON.stringify(currentUser));
+        loginOverlay.style.display = 'none';
+        setupUserEnvironment();
+        initDashboard();
       } else {
-        document.getElementById('houseBadge').style.display = 'none';
-      }
-
-      backBtn.style.visibility = (step <= 2) ? 'hidden' : 'visible';
-      navButtons.style.display = 'flex';
-      document.getElementById('progressBar').style.display = 'flex';
-
-      if (step === 1) {
-        nextBtn.textContent = 'Next Step';
-        nextBtn.disabled = !state.team;
-      } else if (step === 2) {
-        nextBtn.textContent = 'Next Step';
-        nextBtn.disabled = !state.section;
-      } else if (step === 3) {
-        nextBtn.textContent = 'Next Step';
-        renderProgramOptions();
-      } else if (step === 4) {
-        nextBtn.textContent = (state.team === 'Demo') ? 'Test Submission' : 'Submit Registration';
-        nextBtn.disabled = false;
-        renderSummary();
-        loadCandidates(); 
+        loginError.textContent = 'Invalid username or password.';
       }
     }
 
-    function updateProgressBar(step) {
-      document.querySelectorAll('.step-item').forEach(el => {
-        const num = parseInt(el.dataset.step, 10);
-        el.classList.remove('active', 'completed');
-        if (num < step) el.classList.add('completed');
-        else if (num === step) el.classList.add('active');
-      });
-    }
-
-    function enableDemoMode() {
-      state.team = 'Demo';
-      document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('housePasscode').value = '';
-      document.getElementById('passcodeWrapper').classList.remove('active');
-      document.getElementById('viewRegsWrapper').classList.remove('active');
-      currentStep = 2;
-      showStep(2);
-    }
-
-    function logoutHouse() {
-      state.team = null;
-      resetForm(true);
-    }
-
-    function goNext() {
-      if (currentStep === 1 && state.team !== 'Demo') {
-        const inputCode = document.getElementById('housePasscode').value.trim();
-        if (inputCode !== PASSCODES[state.team]) {
-          alert('Incorrect House Passcode. Please contact your captain.');
-          return;
-        }
-      }
-
-      if (currentStep === TOTAL_STEPS) {
-        submitRegistration();
-        return;
-      }
-      if (!validateStep(currentStep)) return;
-      currentStep++;
-      showStep(currentStep);
-    }
-
-    function goBack() {
-      if (currentStep <= 2) return;
-      currentStep--;
-      showStep(currentStep);
-    }
-
-    function validateStep(step) {
-      if (step === 1) return !!state.team;
-      if (step === 2) return !!state.section;
-      if (step === 3) return !!state.program;
-      return true;
-    }
-
-    /* ============ Step 1: Team Selection ============ */
-    function selectTeam(el, team) {
-      document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      state.team = team;
-      
-      document.getElementById('passcodeWrapper').classList.add('active');
-      document.getElementById('housePasscode').value = '';
-      // Show the View Registrations button only after passcode entered — actually show it immediately, validation happens on click
-      document.getElementById('viewRegsWrapper').classList.add('active');
-      
-      nextBtn.disabled = false;
-    }
-
-    document.getElementById('housePasscode').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') goNext();
+    loginBtn.addEventListener('click', attemptLogin);
+    document.getElementById('loginPass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') attemptLogin();
     });
 
-    /* ============ Step 2: Section Selection ============ */
-    function selectSection(el, section) {
-      if (state.section !== section) {
-        state.program = null;
-      }
-      document.querySelectorAll('#step2 .option-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      state.section = section;
-      nextBtn.disabled = false;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('kamaAuthUser');
+      if (unsubscribeRegs) unsubscribeRegs();
+      if (unsubscribeMaster) unsubscribeMaster();
+      location.reload();
+    });
+
+    // Check existing session
+    const savedSession = sessionStorage.getItem('kamaAuthUser');
+    if (savedSession) {
+      currentUser = JSON.parse(savedSession);
+      loginOverlay.style.display = 'none';
+      setupUserEnvironment();
+      initDashboard();
     }
 
-    /* ============ Step 3: Program Selection ============ */
-    function renderProgramOptions() {
-      const container = document.getElementById('programOptions');
-      container.innerHTML = '';
+    function setupUserEnvironment() {
+      document.getElementById('loginRoleDisplay').textContent = currentUser.team;
 
-      const programs = PROGRAMS[state.section] || [];
+      if(currentUser.role === 'house') {
+        // Hide Master Data from Sidebar
+        document.getElementById('navMasterData').style.display = 'none';
+        
+        // Setup House Dashboard
+        document.getElementById('adminDashboardView').style.display = 'none';
+        document.getElementById('houseDashboardView').style.display = 'block';
+        document.getElementById('dashboardTitle').textContent = currentUser.team + ' Dashboard';
 
-      if (programs.length === 0) {
-        container.innerHTML = '<div class="empty-note">No programs available for this section.</div>';
-        nextBtn.disabled = true;
+        // Lock Team filter to their own team
+        const teamFilter = document.getElementById('teamFilter');
+        teamFilter.value = currentUser.team;
+        teamFilter.disabled = true;
+      } else {
+        // Setup Admin Dashboard
+        document.getElementById('adminDashboardView').style.display = 'block';
+        document.getElementById('houseDashboardView').style.display = 'none';
+        document.getElementById('dashboardTitle').textContent = 'Admin Dashboard';
+      }
+    }
+
+    /* ============ Sidebar Navigation ============ */
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(item.dataset.tab + 'Tab').classList.add('active');
+      });
+    });
+
+    /* ============ Init: Real-time Listeners ============ */
+    function initDashboard() {
+      // Listen to Master Participants Database (Needed for House Stats calculation)
+      unsubscribeMaster = db.collection('participants')
+        .onSnapshot(snapshot => {
+          masterParticipants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          if(currentUser.role === 'admin') renderMasterTable();
+          updateDashboardStats(); // Recalculate if master data changes
+        }, err => {
+          if(currentUser.role === 'admin') {
+            document.getElementById('masterTableBody').innerHTML = 
+              `<tr class="empty-row"><td colspan="6">Error loading master data: ${escapeHtml(err.message)}</td></tr>`;
+          }
+        });
+
+      // Listen to Registrations
+      unsubscribeRegs = db.collection('registrations')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot(snapshot => {
+          rawRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          
+          // If House, only keep their registrations locally
+          if(currentUser.role === 'house') {
+            allRegistrations = rawRegistrations.filter(r => r.team === currentUser.team);
+          } else {
+            allRegistrations = [...rawRegistrations];
+          }
+
+          updateDashboardStats();
+          renderTable();
+        }, err => {
+          document.getElementById('tableBody').innerHTML =
+            `<tr class="empty-row"><td colspan="9">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+        });
+    }
+
+    /* ============ Dashboard Stats (Dynamic) ============ */
+    function updateDashboardStats() {
+      if(currentUser.role === 'admin') {
+        // Admin View
+        document.getElementById('statTotal').textContent = allRegistrations.length;
+        TEAMS.forEach(team => {
+          const count = allRegistrations.filter(r => r.team === team).length;
+          const el = document.getElementById('stat' + team);
+          if (el) el.textContent = count;
+        });
+
+        const breakdownEl = document.getElementById('sectionBreakdown');
+        breakdownEl.innerHTML = '';
+        SECTIONS.forEach(section => {
+          const count = allRegistrations.filter(r => r.section === section).length;
+          const row = document.createElement('div');
+          row.className = 'breakdown-row';
+          row.innerHTML = `<span class="b-label">${escapeHtml(section)}</span><span class="b-value">${count}</span>`;
+          breakdownEl.appendChild(row);
+        });
+
+      } else {
+        // House View
+        const houseTotalSlots = masterParticipants.filter(p => p.team === currentUser.team).length;
+        const houseRegs = allRegistrations.length; // Already filtered for this house
+        const houseRem = Math.max(0, houseTotalSlots - houseRegs);
+        const percent = houseTotalSlots > 0 ? Math.round((houseRegs / houseTotalSlots) * 100) : 0;
+
+        document.getElementById('hpTotal').textContent = houseTotalSlots;
+        document.getElementById('hpReg').textContent = houseRegs;
+        document.getElementById('hpRem').textContent = houseRem;
+        document.getElementById('hpPercent').textContent = percent + '%';
+        document.getElementById('hpBarFill').style.width = percent + '%';
+      }
+    }
+
+    /* ============ Table: Registrations Filtering ============ */
+    const searchInput = document.getElementById('searchInput');
+    const teamFilter = document.getElementById('teamFilter');
+    const sectionFilter = document.getElementById('sectionFilter');
+
+    searchInput.addEventListener('input', renderTable);
+    teamFilter.addEventListener('change', renderTable);
+    sectionFilter.addEventListener('change', renderTable);
+
+    function getFilteredData() {
+      const search = searchInput.value.trim().toLowerCase();
+      const team = teamFilter.value;
+      const section = sectionFilter.value;
+
+      return allRegistrations.filter(r => {
+        if (team && r.team !== team) return false;
+        if (section && r.section !== section) return false;
+
+        if (search) {
+          const haystack = [
+            r.registrationId, r.participantName, r.chestNumber,
+            r.topicTitle, r.program
+          ].join(' ').toLowerCase();
+
+          if (!haystack.includes(search)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderTable() {
+      const data = getFilteredData();
+      const tbody = document.getElementById('tableBody');
+      const resultsCount = document.getElementById('resultsCount');
+
+      resultsCount.textContent = `Showing ${data.length} of ${allRegistrations.length} registrations.`;
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No registrations found.</td></tr>';
         return;
       }
 
-      programs.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'option-card';
-        if (state.program === p) card.classList.add('selected');
-        card.innerHTML = `<div class="option-title">${escapeHtml(p)}</div>`;
-        card.addEventListener('click', () => selectProgram(card, p));
-        container.appendChild(card);
+      tbody.innerHTML = '';
+
+      data.forEach(r => {
+        const tr = document.createElement('tr');
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
+          ? r.timestamp.toDate().toLocaleString()
+          : '—';
+
+        tr.innerHTML = `
+          <td>${escapeHtml(r.registrationId || '—')}</td>
+          <td>${escapeHtml(r.chestNumber || '—')}</td>
+          <td>${escapeHtml(r.participantName || '—')}</td>
+          <td>${escapeHtml(r.team || '—')}</td>
+          <td>${escapeHtml(r.section || '—')}</td>
+          <td>${escapeHtml(r.program || '—')}</td>
+          <td>${escapeHtml(r.topicTitle || '—')}</td>
+          <td>${escapeHtml(dateStr)}</td>
+          <td>
+            <div class="action-btns">
+              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit</button>
+              <button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Del</button>
+            </div>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ============ EDIT REGISTRATION Logic ============ */
+    const editRegModal = document.getElementById('editRegModal');
+    
+    function openEditRegModal(id) {
+      const reg = allRegistrations.find(r => r.id === id);
+      if(!reg) return;
+
+      document.getElementById('editRegId').value = reg.id;
+      document.getElementById('editRegChest').value = reg.chestNumber || '';
+      document.getElementById('editRegName').value = reg.participantName || '';
+      document.getElementById('editRegTopic').value = reg.topicTitle || '';
+      
+      editRegModal.classList.add('active');
+    }
+
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      editRegModal.classList.remove('active');
+    });
+
+    document.getElementById('saveEditBtn').addEventListener('click', async () => {
+      const id = document.getElementById('editRegId').value;
+      const chestNumber = document.getElementById('editRegChest').value.trim();
+      const participantName = document.getElementById('editRegName').value.trim();
+      const topicTitle = document.getElementById('editRegTopic').value.trim();
+
+      const btn = document.getElementById('saveEditBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      try {
+        await db.collection('registrations').doc(id).update({
+          chestNumber,
+          participantName,
+          topicTitle
+        });
+        editRegModal.classList.remove('active');
+      } catch(err) {
+        alert("Failed to update: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Changes';
+      }
+    });
+
+    /* ============ Master Data Tab Logic (ADMIN ONLY) ============ */
+    
+    function renderMasterTable() {
+      const tbody = document.getElementById('masterTableBody');
+      if(!tbody) return;
+      
+      if(masterParticipants.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No master data imported yet. Export the template, fill it out, and import it here.</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = '';
+      masterParticipants.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(p.team || '—')}</td>
+          <td>${escapeHtml(p.category || '—')}</td>
+          <td>${escapeHtml(p.program || '—')}</td>
+          <td>${escapeHtml(p.chestNo || '—')}</td>
+          <td>${escapeHtml(p.name || '—')}</td>
+          <td><button class="delete-btn" onclick="openDeleteModal('${p.id}', 'master')">Del</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Import
+    if(document.getElementById('importMasterBtn')) {
+      document.getElementById('importMasterBtn').addEventListener('click', () => document.getElementById('csvFileInput').click());
+      document.getElementById('csvFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+
+        const text = await file.text();
+        const lines = text.split(/\r?\n/);
+        const batch = db.batch();
+        let count = 0;
+
+        for(let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if(!line) continue;
+
+          const cols = line.split(',');
+          const team = cols[0] ? cols[0].trim() : '';
+          const category = cols[1] ? cols[1].trim() : '';
+          const program = cols[2] ? cols[2].trim() : '';
+          const chestNo = cols[3] ? cols[3].trim() : '';
+          const name = cols[4] ? cols[4].trim() : '';
+
+          if(team && category && program && chestNo && name) {
+            const ref = db.collection('participants').doc();
+            batch.set(ref, { team, category, program, chestNo, name });
+            count++;
+          }
+        }
+
+        if(count > 0) {
+          try {
+            await batch.commit();
+            alert(`Success! Imported ${count} valid participant rows.`);
+          } catch(err) {
+            alert('Error saving to database: ' + err.message);
+          }
+        } else {
+          alert('No valid records found. Did you fill out the Chest No and Name columns for each Team?');
+        }
+        e.target.value = '';
+      });
+    }
+
+    // Export Smart Master Template Logic
+    if(document.getElementById('exportMasterBtn')) {
+      document.getElementById('exportMasterBtn').addEventListener('click', () => {
+        const headers = ['Team', 'Category', 'Program Name', 'Chest No', 'Name'];
+        const rows = [];
+        
+        TEAMS.forEach(team => {
+          SECTIONS.forEach(category => {
+            const progs = PROGRAMS[category] || [];
+            progs.forEach(programName => {
+              const existing = masterParticipants.filter(p => p.team === team && p.category === category && p.program === programName);
+              if(existing.length > 0) {
+                existing.forEach(p => rows.push([team, category, programName, p.chestNo || '', p.name || '']));
+              } else {
+                rows.push([team, category, programName, '', '']);
+              }
+            });
+          });
+        });
+        
+        let csv = headers.map(csvEscape).join(',') + '\r\n';
+        rows.forEach(row => { csv += row.map(csvEscape).join(',') + '\r\n'; });
+        downloadCSV(csv, `KAMA_Master_Template_${new Date().toISOString().slice(0, 10)}.csv`);
+      });
+    }
+
+    // Clear Master Data Logic
+    if(document.getElementById('clearMasterBtn')) {
+      document.getElementById('clearMasterBtn').addEventListener('click', async () => {
+        if(masterParticipants.length === 0) { alert("No master data to clear."); return; }
+        const confirmed = confirm("Are you sure you want to delete ALL Master Data rows? Do this before re-importing an updated Excel file.");
+        if(confirmed) {
+          try {
+            const batch = db.batch();
+            masterParticipants.forEach(p => {
+               const ref = db.collection('participants').doc(p.id);
+               batch.delete(ref);
+            });
+            await batch.commit();
+            alert("All Master Data has been successfully cleared.");
+          } catch(err) {
+            alert("Error clearing data: " + err.message);
+          }
+        }
+      });
+    }
+
+    /* ============ Delete Modal ============ */
+    const deleteModal = document.getElementById('deleteModal');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
+    function openDeleteModal(id, type) {
+      pendingDeleteId = id;
+      pendingDeleteType = type;
+      deleteModal.classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      pendingDeleteId = null;
+      pendingDeleteType = null;
+      deleteModal.classList.remove('active');
+    }
+
+    cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+    confirmDeleteBtn.addEventListener('click', async () => {
+      if (!pendingDeleteId) return;
+      
+      confirmDeleteBtn.disabled = true;
+      confirmDeleteBtn.textContent = 'Deleting...';
+
+      try {
+        const collectionName = (pendingDeleteType === 'registration') ? 'registrations' : 'participants';
+        await db.collection(collectionName).doc(pendingDeleteId).delete();
+      } catch (err) {
+        alert('Failed to delete: ' + err.message);
+      } finally {
+        confirmDeleteBtn.disabled = false;
+        confirmDeleteBtn.textContent = 'Delete';
+        closeDeleteModal();
+      }
+    });
+
+    /* ============ Export Registrations to CSV ============ */
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const data = getFilteredData();
+
+      if (data.length === 0) {
+        alert('No data available to export.');
+        return;
+      }
+
+      const headers = [
+        'Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Submitted At'
+      ];
+
+      const rows = data.map(r => {
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
+          ? r.timestamp.toDate().toISOString()
+          : '';
+
+        return [
+          r.registrationId || '', r.team || '', r.section || '', r.program || '', 
+          r.chestNumber || '', r.participantName || '', r.topicTitle || '', dateStr
+        ];
       });
 
-      nextBtn.disabled = !state.program;
-    }
+      let csv = headers.map(csvEscape).join(',') + '\r\n';
+      rows.forEach(row => {
+        csv += row.map(csvEscape).join(',') + '\r\n';
+      });
 
-    function selectProgram(el, program) {
-      document.querySelectorAll('#programOptions .option-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      state.program = program;
-      nextBtn.disabled = false;
-    }
+      downloadCSV(csv, `KAMA_House_Registrations_${new Date().toISOString().slice(0, 10)}.csv`);
+    });
 
-    /* ============ Step 4: Summary & Candidates ============ */
-    function renderSummary() {
-      const box = document.getElementById('summaryBox');
-      box.innerHTML = `
-        <div class="summary-item">
-          <div class="summary-label">House</div>
-          <div class="summary-value">${escapeHtml(state.team || '—')}</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-label">Section</div>
-          <div class="summary-value">${escapeHtml(state.section || '—')}</div>
-        </div>
-        <div class="summary-item">
-          <div class="summary-label">Program</div>
-          <div class="summary-value">${escapeHtml(state.program || '—')}</div>
-        </div>
-      `;
-    }
-
-    async function loadCandidates() {
-      const selectEl = document.getElementById('candidateSelect');
-      
-      if (state.team === 'Demo') {
-        selectEl.innerHTML = '<option value="" selected>-- Select Demo Candidate --</option>' +
-                             '<option value=\'{"chestNo":"000", "name":"John Doe (Demo)"}\'>Chest No: 000 — John Doe (Demo)</option>' +
-                             '<option value=\'{"chestNo":"999", "name":"Jane Smith (Demo)"}\'>Chest No: 999 — Jane Smith (Demo)</option>';
-        selectEl.disabled = false;
-        return;
+    function csvEscape(value) {
+      const str = String(value ?? '');
+      if (/[",\n\r]/.test(str)) {
+        return '"' + str.replace(/"/g, '""') + '"';
       }
-
-      selectEl.innerHTML = '<option value="">Loading candidates from database...</option>';
-      selectEl.disabled = true;
-
-      try {
-        const snapshot = await db.collection('participants').where('category', '==', state.section).get();
-        const docs = snapshot.docs.map(d => d.data()).filter(d => d.program === state.program && d.team === state.team);
-
-        if(docs.length === 0) {
-          selectEl.innerHTML = '<option value="" disabled selected>No Candidates Available for your House in this Program</option>';
-        } else {
-          selectEl.innerHTML = '<option value="" selected>-- Select Candidate --</option>';
-          docs.forEach(data => {
-            if(data.chestNo && data.name) {
-              const opt = document.createElement('option');
-              opt.value = JSON.stringify({ chestNo: data.chestNo, name: data.name });
-              opt.textContent = `Chest No: ${data.chestNo} — ${data.name}`;
-              selectEl.appendChild(opt);
-            }
-          });
-        }
-        selectEl.disabled = false;
-      } catch (err) {
-        selectEl.innerHTML = '<option value="">Error loading candidates. Contact Admin.</option>';
-      }
+      return str;
     }
-
-    /* ============ VIEW REGISTRATIONS ============ */
-    function openViewRegistrations() {
-      // Validate passcode first
-      if (state.team !== 'Demo') {
-        const inputCode = document.getElementById('housePasscode').value.trim();
-        if (!inputCode) {
-          alert('Please enter your House Passcode first to view registrations.');
-          document.getElementById('housePasscode').focus();
-          return;
-        }
-        if (inputCode !== PASSCODES[state.team]) {
-          alert('Incorrect House Passcode. Please contact your captain.');
-          return;
-        }
-      }
-
-      // Hide all step content and nav
-      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-      navButtons.style.display = 'none';
-      document.getElementById('progressBar').style.display = 'none';
-      document.getElementById('houseBadge').style.display = 'none';
-
-      // Show view screen
-      const screen = document.getElementById('viewRegsScreen');
-      screen.style.display = 'block';
-      requestAnimationFrame(() => screen.classList.add('active'));
-
-      document.getElementById('viewRegsTitle').textContent =
-        (state.team === 'Demo') ? 'Demo House Registrations' : state.team + ' — Registrations';
-
-      fetchAndRenderRegistrations();
-    }
-
-    function closeViewRegistrations() {
-      const screen = document.getElementById('viewRegsScreen');
-      screen.classList.remove('active');
-      screen.style.display = 'none';
-      navButtons.style.display = 'flex';
-      document.getElementById('progressBar').style.display = 'flex';
-      showStep(1);
-    }
-
-    async function fetchAndRenderRegistrations() {
-      const container = document.getElementById('regsTableContainer');
-      container.innerHTML = '<div class="loading-regs"><span class="spinner-sm"></span> Loading registrations...</div>';
-      document.getElementById('regsStats').innerHTML = '';
-
-      // Demo mode: show dummy data
-      if (state.team === 'Demo') {
-        allRegistrations = [
-          { registrationId: 'DEMO-111111', section: 'bidayah', program: 'GROUP SONG', chestNumber: '000', participantName: 'John Doe (Demo)', topicTitle: 'Sample Song Title', timestamp: null },
-          { registrationId: 'DEMO-222222', section: 'Ula', program: 'SONG MLM', chestNumber: '999', participantName: 'Jane Smith (Demo)', topicTitle: 'Another Demo Topic', timestamp: null },
-        ];
-        renderRegsTable(allRegistrations);
-        return;
-      }
-
-      try {
-        const snapshot = await db.collection('registrations').where('team', '==', state.team).orderBy('timestamp', 'desc').get();
-        allRegistrations = snapshot.docs.map(d => d.data());
-        renderRegsTable(allRegistrations);
-      } catch (err) {
-        // Try without orderBy in case index not set up
-        try {
-          const snapshot2 = await db.collection('registrations').where('team', '==', state.team).get();
-          allRegistrations = snapshot2.docs.map(d => d.data());
-          renderRegsTable(allRegistrations);
-        } catch(err2) {
-          container.innerHTML = `<div class="no-regs-msg"><div class="no-regs-icon">⚠️</div>Error loading registrations.<br><small style="color:var(--error)">${escapeHtml(err2.message)}</small></div>`;
-        }
-      }
-    }
-
-    function renderRegsTable(data) {
-      const container = document.getElementById('regsTableContainer');
-      const statsEl = document.getElementById('regsStats');
-
-      // Stats
-      statsEl.innerHTML = `
-        <div class="stat-pill">Total Entries <span>${data.length}</span></div>
-        <div class="stat-pill">Sections <span>${[...new Set(data.map(r => r.section))].length}</span></div>
-        <div class="stat-pill">Programs <span>${[...new Set(data.map(r => r.program))].length}</span></div>
-      `;
-
-      // Populate filters
-      const secFilter = document.getElementById('filterSection');
-      const progFilter = document.getElementById('filterProgram');
-      const sections = [...new Set(allRegistrations.map(r => r.section))].filter(Boolean);
-      const programs = [...new Set(allRegistrations.map(r => r.program))].filter(Boolean);
-
-      secFilter.innerHTML = '<option value="">All Sections</option>' + sections.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
-      progFilter.innerHTML = '<option value="">All Programs</option>' + programs.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
-
-      buildTable(data, container);
-    }
-
-    function buildTable(data, container) {
-      if (data.length === 0) {
-        container.innerHTML = `
-          <div class="no-regs-msg">
-            <div class="no-regs-icon">📋</div>
-            No registrations found for the selected filters.
-          </div>`;
-        return;
-      }
-
-      const rows = data.map((r, i) => {
-        const ts = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
-        return `
-          <tr>
-            <td class="reg-id-cell">${escapeHtml(r.registrationId || '—')}</td>
-            <td><span class="section-badge">${escapeHtml(r.section || '—')}</span></td>
-            <td>${escapeHtml(r.program || '—')}</td>
-            <td class="chest-cell">${escapeHtml(r.chestNumber || '—')}</td>
-            <td>${escapeHtml(r.participantName || '—')}</td>
-            <td>${escapeHtml(r.topicTitle || '—')}</td>
-            <td style="color:var(--text-muted); font-size:0.75rem; white-space:nowrap;">${ts}</td>
-          </tr>`;
-      }).join('');
-
-      container.innerHTML = `
-        <div class="regs-table-wrapper">
-          <table class="regs-table">
-            <thead>
-              <tr>
-                <th>Reg ID</th>
-                <th>Section</th>
-                <th>Program</th>
-                <th>Chest No</th>
-                <th>Participant</th>
-                <th>Topic / Title</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>`;
-    }
-
-    function applyFilters() {
-      const sec = document.getElementById('filterSection').value;
-      const prog = document.getElementById('filterProgram').value;
-      let filtered = allRegistrations;
-      if (sec) filtered = filtered.filter(r => r.section === sec);
-      if (prog) filtered = filtered.filter(r => r.program === prog);
-      buildTable(filtered, document.getElementById('regsTableContainer'));
-    }
-
-    /* ============ Loading UI & Submission ============ */
-    function animateLoadingBar(durationMs, isDemo = false) {
-      const overlay = document.getElementById('loadingOverlay');
-      const fill = document.getElementById('loadingBarFill');
-      const text = document.getElementById('loadingTextStatus');
-      
-      text.textContent = isDemo ? "Testing Submission Flow..." : "Submitting Registration...";
-      overlay.classList.add('active');
-      fill.style.transition = 'none';
-      fill.style.width = '0%';
-      void fill.offsetWidth; 
-      fill.style.transition = `width ${durationMs}ms ease-in-out`;
-      fill.style.width = '90%'; 
-    }
-
-    function stopLoadingBar() {
-      const fill = document.getElementById('loadingBarFill');
-      fill.style.transition = `width 0.3s ease-out`;
-      fill.style.width = '100%';
-      setTimeout(() => {
-        document.getElementById('loadingOverlay').classList.remove('active');
-      }, 400);
-    }
-
-    async function submitRegistration() {
-      const candidateSelectVal = document.getElementById('candidateSelect').value;
-      const topicTitle = document.getElementById('topicTitle').value.trim();
-      const referenceLink = document.getElementById('referenceLink').value.trim();
-
-      errorEl.textContent = '';
-
-      if (!candidateSelectVal || !topicTitle) {
-        errorEl.textContent = 'Please select a candidate and provide a Topic / Title.';
-        return;
-      }
-
-      const candidateData = JSON.parse(candidateSelectVal);
-      const payload = {
-        registrationId: generateRegId(),
-        team: state.team,
-        section: state.section,
-        program: state.program,
-        chestNumber: candidateData.chestNo,
-        participantName: candidateData.name,
-        topicTitle,
-        referenceLink
-      };
-
-      if (state.team === 'Demo') {
-        nextBtn.disabled = true;
-        backBtn.disabled = true;
-        animateLoadingBar(1000, true);
-        setTimeout(() => {
-          stopLoadingBar();
-          setTimeout(() => {
-            showSuccess('DEMO-123456', payload, true);
-          }, 400);
-        }, 1200);
-        return;
-      }
-
-      nextBtn.disabled = true;
-      backBtn.disabled = true;
-      nextBtn.textContent = 'Submitting...';
-      payload.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-
-      animateLoadingBar(1500, false); 
-
-      try {
-        await db.collection('registrations').add(payload);
-        stopLoadingBar();
-        setTimeout(() => {
-          showSuccess(payload.registrationId, payload, false);
-        }, 400);
-      } catch (err) {
-        stopLoadingBar();
-        setTimeout(() => {
-          errorEl.textContent = 'Submission failed: ' + err.message;
-          nextBtn.disabled = false;
-          backBtn.disabled = false;
-          nextBtn.textContent = 'Submit Registration';
-        }, 400);
-      }
-    }
-
-    function generateRegId() {
-      const num = Math.floor(100000 + Math.random() * 900000);
-      return 'KAMA-' + num;
-    }
-
-    function showSuccess(regId, payload, isDemo = false) {
-      document.getElementById('successRegId').textContent = regId;
-      
-      if(isDemo) {
-        document.getElementById('successTitleText').textContent = "Demo Test Complete!";
-        document.getElementById('successSubText').innerHTML = "This was a test. <strong style='color:var(--error);'>No data was saved to the database.</strong>";
-        document.getElementById('successTitleText').style.color = "var(--success)";
-      } else {
-        document.getElementById('successTitleText').textContent = "Registration Confirmed";
-        document.getElementById('successSubText').textContent = "The entry has been successfully recorded in the Master Database. Please save the Registration ID below for future reference.";
-        document.getElementById('successTitleText').style.color = "#fff";
-      }
-
-      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-      document.getElementById('successScreen').classList.add('active');
-      navButtons.style.display = 'none';
-      document.getElementById('progressBar').style.display = 'none';
-    }
-
-    /* ============ Reset ============ */
-    function resetForm(fullReset = false) {
-      state.section = null;
-      state.program = null;
-      currentStep = fullReset ? 1 : 2;
-
-      if(fullReset) {
-        state.team = null;
-        document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-        document.getElementById('passcodeWrapper').classList.remove('active');
-        document.getElementById('viewRegsWrapper').classList.remove('active');
-        document.getElementById('housePasscode').value = '';
-      }
-
-      document.querySelectorAll('#step2 .option-card, #step3 .option-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('candidateSelect').innerHTML = '<option value="">Loading candidates...</option>';
-      document.getElementById('topicTitle').value = '';
-      document.getElementById('referenceLink').value = '';
-      errorEl.textContent = '';
-      document.getElementById('programOptions').innerHTML = '';
-
-      navButtons.style.display = 'flex';
-      document.getElementById('progressBar').style.display = 'flex';
-      backBtn.disabled = false;
-      nextBtn.disabled = false;
-
-      showStep(currentStep);
+    
+    function downloadCSV(csvString, filename) {
+      const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
 
     /* ============ Helpers ============ */
@@ -1578,11 +1409,7 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
-
-    /* ============ Init ============ */
-    showStep(1);
   </script>
 
-  
 </body>
 </html>
