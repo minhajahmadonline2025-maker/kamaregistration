@@ -903,20 +903,20 @@
         <p class="step-desc">Choose the category section applicable to the participant.</p>
 
         <div class="options-grid">
-          <div class="option-card" onclick="selectSection(this, 'BIDĀYAH')">
-            <div class="option-title">BIDĀYAH</div>
+          <div class="option-card" onclick="selectSection(this, 'bidayah')">
+            <div class="option-title">bidayah</div>
           </div>
-          <div class="option-card" onclick="selectSection(this, 'ʾŪLĀ')">
-            <div class="option-title">ʾŪLĀ</div>
+          <div class="option-card" onclick="selectSection(this, 'Ula')">
+            <div class="option-title">Ula</div>
           </div>
-          <div class="option-card" onclick="selectSection(this, 'THĀNIYAH')">
-            <div class="option-title">THĀNIYAH</div>
+          <div class="option-card" onclick="selectSection(this, 'thaniya')">
+            <div class="option-title">thaniya</div>
           </div>
-          <div class="option-card" onclick="selectSection(this, 'THĀNAWIYYAH')">
-            <div class="option-title">THĀNAWIYYAH</div>
+          <div class="option-card" onclick="selectSection(this, 'thanawiyya')">
+            <div class="option-title">thanawiyya</div>
           </div>
-          <div class="option-card" onclick="selectSection(this, 'ʿĀLIYAH')">
-            <div class="option-title">ʿĀLIYAH</div>
+          <div class="option-card" onclick="selectSection(this, 'aliyah')">
+            <div class="option-title">aliyah</div>
           </div>
         </div>
       </div>
@@ -1049,11 +1049,11 @@
     };
 
     const PROGRAMS = {
-      "BIDĀYAH": ["GROUP SONG", "KADHAKADHANAM", "SONG ARB", "SONG MALAYALAM"],
-      "ʾŪLĀ": ["GROUP SONG", "SONG MLM", "SONG ENGLISH", "SONG URDU", "SONG ARB", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM", "STORY NARRATION ENGLISH"],
-      "THĀNIYAH": ["HISTORY TALK ENGLISH", "BHAKTHI GANAM", "SONG ARABIC", "SONG ENGLISH", "SONG URDU", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM"],
-      "THĀNAWIYYAH": ["PADAPPATTU", "NASHĪD ARB", "SONG URD", "SPEECH & SONG URDU", "INSPIRING TALK", "TADRIS MLM"],
-      "ʿĀLIYAH": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
+      "bidayah": ["GROUP SONG", "KADHAKADHANAM", "SONG ARB", "SONG MALAYALAM"],
+      "Ula": ["GROUP SONG", "SONG MLM", "SONG ENGLISH", "SONG URDU", "SONG ARB", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM", "STORY NARRATION ENGLISH"],
+      "thaniya": ["HISTORY TALK ENGLISH", "BHAKTHI GANAM", "SONG ARABIC", "SONG ENGLISH", "SONG URDU", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM"],
+      "thanawiyya": ["PADAPPATTU", "NASHĪD ARB", "SONG URD", "SPEECH & SONG URDU", "INSPIRING TALK", "TADRIS MLM"],
+      "aliyah": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
     };
 
     /* ============ State ============ */
@@ -1332,8 +1332,8 @@
       // Demo mode: show dummy data
       if (state.team === 'Demo') {
         allRegistrations = [
-          { registrationId: 'DEMO-111111', section: 'BIDĀYAH', program: 'GROUP SONG', chestNumber: '000', participantName: 'John Doe (Demo)', topicTitle: 'Sample Song Title', timestamp: null },
-          { registrationId: 'DEMO-222222', section: 'ʾŪLĀ', program: 'SONG MLM', chestNumber: '999', participantName: 'Jane Smith (Demo)', topicTitle: 'Another Demo Topic', timestamp: null },
+          { registrationId: 'DEMO-111111', section: 'bidayah', program: 'GROUP SONG', chestNumber: '000', participantName: 'John Doe (Demo)', topicTitle: 'Sample Song Title', timestamp: null },
+          { registrationId: 'DEMO-222222', section: 'Ula', program: 'SONG MLM', chestNumber: '999', participantName: 'Jane Smith (Demo)', topicTitle: 'Another Demo Topic', timestamp: null },
         ];
         renderRegsTable(allRegistrations);
         return;
