@@ -36,216 +36,39 @@
   }
 
   /* ============ Login Overlay ============ */
-  .login-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 1.5rem;
-  }
+  .login-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1.5rem; }
+  .login-box { width: 100%; max-width: 380px; border: 1px solid var(--line); background: var(--bg-panel); padding: 3rem 2.5rem; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .login-title { font-weight: 700; font-size: 1.4rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
+  .login-divider { width: 48px; height: 3px; border-radius: 2px; background: var(--gold); margin: 1rem auto; }
+  .login-subtitle { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2rem; }
+  .login-field { margin-bottom: 1.25rem; text-align: left; }
+  .login-label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 0.5rem; }
+  .login-input { width: 100%; background: var(--bg-input); border: 2px solid var(--line); border-radius: 6px; color: #fff; padding: 0.85rem 1rem; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; transition: all 0.2s ease; }
+  .login-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); }
+  
+  select.login-input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 1rem top 50%; background-size: 0.65rem auto; padding-right: 2.5rem; }
 
-  .login-box {
-    width: 100%;
-    max-width: 380px;
-    border: 1px solid var(--line);
-    background: var(--bg-panel);
-    padding: 3rem 2.5rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-
-  .login-title {
-    font-weight: 700;
-    font-size: 1.4rem;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-transform: uppercase;
-  }
-
-  .login-divider {
-    width: 48px;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--gold);
-    margin: 1rem auto;
-  }
-
-  .login-subtitle {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-  }
-
-  .login-field {
-    margin-bottom: 1.25rem;
-    text-align: left;
-  }
-
-  .login-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-  }
-
-  .login-input {
-    width: 100%;
-    background: var(--bg-input);
-    border: 2px solid var(--line);
-    border-radius: 6px;
-    color: #fff;
-    padding: 0.85rem 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-  }
-
-  .login-input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px var(--gold-soft);
-  }
-
-  .login-btn {
-    width: 100%;
-    margin-top: 1rem;
-    background: var(--gold);
-    color: var(--bg);
-    border: none;
-    border-radius: 6px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
+  .login-btn { width: 100%; margin-top: 1rem; background: var(--gold); color: var(--bg); border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.85rem; padding: 1rem; cursor: pointer; transition: all 0.2s ease; }
   .login-btn:hover { background: #45E6DB; box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); }
-
-  .login-error {
-    color: var(--error);
-    font-size: 0.8rem;
-    font-weight: 500;
-    margin-top: 1rem;
-    min-height: 1rem;
-  }
+  .login-error { color: var(--error); font-size: 0.8rem; font-weight: 500; margin-top: 1rem; min-height: 1rem; }
 
   /* ============ Layout ============ */
-  .admin-layout {
-    display: flex;
-    min-height: 100vh;
-  }
+  .admin-layout { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; background: var(--bg-sidebar); border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 2rem 0; }
+  .sidebar-logo { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.15em; color: var(--gold); text-align: center; padding: 0 1.5rem 2rem; border-bottom: 1px solid var(--line); line-height: 1.6; }
+  .sidebar-nav { flex: 1; padding-top: 1.5rem; display: flex; flex-direction: column; }
+  .nav-item { background: none; border: none; text-align: left; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 1.1rem 1.5rem; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s ease; }
+  .nav-item:hover { color: #fff; background: rgba(255,255,255,0.02); }
+  .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-soft); }
+  .sidebar-footer { padding: 1.5rem; border-top: 1px solid var(--line); }
+  .logout-btn { width: 100%; background: none; border: 2px solid var(--gold-border); border-radius: 6px; color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem; cursor: pointer; transition: all 0.2s ease; }
+  .logout-btn:hover { border-color: var(--gold); background: var(--gold-soft); }
 
-  .sidebar {
-    width: 240px;
-    flex-shrink: 0;
-    background: var(--bg-sidebar);
-    border-right: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 0;
-  }
-
-  .sidebar-logo {
-    font-weight: 700;
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-align: center;
-    padding: 0 1.5rem 2rem;
-    border-bottom: 1px solid var(--line);
-    line-height: 1.6;
-  }
-
-  .sidebar-nav {
-    flex: 1;
-    padding-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .nav-item {
-    background: none;
-    border: none;
-    text-align: left;
-    color: var(--text-muted);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 1.1rem 1.5rem;
-    cursor: pointer;
-    border-left: 3px solid transparent;
-    transition: all 0.2s ease;
-  }
-
-  .nav-item:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.02);
-  }
-
-  .nav-item.active {
-    color: var(--gold);
-    border-left-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  .sidebar-footer {
-    padding: 1.5rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .logout-btn {
-    width: 100%;
-    background: none;
-    border: 2px solid var(--gold-border);
-    border-radius: 6px;
-    color: var(--gold);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .logout-btn:hover {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  /* ============ Main Content ============ */
-  .main-content {
-    flex: 1;
-    padding: 2.5rem 2.5rem 4rem;
-    overflow-x: hidden;
-  }
+  .main-content { flex: 1; padding: 2.5rem 2.5rem 4rem; overflow-x: hidden; }
 
   @media (max-width: 720px) {
     .admin-layout { flex-direction: column; }
-    .sidebar {
-      width: 100%;
-      flex-direction: row;
-      align-items: center;
-      padding: 1rem;
-      gap: 1rem;
-    }
+    .sidebar { width: 100%; flex-direction: row; align-items: center; padding: 1rem; gap: 1rem; }
     .sidebar-logo { border-bottom: none; padding: 0; border-right: 1px solid var(--line); padding-right: 1rem; }
     .sidebar-nav { flex-direction: row; padding-top: 0; overflow-x: auto;}
     .nav-item { border-left: none; border-bottom: 2px solid transparent; padding: 0.6rem 1rem; white-space: nowrap; }
@@ -258,400 +81,76 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  .page-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .page-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: #fff;
-    text-transform: uppercase;
-    margin-bottom: 2.5rem;
-  }
+  .page-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .page-title { font-size: 1.8rem; font-weight: 700; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; margin-bottom: 2.5rem; }
 
   /* ============ Stat Cards ============ */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 2.5rem;
-  }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
+  .stat-card { border: 1px solid var(--line); border-radius: 8px; background: var(--bg-panel); padding: 1.75rem 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+  .stat-card.highlight { border: 2px solid var(--gold-border); background: rgba(102, 252, 241, 0.03); }
+  .stat-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
+  .stat-value { font-weight: 700; font-size: 2.2rem; color: var(--gold); }
 
-  .stat-card {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--bg-panel);
-    padding: 1.75rem 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  }
-
-  .stat-card.highlight {
-    border: 2px solid var(--gold-border);
-    background: rgba(102, 252, 241, 0.03);
-  }
-
-  .stat-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-  }
-
-  .stat-value {
-    font-weight: 700;
-    font-size: 2.2rem;
-    color: var(--gold);
-  }
-
-  .section-breakdown {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--bg-panel);
-    overflow: hidden;
-  }
-
-  .breakdown-header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--line);
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-
-  .breakdown-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--line);
-    font-size: 0.9rem;
-  }
-
+  .section-breakdown { border: 1px solid var(--line); border-radius: 8px; background: var(--bg-panel); overflow: hidden; }
+  .breakdown-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--line); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+  .breakdown-row { display: flex; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
   .breakdown-row:last-child { border-bottom: none; }
-
   .breakdown-row .b-label { color: var(--text-muted); font-weight: 500; }
   .breakdown-row .b-value { color: #fff; font-weight: 700; }
 
   /* ===== House Specific Progress Bar ===== */
-  .house-progress-container {
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .hp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .hp-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .hp-percent {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--success);
-  }
-
-  .hp-bar-bg {
-    width: 100%;
-    height: 14px;
-    background: var(--bg-input);
-    border-radius: 7px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-  }
-
-  .hp-bar-fill {
-    height: 100%;
-    background: var(--success);
-    width: 0%;
-    transition: width 1s ease-in-out;
-  }
-
-  .hp-details {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
+  .house-progress-container { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 8px; padding: 2rem; margin-bottom: 2rem; }
+  .hp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .hp-title { font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
+  .hp-percent { font-size: 1.5rem; font-weight: 700; color: var(--success); }
+  .hp-bar-bg { width: 100%; height: 14px; background: var(--bg-input); border-radius: 7px; overflow: hidden; margin-bottom: 1rem; }
+  .hp-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 1s ease-in-out; }
+  .hp-details { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
   /* ============ Filters Bar ============ */
-  .filters-bar {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    align-items: stretch;
-  }
-
-  .filters-bar input,
-  .filters-bar select {
-    background: var(--bg-input);
-    border: 2px solid var(--line);
-    border-radius: 6px;
-    color: #fff;
-    padding: 0.85rem 1.2rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-  }
-
-  .filters-bar input:focus,
-  .filters-bar select:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
-
+  .filters-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: stretch; }
+  .filters-bar input, .filters-bar select { background: var(--bg-input); border: 2px solid var(--line); border-radius: 6px; color: #fff; padding: 0.85rem 1.2rem; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 500; }
+  .filters-bar input:focus, .filters-bar select:focus { outline: none; border-color: var(--gold); }
   #searchInput { flex: 1; min-width: 180px; }
   .filters-bar select { min-width: 160px; cursor: pointer; }
 
-  .export-btn {
-    background: transparent;
-    border: 2px solid var(--gold-border);
-    border-radius: 6px;
-    color: var(--gold);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.85rem 1.5rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .export-btn:hover {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  .btn-danger {
-    color: var(--error);
-    border-color: rgba(255, 107, 107, 0.4);
-  }
-
-  .btn-danger:hover {
-    border-color: var(--error);
-    background: rgba(255, 107, 107, 0.1);
-  }
-
-  .results-count {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-    line-height: 1.6;
-  }
+  .export-btn { background: transparent; border: 2px solid var(--gold-border); border-radius: 6px; color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 1.5rem; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+  .export-btn:hover { border-color: var(--gold); background: var(--gold-soft); }
+  .btn-danger { color: var(--error); border-color: rgba(255, 107, 107, 0.4); }
+  .btn-danger:hover { border-color: var(--error); background: rgba(255, 107, 107, 0.1); }
+  .results-count { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.6; }
 
   /* ============ Table ============ */
-  .table-wrapper {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    overflow-x: auto;
-    background: var(--bg-panel);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 980px;
-  }
-
-  thead th {
-    text-align: left;
-    font-weight: 700;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    padding: 1.2rem 1rem;
-    border-bottom: 1px solid var(--gold-border);
-    white-space: nowrap;
-    background: rgba(102, 252, 241, 0.02);
-  }
-
-  tbody td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--line);
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #fff;
-    vertical-align: middle;
-  }
-
+  .table-wrapper { border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; background: var(--bg-panel); }
+  table { width: 100%; border-collapse: collapse; min-width: 980px; }
+  thead th { text-align: left; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); padding: 1.2rem 1rem; border-bottom: 1px solid var(--gold-border); white-space: nowrap; background: rgba(102, 252, 241, 0.02); }
+  tbody td { padding: 1rem; border-bottom: 1px solid var(--line); font-size: 0.85rem; font-weight: 500; color: #fff; vertical-align: middle; }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: rgba(255,255,255,0.02); }
 
-  .ref-link {
-    color: var(--gold);
-    text-decoration: none;
-    border-bottom: 1px solid var(--gold-border);
-    font-size: 0.8rem;
-  }
-
-  .ref-link:hover { border-bottom-color: var(--gold); }
-
-  .action-btns {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .edit-btn {
-    background: none;
-    border: 1px solid var(--gold-border);
-    border-radius: 4px;
-    color: var(--gold);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.6rem 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
+  .action-btns { display: flex; gap: 0.5rem; }
+  .edit-btn { background: none; border: 1px solid var(--gold-border); border-radius: 4px; color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 0.8rem; cursor: pointer; transition: all 0.2s ease; }
   .edit-btn:hover { background: var(--gold-soft); border-color: var(--gold); }
-
-  .delete-btn {
-    background: none;
-    border: 1px solid rgba(255, 107, 107, 0.4);
-    border-radius: 4px;
-    color: var(--error);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.6rem 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .delete-btn:hover {
-    border-color: var(--error);
-    background: rgba(255, 107, 107, 0.1);
-  }
-
-  .empty-row td {
-    text-align: center;
-    color: var(--text-muted);
-    padding: 3rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .muted { color: var(--text-muted); }
+  .delete-btn { background: none; border: 1px solid rgba(255, 107, 107, 0.4); border-radius: 4px; color: var(--error); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 0.8rem; cursor: pointer; transition: all 0.2s ease; }
+  .delete-btn:hover { border-color: var(--error); background: rgba(255, 107, 107, 0.1); }
+  .empty-row td { text-align: center; color: var(--text-muted); padding: 3rem 1rem; font-size: 0.9rem; }
 
   /* ============ Modal ============ */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 900;
-    padding: 1.5rem;
-  }
-
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 900; padding: 1.5rem; }
   .modal-overlay.active { display: flex; }
-
-  .modal-box {
-    width: 100%;
-    max-width: 400px;
-    background: var(--bg-panel);
-    border: 2px solid var(--gold-border);
-    border-radius: 12px;
-    padding: 2.5rem 2rem;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-
-  .modal-title {
-    font-weight: 700;
-    font-size: 1.2rem;
-    letter-spacing: 0.1em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-
-  .modal-text {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .modal-actions button {
-    flex: 1;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.9rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .modal-cancel {
-    background: transparent;
-    border: 2px solid var(--line);
-    color: var(--text-muted);
-  }
-
+  .modal-box { width: 100%; max-width: 400px; background: var(--bg-panel); border: 2px solid var(--gold-border); border-radius: 12px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; }
+  .modal-title { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
+  .modal-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem; }
+  .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+  .modal-actions button { flex: 1; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.9rem; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; }
+  .modal-cancel { background: transparent; border: 2px solid var(--line); color: var(--text-muted); }
   .modal-cancel:hover { border-color: var(--text); color: var(--text); }
-
-  .modal-confirm {
-    background: var(--error);
-    border: 2px solid var(--error);
-    color: var(--bg);
-  }
-
+  .modal-confirm { background: var(--error); border: 2px solid var(--error); color: var(--bg); }
   .modal-confirm:hover { background: #ff8787; border-color: #ff8787; }
-
-  .modal-save {
-    background: var(--gold);
-    border: 2px solid var(--gold);
-    color: var(--bg);
-  }
-
+  .modal-save { background: var(--gold); border: 2px solid var(--gold); color: var(--bg); }
   .modal-save:hover { background: #45E6DB; border-color: #45E6DB; }
-
 </style>
 </head>
 <body>
@@ -662,17 +161,14 @@
       <div class="login-title">KAMA Arts Fest</div>
       <div class="login-divider"></div>
       <div class="login-subtitle">Secure Login</div>
-
       <div class="login-field">
         <label class="login-label" for="loginUser">Username (House / Admin)</label>
         <input type="text" id="loginUser" class="login-input" autocomplete="username">
       </div>
-
       <div class="login-field">
         <label class="login-label" for="loginPass">Password</label>
         <input type="password" id="loginPass" class="login-input" autocomplete="current-password">
       </div>
-
       <button class="login-btn" id="loginBtn">Login</button>
       <p class="login-error" id="loginError"></p>
     </div>
@@ -720,27 +216,22 @@
 
         <!-- ONLY FOR ADMIN LOGIN -->
         <div id="adminDashboardView" style="display:none;">
+          
+          <!-- GLOBAL REGISTRATION STOP BUTTON -->
+          <div style="margin-bottom: 2.5rem; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.3rem;">Global Registration Status</h3>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;" id="regStatusText">Checking status...</p>
+            </div>
+            <button id="toggleRegBtn" style="padding: 0.8rem 1.5rem; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 6px; cursor: pointer; transition: all 0.2s ease;" disabled>Loading...</button>
+          </div>
+
           <div class="stats-grid">
-            <div class="stat-card highlight">
-              <div class="stat-label">Total Entries</div>
-              <div class="stat-value" id="statTotal">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Hormuz</div>
-              <div class="stat-value" id="statHormuz">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Bosphorus</div>
-              <div class="stat-value" id="statBosphorus">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Malacca</div>
-              <div class="stat-value" id="statMalacca">0</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Gibraltar</div>
-              <div class="stat-value" id="statGibraltar">0</div>
-            </div>
+            <div class="stat-card highlight"><div class="stat-label">Total Entries</div><div class="stat-value" id="statTotal">0</div></div>
+            <div class="stat-card"><div class="stat-label">Hormuz</div><div class="stat-value" id="statHormuz">0</div></div>
+            <div class="stat-card"><div class="stat-label">Bosphorus</div><div class="stat-value" id="statBosphorus">0</div></div>
+            <div class="stat-card"><div class="stat-label">Malacca</div><div class="stat-value" id="statMalacca">0</div></div>
+            <div class="stat-card"><div class="stat-label">Gibraltar</div><div class="stat-value" id="statGibraltar">0</div></div>
           </div>
 
           <div class="section-breakdown">
@@ -758,7 +249,6 @@
 
         <div class="filters-bar">
           <input type="text" id="searchInput" placeholder="Search by name, chest no, ID or topic...">
-          
           <select id="teamFilter">
             <option value="">All Houses</option>
             <option value="Hormuz">Hormuz</option>
@@ -766,7 +256,6 @@
             <option value="Malacca">Malacca</option>
             <option value="Gibraltar">Gibraltar</option>
           </select>
-
           <select id="sectionFilter">
             <option value="">All Sections</option>
             <option value="bidayah">bidayah</option>
@@ -783,17 +272,7 @@
         <div class="table-wrapper">
           <table>
             <thead>
-              <tr>
-                <th>Reg. ID</th>
-                <th>Chest No.</th>
-                <th>Participant</th>
-                <th>House</th>
-                <th>Section</th>
-                <th>Program</th>
-                <th>Topic / Title</th>
-                <th>Submitted</th>
-                <th>Action</th>
-              </tr>
+              <tr><th>Reg. ID</th><th>Chest No.</th><th>Participant</th><th>House</th><th>Section</th><th>Program</th><th>Topic / Title</th><th>Submitted</th><th>Action</th></tr>
             </thead>
             <tbody id="tableBody">
               <tr class="empty-row"><td colspan="9">Loading registrations...</td></tr>
@@ -816,20 +295,13 @@
 
         <p class="results-count">
           <strong>Admin Note:</strong><br>
-          Export the template, fill out the Chest Numbers and Names, Clear the old database, and Import your finished CSV to enable Dropdown Selection for Houses.
+          Export the template, fill out the Chest Numbers and Names, Clear the old database, and Import your finished CSV to enable Dropdown Selection for Houses. Or edit entries manually below.
         </p>
 
         <div class="table-wrapper">
           <table style="min-width: 100%;">
             <thead>
-              <tr>
-                <th>House</th>
-                <th>Category</th>
-                <th>Program Name</th>
-                <th>Chest No.</th>
-                <th>Participant Name</th>
-                <th style="width: 80px;">Action</th>
-              </tr>
+              <tr><th>House</th><th>Category</th><th>Program Name</th><th>Chest No.</th><th>Participant Name</th><th style="width: 120px;">Action</th></tr>
             </thead>
             <tbody id="masterTableBody">
               <tr class="empty-row"><td colspan="6">Loading master data...</td></tr>
@@ -867,13 +339,56 @@
     </div>
   </div>
 
+  <!-- ============ EDIT MASTER DATA MODAL ============ -->
+  <div class="modal-overlay" id="editMasterModal">
+    <div class="modal-box" style="text-align: left;">
+      <div class="modal-title" style="text-align: center;">Edit Master Data</div>
+      <input type="hidden" id="editMasterId">
+      
+      <div class="login-field">
+        <label class="login-label">House (Team)</label>
+        <select id="editMasterTeam" class="login-input">
+          <option value="Hormuz">Hormuz</option>
+          <option value="Bosphorus">Bosphorus</option>
+          <option value="Malacca">Malacca</option>
+          <option value="Gibraltar">Gibraltar</option>
+        </select>
+      </div>
+      <div class="login-field">
+        <label class="login-label">Category (Section)</label>
+        <select id="editMasterCategory" class="login-input">
+          <option value="bidayah">bidayah</option>
+          <option value="Ula">Ula</option>
+          <option value="thaniya">thaniya</option>
+          <option value="thanawiyya">thanawiyya</option>
+          <option value="aliyah">aliyah</option>
+        </select>
+      </div>
+      <div class="login-field">
+        <label class="login-label">Program Name</label>
+        <input type="text" id="editMasterProgram" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Chest Number</label>
+        <input type="text" id="editMasterChest" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Participant Name</label>
+        <input type="text" id="editMasterName" class="login-input">
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-cancel" id="cancelMasterEditBtn">Cancel</button>
+        <button class="modal-save" id="saveMasterEditBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ DELETE CONFIRMATION MODAL ============ -->
   <div class="modal-overlay" id="deleteModal">
     <div class="modal-box">
       <div class="modal-title">Confirm Deletion</div>
-      <p class="modal-text">
-        Are you sure you want to permanently delete this record? This action cannot be undone.
-      </p>
+      <p class="modal-text">Are you sure you want to permanently delete this record? This action cannot be undone.</p>
       <div class="modal-actions">
         <button class="modal-cancel" id="cancelDeleteBtn">Cancel</button>
         <button class="modal-confirm" id="confirmDeleteBtn">Delete</button>
@@ -911,7 +426,6 @@
       "aliyah": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
     };
 
-    // User Logins mapping
     const USERS = {
       'admin': { role: 'admin', pass: 'kama2025', team: 'Admin' },
       'hormuz': { role: 'house', pass: '794325', team: 'Hormuz' },
@@ -922,14 +436,17 @@
 
     /* ============ State ============ */
     let currentUser = null;
-    let rawRegistrations = []; // All data from DB
-    let allRegistrations = []; // Filtered for current user
+    let rawRegistrations = []; 
+    let allRegistrations = []; 
     let masterParticipants = [];
     
     let pendingDeleteId = null;
     let pendingDeleteType = null;
     let unsubscribeRegs = null;
     let unsubscribeMaster = null;
+    let unsubscribeSettings = null;
+    
+    let isRegOpen = true; // Global Master Switch State
 
     /* ============ Authentication ============ */
     const loginOverlay = document.getElementById('loginOverlay');
@@ -952,18 +469,16 @@
     }
 
     loginBtn.addEventListener('click', attemptLogin);
-    document.getElementById('loginPass').addEventListener('keydown', e => {
-      if (e.key === 'Enter') attemptLogin();
-    });
+    document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
       sessionStorage.removeItem('kamaAuthUser');
       if (unsubscribeRegs) unsubscribeRegs();
       if (unsubscribeMaster) unsubscribeMaster();
+      if (unsubscribeSettings) unsubscribeSettings();
       location.reload();
     });
 
-    // Check existing session
     const savedSession = sessionStorage.getItem('kamaAuthUser');
     if (savedSession) {
       currentUser = JSON.parse(savedSession);
@@ -976,20 +491,15 @@
       document.getElementById('loginRoleDisplay').textContent = currentUser.team;
 
       if(currentUser.role === 'house') {
-        // Hide Master Data from Sidebar
         document.getElementById('navMasterData').style.display = 'none';
-        
-        // Setup House Dashboard
         document.getElementById('adminDashboardView').style.display = 'none';
         document.getElementById('houseDashboardView').style.display = 'block';
         document.getElementById('dashboardTitle').textContent = currentUser.team + ' Dashboard';
 
-        // Lock Team filter to their own team
         const teamFilter = document.getElementById('teamFilter');
         teamFilter.value = currentUser.team;
         teamFilter.disabled = true;
       } else {
-        // Setup Admin Dashboard
         document.getElementById('adminDashboardView').style.display = 'block';
         document.getElementById('houseDashboardView').style.display = 'none';
         document.getElementById('dashboardTitle').textContent = 'Admin Dashboard';
@@ -1008,44 +518,79 @@
 
     /* ============ Init: Real-time Listeners ============ */
     function initDashboard() {
-      // Listen to Master Participants Database (Needed for House Stats calculation)
-      unsubscribeMaster = db.collection('participants')
-        .onSnapshot(snapshot => {
-          masterParticipants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          if(currentUser.role === 'admin') renderMasterTable();
-          updateDashboardStats(); // Recalculate if master data changes
-        }, err => {
-          if(currentUser.role === 'admin') {
-            document.getElementById('masterTableBody').innerHTML = 
-              `<tr class="empty-row"><td colspan="6">Error loading master data: ${escapeHtml(err.message)}</td></tr>`;
-          }
-        });
-
-      // Listen to Registrations
-      unsubscribeRegs = db.collection('registrations')
-        .orderBy('timestamp', 'desc')
-        .onSnapshot(snapshot => {
-          rawRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          
-          // If House, only keep their registrations locally
-          if(currentUser.role === 'house') {
-            allRegistrations = rawRegistrations.filter(r => r.team === currentUser.team);
+      // Global Settings Listener for Admin Switch
+      if (currentUser.role === 'admin') {
+        unsubscribeSettings = db.collection('settings').doc('system').onSnapshot(doc => {
+          if (doc.exists) {
+            isRegOpen = doc.data().registrationOpen !== false;
           } else {
-            allRegistrations = [...rawRegistrations];
+            isRegOpen = true;
           }
-
-          updateDashboardStats();
-          renderTable();
-        }, err => {
-          document.getElementById('tableBody').innerHTML =
-            `<tr class="empty-row"><td colspan="9">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+          updateRegToggleButton();
         });
+      }
+
+      unsubscribeMaster = db.collection('participants').onSnapshot(snapshot => {
+        masterParticipants = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if(currentUser.role === 'admin') renderMasterTable();
+        updateDashboardStats(); 
+      }, err => {
+        if(currentUser.role === 'admin') {
+          document.getElementById('masterTableBody').innerHTML = `<tr class="empty-row"><td colspan="6">Error loading master data: ${escapeHtml(err.message)}</td></tr>`;
+        }
+      });
+
+      unsubscribeRegs = db.collection('registrations').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        rawRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if(currentUser.role === 'house') {
+          allRegistrations = rawRegistrations.filter(r => r.team === currentUser.team);
+        } else {
+          allRegistrations = [...rawRegistrations];
+        }
+        updateDashboardStats();
+        renderTable();
+      }, err => {
+        document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="9">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+      });
     }
 
-    /* ============ Dashboard Stats (Dynamic) ============ */
+    /* ============ Stop Switch Logic (Admin) ============ */
+    function updateRegToggleButton() {
+      const btn = document.getElementById('toggleRegBtn');
+      const text = document.getElementById('regStatusText');
+      if(!btn) return;
+
+      btn.disabled = false;
+      if(isRegOpen) {
+        text.textContent = "Registrations are currently OPEN. Users can submit entries.";
+        btn.textContent = "STOP ALL REGISTRATIONS";
+        btn.style.backgroundColor = "transparent";
+        btn.style.color = "var(--error)";
+        btn.style.border = "2px solid var(--error)";
+      } else {
+        text.textContent = "Registrations are currently CLOSED. Users cannot access the form.";
+        btn.textContent = "START REGISTRATIONS";
+        btn.style.backgroundColor = "var(--success)";
+        btn.style.color = "var(--bg)";
+        btn.style.border = "2px solid var(--success)";
+      }
+    }
+
+    document.getElementById('toggleRegBtn')?.addEventListener('click', async () => {
+      const btn = document.getElementById('toggleRegBtn');
+      btn.disabled = true;
+      btn.textContent = "Updating...";
+      try {
+        await db.collection('settings').doc('system').set({ registrationOpen: !isRegOpen }, { merge: true });
+      } catch(e) {
+        alert("Error updating status: " + e.message);
+        btn.disabled = false;
+      }
+    });
+
+    /* ============ Dashboard Stats ============ */
     function updateDashboardStats() {
       if(currentUser.role === 'admin') {
-        // Admin View
         document.getElementById('statTotal').textContent = allRegistrations.length;
         TEAMS.forEach(team => {
           const count = allRegistrations.filter(r => r.team === team).length;
@@ -1062,11 +607,9 @@
           row.innerHTML = `<span class="b-label">${escapeHtml(section)}</span><span class="b-value">${count}</span>`;
           breakdownEl.appendChild(row);
         });
-
       } else {
-        // House View
         const houseTotalSlots = masterParticipants.filter(p => p.team === currentUser.team).length;
-        const houseRegs = allRegistrations.length; // Already filtered for this house
+        const houseRegs = allRegistrations.length; 
         const houseRem = Math.max(0, houseTotalSlots - houseRegs);
         const percent = houseTotalSlots > 0 ? Math.round((houseRegs / houseTotalSlots) * 100) : 0;
 
@@ -1095,13 +638,8 @@
       return allRegistrations.filter(r => {
         if (team && r.team !== team) return false;
         if (section && r.section !== section) return false;
-
         if (search) {
-          const haystack = [
-            r.registrationId, r.participantName, r.chestNumber,
-            r.topicTitle, r.program
-          ].join(' ').toLowerCase();
-
+          const haystack = [r.registrationId, r.participantName, r.chestNumber, r.topicTitle, r.program].join(' ').toLowerCase();
           if (!haystack.includes(search)) return false;
         }
         return true;
@@ -1121,13 +659,9 @@
       }
 
       tbody.innerHTML = '';
-
       data.forEach(r => {
         const tr = document.createElement('tr');
-        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
-          ? r.timestamp.toDate().toLocaleString()
-          : '—';
-
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toLocaleString() : '—';
         tr.innerHTML = `
           <td>${escapeHtml(r.registrationId || '—')}</td>
           <td>${escapeHtml(r.chestNumber || '—')}</td>
@@ -1144,7 +678,6 @@
             </div>
           </td>
         `;
-
         tbody.appendChild(tr);
       });
     }
@@ -1155,46 +688,31 @@
     function openEditRegModal(id) {
       const reg = allRegistrations.find(r => r.id === id);
       if(!reg) return;
-
       document.getElementById('editRegId').value = reg.id;
       document.getElementById('editRegChest').value = reg.chestNumber || '';
       document.getElementById('editRegName').value = reg.participantName || '';
       document.getElementById('editRegTopic').value = reg.topicTitle || '';
-      
       editRegModal.classList.add('active');
     }
 
-    document.getElementById('cancelEditBtn').addEventListener('click', () => {
-      editRegModal.classList.remove('active');
-    });
+    document.getElementById('cancelEditBtn').addEventListener('click', () => { editRegModal.classList.remove('active'); });
 
     document.getElementById('saveEditBtn').addEventListener('click', async () => {
       const id = document.getElementById('editRegId').value;
       const chestNumber = document.getElementById('editRegChest').value.trim();
       const participantName = document.getElementById('editRegName').value.trim();
       const topicTitle = document.getElementById('editRegTopic').value.trim();
-
       const btn = document.getElementById('saveEditBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-
+      
+      btn.disabled = true; btn.textContent = 'Saving...';
       try {
-        await db.collection('registrations').doc(id).update({
-          chestNumber,
-          participantName,
-          topicTitle
-        });
+        await db.collection('registrations').doc(id).update({ chestNumber, participantName, topicTitle });
         editRegModal.classList.remove('active');
-      } catch(err) {
-        alert("Failed to update: " + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Save Changes';
-      }
+      } catch(err) { alert("Failed to update: " + err.message); } 
+      finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
     });
 
     /* ============ Master Data Tab Logic (ADMIN ONLY) ============ */
-    
     function renderMasterTable() {
       const tbody = document.getElementById('masterTableBody');
       if(!tbody) return;
@@ -1213,11 +731,60 @@
           <td>${escapeHtml(p.program || '—')}</td>
           <td>${escapeHtml(p.chestNo || '—')}</td>
           <td>${escapeHtml(p.name || '—')}</td>
-          <td><button class="delete-btn" onclick="openDeleteModal('${p.id}', 'master')">Del</button></td>
+          <td>
+            <div class="action-btns">
+              <button class="edit-btn" onclick="openEditMasterModal('${p.id}')">Edit</button>
+              <button class="delete-btn" onclick="openDeleteModal('${p.id}', 'master')">Del</button>
+            </div>
+          </td>
         `;
         tbody.appendChild(tr);
       });
     }
+
+    /* ============ EDIT MASTER DATA Logic ============ */
+    const editMasterModal = document.getElementById('editMasterModal');
+
+    function openEditMasterModal(id) {
+      const participant = masterParticipants.find(p => p.id === id);
+      if(!participant) return;
+
+      document.getElementById('editMasterId').value = participant.id;
+      
+      const teamDropdown = document.getElementById('editMasterTeam');
+      teamDropdown.value = participant.team || 'Hormuz';
+      if(!teamDropdown.value) teamDropdown.value = 'Hormuz'; 
+      
+      const categoryDropdown = document.getElementById('editMasterCategory');
+      categoryDropdown.value = participant.category || 'bidayah';
+      if(!categoryDropdown.value) categoryDropdown.value = 'bidayah';
+
+      document.getElementById('editMasterProgram').value = participant.program || '';
+      document.getElementById('editMasterChest').value = participant.chestNo || '';
+      document.getElementById('editMasterName').value = participant.name || '';
+
+      editMasterModal.classList.add('active');
+    }
+
+    document.getElementById('cancelMasterEditBtn').addEventListener('click', () => { editMasterModal.classList.remove('active'); });
+
+    document.getElementById('saveMasterEditBtn').addEventListener('click', async () => {
+      const id = document.getElementById('editMasterId').value;
+      const team = document.getElementById('editMasterTeam').value;
+      const category = document.getElementById('editMasterCategory').value;
+      const program = document.getElementById('editMasterProgram').value.trim();
+      const chestNo = document.getElementById('editMasterChest').value.trim();
+      const name = document.getElementById('editMasterName').value.trim();
+
+      const btn = document.getElementById('saveMasterEditBtn');
+      btn.disabled = true; btn.textContent = 'Saving...';
+
+      try {
+        await db.collection('participants').doc(id).update({ team, category, program, chestNo, name });
+        editMasterModal.classList.remove('active');
+      } catch(err) { alert("Failed to update Master Data: " + err.message); } 
+      finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
+    });
 
     // Import
     if(document.getElementById('importMasterBtn')) {
@@ -1250,15 +817,9 @@
         }
 
         if(count > 0) {
-          try {
-            await batch.commit();
-            alert(`Success! Imported ${count} valid participant rows.`);
-          } catch(err) {
-            alert('Error saving to database: ' + err.message);
-          }
-        } else {
-          alert('No valid records found. Did you fill out the Chest No and Name columns for each Team?');
-        }
+          try { await batch.commit(); alert(`Success! Imported ${count} valid participant rows.`); } 
+          catch(err) { alert('Error saving to database: ' + err.message); }
+        } else { alert('No valid records found. Did you fill out the Chest No and Name columns for each Team?'); }
         e.target.value = '';
       });
     }
@@ -1268,21 +829,16 @@
       document.getElementById('exportMasterBtn').addEventListener('click', () => {
         const headers = ['Team', 'Category', 'Program Name', 'Chest No', 'Name'];
         const rows = [];
-        
         TEAMS.forEach(team => {
           SECTIONS.forEach(category => {
             const progs = PROGRAMS[category] || [];
             progs.forEach(programName => {
               const existing = masterParticipants.filter(p => p.team === team && p.category === category && p.program === programName);
-              if(existing.length > 0) {
-                existing.forEach(p => rows.push([team, category, programName, p.chestNo || '', p.name || '']));
-              } else {
-                rows.push([team, category, programName, '', '']);
-              }
+              if(existing.length > 0) { existing.forEach(p => rows.push([team, category, programName, p.chestNo || '', p.name || ''])); } 
+              else { rows.push([team, category, programName, '', '']); }
             });
           });
         });
-        
         let csv = headers.map(csvEscape).join(',') + '\r\n';
         rows.forEach(row => { csv += row.map(csvEscape).join(',') + '\r\n'; });
         downloadCSV(csv, `KAMA_Master_Template_${new Date().toISOString().slice(0, 10)}.csv`);
@@ -1297,15 +853,10 @@
         if(confirmed) {
           try {
             const batch = db.batch();
-            masterParticipants.forEach(p => {
-               const ref = db.collection('participants').doc(p.id);
-               batch.delete(ref);
-            });
+            masterParticipants.forEach(p => { const ref = db.collection('participants').doc(p.id); batch.delete(ref); });
             await batch.commit();
             alert("All Master Data has been successfully cleared.");
-          } catch(err) {
-            alert("Error clearing data: " + err.message);
-          }
+          } catch(err) { alert("Error clearing data: " + err.message); }
         }
       });
     }
@@ -1316,74 +867,44 @@
     const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 
     function openDeleteModal(id, type) {
-      pendingDeleteId = id;
-      pendingDeleteType = type;
-      deleteModal.classList.add('active');
+      pendingDeleteId = id; pendingDeleteType = type; deleteModal.classList.add('active');
     }
 
     function closeDeleteModal() {
-      pendingDeleteId = null;
-      pendingDeleteType = null;
-      deleteModal.classList.remove('active');
+      pendingDeleteId = null; pendingDeleteType = null; deleteModal.classList.remove('active');
     }
 
     cancelDeleteBtn.addEventListener('click', closeDeleteModal);
 
     confirmDeleteBtn.addEventListener('click', async () => {
       if (!pendingDeleteId) return;
-      
-      confirmDeleteBtn.disabled = true;
-      confirmDeleteBtn.textContent = 'Deleting...';
-
+      confirmDeleteBtn.disabled = true; confirmDeleteBtn.textContent = 'Deleting...';
       try {
         const collectionName = (pendingDeleteType === 'registration') ? 'registrations' : 'participants';
         await db.collection(collectionName).doc(pendingDeleteId).delete();
-      } catch (err) {
-        alert('Failed to delete: ' + err.message);
-      } finally {
-        confirmDeleteBtn.disabled = false;
-        confirmDeleteBtn.textContent = 'Delete';
-        closeDeleteModal();
-      }
+      } catch (err) { alert('Failed to delete: ' + err.message); } 
+      finally { confirmDeleteBtn.disabled = false; confirmDeleteBtn.textContent = 'Delete'; closeDeleteModal(); }
     });
 
     /* ============ Export Registrations to CSV ============ */
     document.getElementById('exportBtn').addEventListener('click', () => {
       const data = getFilteredData();
+      if (data.length === 0) { alert('No data available to export.'); return; }
 
-      if (data.length === 0) {
-        alert('No data available to export.');
-        return;
-      }
-
-      const headers = [
-        'Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Submitted At'
-      ];
-
+      const headers = ['Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Submitted At'];
       const rows = data.map(r => {
-        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function')
-          ? r.timestamp.toDate().toISOString()
-          : '';
-
-        return [
-          r.registrationId || '', r.team || '', r.section || '', r.program || '', 
-          r.chestNumber || '', r.participantName || '', r.topicTitle || '', dateStr
-        ];
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toISOString() : '';
+        return [ r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', dateStr ];
       });
 
       let csv = headers.map(csvEscape).join(',') + '\r\n';
-      rows.forEach(row => {
-        csv += row.map(csvEscape).join(',') + '\r\n';
-      });
-
+      rows.forEach(row => { csv += row.map(csvEscape).join(',') + '\r\n'; });
       downloadCSV(csv, `KAMA_House_Registrations_${new Date().toISOString().slice(0, 10)}.csv`);
     });
 
     function csvEscape(value) {
       const str = String(value ?? '');
-      if (/[",\n\r]/.test(str)) {
-        return '"' + str.replace(/"/g, '""') + '"';
-      }
+      if (/[",\n\r]/.test(str)) { return '"' + str.replace(/"/g, '""') + '"'; }
       return str;
     }
     
@@ -1391,23 +912,14 @@
       const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      link.href = url; link.download = filename;
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
       URL.revokeObjectURL(url);
     }
 
-    /* ============ Helpers ============ */
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
   </script>
 
