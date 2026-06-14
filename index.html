@@ -217,6 +217,10 @@
     cursor: pointer;
     transition: all 0.2s ease;
     background: rgba(255,255,255,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .option-card:hover {
@@ -235,18 +239,10 @@
     letter-spacing: 0.05em;
     color: #fff;
     transition: color 0.2s ease;
+    margin: 0;
   }
 
   .option-card.selected .option-title { color: var(--gold); }
-
-  .option-sub {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-    text-transform: uppercase;
-  }
 
   .demo-option {
     border: 2px dashed rgba(255, 255, 255, 0.2);
@@ -605,7 +601,6 @@
 
     <div class="form-card">
       
-      <!-- LOADING OVERLAY -->
       <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingTextStatus">Submitting Registration...</div>
@@ -614,38 +609,30 @@
         </div>
       </div>
 
-      <!-- STEP 1: TEAM -->
       <div class="step-content active" id="step1">
         <div class="step-eyebrow">Step 1 of 4</div>
         <div class="step-heading">Select Your House</div>
         <p class="step-desc">Choose the House you belong to for this entry.</p>
 
-        <!-- Demo Mode Option -->
         <div class="demo-option" onclick="selectTeam(this, 'Demo')">
           <div class="option-title">TEST / DEMO MODE</div>
-          <div class="option-sub">Click here to test the form without a passcode</div>
         </div>
 
         <div class="options-grid">
           <div class="option-card" onclick="selectTeam(this, 'Hormuz')">
             <div class="option-title">Hormuz</div>
-            <div class="option-sub">Strait of Hormuz</div>
           </div>
           <div class="option-card" onclick="selectTeam(this, 'Bosphorus')">
             <div class="option-title">Bosphorus</div>
-            <div class="option-sub">Strait of Bosphorus</div>
           </div>
           <div class="option-card" onclick="selectTeam(this, 'Malacca')">
             <div class="option-title">Malacca</div>
-            <div class="option-sub">Strait of Malacca</div>
           </div>
           <div class="option-card" onclick="selectTeam(this, 'Gibraltar')">
             <div class="option-title">Gibraltar</div>
-            <div class="option-sub">Strait of Gibraltar</div>
           </div>
         </div>
 
-        <!-- Security Passcode -->
         <div class="passcode-wrapper" id="passcodeWrapper">
           <label class="field-label" for="housePasscode">House Passcode <span class="req">*</span></label>
           <input type="password" id="housePasscode" class="field-input" placeholder="Enter 6-digit passcode">
@@ -653,7 +640,6 @@
         </div>
       </div>
 
-      <!-- STEP 2: SECTION -->
       <div class="step-content" id="step2">
         <div class="step-eyebrow">Step 2 of 4</div>
         <div class="step-heading">Select Section</div>
@@ -662,28 +648,22 @@
         <div class="options-grid">
           <div class="option-card" onclick="selectSection(this, 'BIDĀYAH')">
             <div class="option-title">BIDĀYAH</div>
-            <div class="option-sub">Beginners</div>
           </div>
           <div class="option-card" onclick="selectSection(this, 'ʾŪLĀ')">
             <div class="option-title">ʾŪLĀ</div>
-            <div class="option-sub">Primary</div>
           </div>
           <div class="option-card" onclick="selectSection(this, 'THĀNIYAH')">
             <div class="option-title">THĀNIYAH</div>
-            <div class="option-sub">Secondary</div>
           </div>
           <div class="option-card" onclick="selectSection(this, 'THĀNAWIYYAH')">
             <div class="option-title">THĀNAWIYYAH</div>
-            <div class="option-sub">Higher Secondary</div>
           </div>
           <div class="option-card" onclick="selectSection(this, 'ʿĀLIYAH')">
             <div class="option-title">ʿĀLIYAH</div>
-            <div class="option-sub">Senior</div>
           </div>
         </div>
       </div>
 
-      <!-- STEP 3: PROGRAM -->
       <div class="step-content" id="step3">
         <div class="step-eyebrow">Step 3 of 4</div>
         <div class="step-heading">Select Program</div>
@@ -692,7 +672,6 @@
         <div class="options-grid" id="programOptions"></div>
       </div>
 
-      <!-- STEP 4: DETAILS -->
       <div class="step-content" id="step4">
         <div class="step-eyebrow">Step 4 of 4</div>
         <div class="step-heading">Participant Details</div>
@@ -721,7 +700,6 @@
         <p class="error-text" id="formError"></p>
       </div>
 
-      <!-- SUCCESS SCREEN -->
       <div class="step-content" id="successScreen">
         <div class="success-screen">
           <div class="success-icon">✓</div>
@@ -739,7 +717,6 @@
         </div>
       </div>
 
-      <!-- NAV BUTTONS -->
       <div class="nav-buttons" id="navButtons">
         <button class="btn" id="backBtn" onclick="goBack()">Back</button>
         <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>Next Step</button>
@@ -752,7 +729,6 @@
     KAMA Arts Fest © 2026 — Secure Registration Portal
   </footer>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -772,58 +748,18 @@
 
     /* ============ Data & Passcodes ============ */
     const PASSCODES = {
-      "Hormuz": "100100",
-      "Bosphorus": "200200",
-      "Malacca": "300300",
-      "Gibraltar": "400400"
+      "Hormuz": "794325",
+      "Bosphorus": "542809",
+      "Malacca": "437527",
+      "Gibraltar": "102355"
     };
 
     const PROGRAMS = {
-      "BIDĀYAH": [
-        { name: "GROUP SONG", sub: "Event" },
-        { name: "KADHAKADHANAM", sub: "Event" },
-        { name: "SONG ARB", sub: "Event" },
-        { name: "SONG MALAYALAM", sub: "Event" }
-      ],
-      "ʾŪLĀ": [
-        { name: "GROUP SONG", sub: "Event" },
-        { name: "SONG MLM", sub: "Event" },
-        { name: "SONG ENGLISH", sub: "Event" },
-        { name: "SONG URDU", sub: "Event" },
-        { name: "SONG ARB", sub: "Event" },
-        { name: "SPEECH & SONG MALAYALAM", sub: "Event" },
-        { name: "PADHYAPARAYANAM", sub: "Event" },
-        { name: "STORY NARRATION ENGLISH", sub: "Event" }
-      ],
-      "THĀNIYAH": [
-        { name: "HISTORY TALK ENGLISH", sub: "Event" },
-        { name: "BHAKTHI GANAM", sub: "Event" },
-        { name: "SONG ARABIC", sub: "Event" },
-        { name: "SONG ENGLISH", sub: "Event" },
-        { name: "SONG URDU", sub: "Event" },
-        { name: "SPEECH & SONG MALAYALAM", sub: "Event" },
-        { name: "PADHYAPARAYANAM", sub: "Event" }
-      ],
-      "THĀNAWIYYAH": [
-        { name: "PADAPPATTU", sub: "Event" },
-        { name: "NASHĪD ARB", sub: "Event" },
-        { name: "SONG URD", sub: "Event" },
-        { name: "SPEECH & SONG URDU", sub: "Event" },
-        { name: "INSPIRING TALK", sub: "Event" },
-        { name: "TADRIS MLM", sub: "Event" }
-      ],
-      "ʿĀLIYAH": [
-        { name: "KHUṬBAH", sub: "Event" },
-        { name: "MAPPILAPPATTU", sub: "Event" },
-        { name: "NASHĪD ARB", sub: "Event" },
-        { name: "SONG ENG", sub: "Event" },
-        { name: "SPEECH & SONG ARB", sub: "Event" },
-        { name: "GAZAL", sub: "Event" },
-        { name: "LECTURING ENG", sub: "Event" },
-        { name: "PADAPPATTU", sub: "Event" },
-        { name: "ACADEMIC TALK ENG", sub: "Event" },
-        { name: "RJ TALKS", sub: "Event" }
-      ]
+      "BIDĀYAH": ["GROUP SONG", "KADHAKADHANAM", "SONG ARB", "SONG MALAYALAM"],
+      "ʾŪLĀ": ["GROUP SONG", "SONG MLM", "SONG ENGLISH", "SONG URDU", "SONG ARB", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM", "STORY NARRATION ENGLISH"],
+      "THĀNIYAH": ["HISTORY TALK ENGLISH", "BHAKTHI GANAM", "SONG ARABIC", "SONG ENGLISH", "SONG URDU", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM"],
+      "THĀNAWIYYAH": ["PADAPPATTU", "NASHĪD ARB", "SONG URD", "SPEECH & SONG URDU", "INSPIRING TALK", "TADRIS MLM"],
+      "ʿĀLIYAH": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
     };
 
     /* ============ State ============ */
@@ -959,12 +895,9 @@
       programs.forEach(p => {
         const card = document.createElement('div');
         card.className = 'option-card';
-        if (state.program === p.name) card.classList.add('selected');
-        card.innerHTML = `
-          <div class="option-title">${escapeHtml(p.name)}</div>
-          <div class="option-sub">${escapeHtml(p.sub)}</div>
-        `;
-        card.addEventListener('click', () => selectProgram(card, p.name));
+        if (state.program === p) card.classList.add('selected');
+        card.innerHTML = `<div class="option-title">${escapeHtml(p)}</div>`;
+        card.addEventListener('click', () => selectProgram(card, p));
         container.appendChild(card);
       });
 
