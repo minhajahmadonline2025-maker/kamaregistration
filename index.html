@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAMA Arts Fest — Registration</title>
+<title>KAMA Arts Fest — Portal</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +22,7 @@
     --text-muted: #8A909D;
     --error: #FF6B6B;
     --success: #45B69C;
+    --warning: #FFA500;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,7 +42,7 @@
 
   .site-header {
     text-align: center;
-    padding: 3rem 1.5rem 1.5rem;
+    padding: 2.5rem 1.5rem 1rem;
   }
 
   .site-title {
@@ -56,7 +57,7 @@
     width: 60px;
     height: 3px;
     background: var(--gold);
-    margin: 1rem auto;
+    margin: 0.75rem auto;
     border-radius: 2px;
   }
 
@@ -71,82 +72,9 @@
   .container {
     flex: 1;
     width: 100%;
-    max-width: 760px;
+    max-width: 850px;
     margin: 0 auto;
     padding: 1.5rem 1.25rem 4rem;
-  }
-
-  .progress-bar {
-    display: flex;
-    margin-bottom: 2.5rem;
-  }
-
-  .step-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-
-  .step-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 17px;
-    left: 50%;
-    width: 100%;
-    height: 2px;
-    background: var(--line);
-    z-index: 0;
-    transition: background 0.3s ease;
-  }
-
-  .step-item.completed:not(:last-child)::after {
-    background: var(--gold);
-  }
-
-  .step-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid var(--line);
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    z-index: 1;
-    transition: all 0.3s ease;
-  }
-
-  .step-item.active .step-circle {
-    border-color: var(--gold);
-    color: var(--gold);
-    box-shadow: 0 0 10px var(--gold-soft);
-  }
-
-  .step-item.completed .step-circle {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--bg);
-  }
-
-  .step-label {
-    margin-top: 0.75rem;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-    text-align: center;
-  }
-
-  .step-item.active .step-label,
-  .step-item.completed .step-label {
-    color: var(--text);
   }
 
   .form-card {
@@ -158,15 +86,13 @@
     overflow: hidden;
   }
 
-  @media (max-width: 540px) {
-    .form-card { padding: 2rem 1.25rem; }
-  }
+  @media (max-width: 540px) { .form-card { padding: 2rem 1.25rem; } }
 
-  /* SYSTEM CLOSED OVERLAY */
+  /* CLOSED REGISTRATIONS MASTER SWITCH OVERLAY */
   .closed-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(31, 40, 51, 0.95);
+    background: rgba(31, 40, 51, 0.96);
     z-index: 200;
     display: flex;
     flex-direction: column;
@@ -179,28 +105,10 @@
     transition: opacity 0.3s ease;
     backdrop-filter: blur(4px);
   }
-  .closed-overlay.active {
-    opacity: 1;
-    pointer-events: all;
-  }
-  .closed-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  .closed-heading {
-    color: var(--error);
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-  }
-  .closed-text {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    max-width: 400px;
-  }
+  .closed-overlay.active { opacity: 1; pointer-events: all; }
+  .closed-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .closed-heading { color: var(--error); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .closed-text { color: var(--text-muted); font-size: 0.9rem; max-width: 400px; }
 
   .house-badge {
     background: rgba(102, 252, 241, 0.05);
@@ -226,30 +134,7 @@
     letter-spacing: 0.05em;
     transition: all 0.2s ease;
   }
-
-  .logout-house-btn:hover {
-    background: rgba(255, 107, 107, 0.1);
-  }
-
-  .demo-sm-btn {
-    background: transparent;
-    border: 1px dashed var(--text-muted);
-    color: var(--text-muted);
-    padding: 0.35rem 0.7rem;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .demo-sm-btn:hover {
-    color: var(--gold);
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
+  .logout-house-btn:hover { background: rgba(255, 107, 107, 0.1); }
 
   .step-content { display: none; animation: fadeIn 0.4s ease; }
   .step-content.active { display: block; }
@@ -259,40 +144,12 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .step-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.5rem;
-  }
+  .step-eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .step-heading { font-size: 1.6rem; font-weight: 700; letter-spacing: 0.02em; color: #fff; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
 
-  .step-heading {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #fff;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .step-desc {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-
-  .options-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  @media (max-width: 540px) {
-    .options-grid { grid-template-columns: 1fr; }
-  }
+  .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 540px) { .options-grid { grid-template-columns: 1fr; } }
 
   .option-card {
     border: 2px solid var(--line);
@@ -306,382 +163,129 @@
     justify-content: center;
     text-align: center;
   }
-
-  .option-card:hover {
-    border-color: var(--gold-border);
-    background: var(--gold-soft);
-  }
-
-  .option-card.selected {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  .option-title {
-    font-weight: 600;
-    font-size: 1.05rem;
-    letter-spacing: 0.05em;
-    color: #fff;
-    transition: color 0.2s ease;
-    margin: 0;
-  }
-
+  .option-card:hover { border-color: var(--gold-border); background: var(--gold-soft); }
+  .option-card.selected { border-color: var(--gold); background: var(--gold-soft); }
+  .option-title { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.05em; color: #fff; margin: 0; }
   .option-card.selected .option-title { color: var(--gold); }
 
-  .empty-note {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    padding: 1.5rem 0;
-    text-align: center;
-    border: 1px dashed var(--line);
-  }
+  .passcode-wrapper { margin-top: 1.5rem; display: none; animation: fadeIn 0.3s ease; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--line); }
+  .passcode-wrapper.active { display: block; }
 
-  .passcode-wrapper {
-    margin-top: 1.5rem;
-    display: none;
-    animation: fadeIn 0.3s ease;
+  /* ===== ADVANCED STATS VIEWS ===== */
+  .house-progress-container {
     background: rgba(0,0,0,0.2);
-    padding: 1.5rem;
-    border-radius: 8px;
     border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
   }
+  .hp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .hp-title { font-size: 1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
+  .hp-percent { font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+  .hp-bar-bg { width: 100%; height: 10px; background: var(--bg-input); border-radius: 5px; overflow: hidden; margin-bottom: 1rem; }
+  .hp-bar-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.8s ease-in-out; }
+  .hp-details { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
-  .passcode-wrapper.active {
-    display: block;
+  /* Dashboard Sub-Tabs */
+  .dash-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
   }
-
-  .view-regs-wrapper {
-    display: none;
-    margin-top: 1.25rem;
-    animation: fadeIn 0.3s ease;
-  }
-
-  .view-regs-wrapper.active {
-    display: block;
-  }
-
-  .btn-view-regs {
-    width: 100%;
+  .dash-tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    font-size: 0.78rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: 6px;
-    border: 2px solid var(--gold-border);
-    background: transparent;
-    color: var(--gold);
+    letter-spacing: 0.05em;
     cursor: pointer;
+    padding: 0.5rem 0.5rem;
+    border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
   }
+  .dash-tab-btn:hover { color: #fff; }
+  .dash-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-  .btn-view-regs:hover {
-    border-color: var(--gold);
-    background: var(--gold-soft);
-  }
-
-  /* ===== REGISTRATIONS VIEW SCREEN ===== */
-  #viewRegsScreen { display: none; }
-  #viewRegsScreen.active { display: block; animation: fadeIn 0.4s ease; }
-
-  .regs-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .regs-stats {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-  }
-
-  .stat-pill {
-    background: rgba(102, 252, 241, 0.06);
-    border: 1px solid var(--gold-border);
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+  /* Status Badges */
+  .status-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--gold);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
   }
+  .status-approved { background: rgba(69, 182, 156, 0.15); border: 1px solid var(--success); color: var(--success); }
+  .status-rejected { background: rgba(255, 107, 107, 0.15); border: 1px solid var(--error); color: var(--error); }
+  .status-pending { background: rgba(255, 165, 0, 0.15); border: 1px solid var(--warning); color: var(--warning); }
+  .status-notentered { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--text-muted); color: var(--text-muted); }
 
-  .stat-pill span {
-    color: #fff;
-    margin-left: 0.4rem;
-    font-size: 0.9rem;
-  }
-
-  .filter-bar {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-select {
-    flex: 1;
-    min-width: 140px;
-    background: var(--bg-input);
-    border: 2px solid var(--line);
-    border-radius: 6px;
-    color: var(--text);
-    padding: 0.6rem 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.8rem top 50%;
-    background-size: 0.6rem auto;
-    padding-right: 2rem;
-    transition: border-color 0.2s ease;
-  }
-
+  .filter-bar { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .filter-select { flex: 1; min-width: 130px; background: var(--bg-input); border: 1px solid var(--line); border-radius: 6px; color: var(--text); padding: 0.6rem 1rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 500; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 0.8rem top 50%; background-size: 0.6rem auto; padding-right: 2rem; transition: border-color 0.2s ease; }
   .filter-select:focus { outline: none; border-color: var(--gold); }
 
-  .regs-table-wrapper {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid var(--line);
-  }
-
-  .regs-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.82rem;
-    min-width: 520px;
-  }
-
-  .regs-table thead tr {
-    background: rgba(102, 252, 241, 0.06);
-    border-bottom: 1px solid var(--gold-border);
-  }
-
-  .regs-table th {
-    padding: 0.8rem 1rem;
-    text-align: left;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    white-space: nowrap;
-  }
-
+  /* Table styling overrides */
+  .regs-table-wrapper { overflow-x: auto; border-radius: 8px; border: 1px solid var(--line); background: rgba(0,0,0,0.15); }
+  .regs-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px; }
+  .regs-table thead tr { background: rgba(102, 252, 241, 0.06); border-bottom: 1px solid var(--gold-border); }
+  .regs-table th { padding: 0.8rem 1rem; text-align: left; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
   .regs-table tbody tr { border-bottom: 1px solid var(--line); transition: background 0.15s ease; }
-  .regs-table tbody tr:last-child { border-bottom: none; }
   .regs-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+  .regs-table td { padding: 0.9rem 0.8rem; color: var(--text); vertical-align: middle; }
+  
+  .reg-id-cell { font-size: 0.72rem; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; white-space: nowrap; }
+  .chest-cell { font-weight: 700; color: #fff; }
+  .section-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 3px; background: rgba(102, 252, 241, 0.08); border: 1px solid var(--gold-border); color: var(--gold); white-space: nowrap; }
 
-  .regs-table td { padding: 0.85rem 1rem; color: var(--text); vertical-align: middle; }
-  .regs-table td.reg-id-cell { font-size: 0.72rem; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; white-space: nowrap; }
-  .regs-table td.chest-cell { font-weight: 700; color: #fff; }
-
-  .section-badge {
-    display: inline-block;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    border-radius: 3px;
-    background: rgba(102, 252, 241, 0.08);
-    border: 1px solid var(--gold-border);
-    color: var(--gold);
-    white-space: nowrap;
-  }
-
-  .loading-regs, .no-regs-msg {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-
-  .spinner-sm {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--line);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-right: 0.5rem;
-    vertical-align: middle;
-  }
-
+  .loading-regs, .no-regs-msg { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 0.85rem; }
   .no-regs-msg { border: 1px dashed var(--line); border-radius: 8px; }
   .no-regs-msg .no-regs-icon { font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.4; }
 
-  .summary-box {
-    background: rgba(0,0,0,0.2);
-    border-radius: 8px;
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    border: 1px solid var(--line);
-  }
+  .spinner-sm { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--line); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin-right: 0.5rem; vertical-align: middle; }
 
+  .summary-box { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 1.2rem 1.5rem; margin-bottom: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border: 1px solid var(--line); }
   @media (max-width: 540px) { .summary-box { grid-template-columns: 1fr; } }
-
-  .summary-item .summary-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.4rem;
-  }
-
+  .summary-item .summary-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
   .summary-item .summary-value { font-weight: 700; font-size: 0.95rem; color: var(--gold); }
+  
   .field-group { margin-bottom: 1.5rem; position: relative; }
-
-  .field-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text);
-    margin-bottom: 0.6rem;
-  }
-
+  .field-label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 0.6rem; }
   .field-label .req { color: var(--error); }
   .field-label .opt { font-weight: 400; font-style: italic; text-transform: none; letter-spacing: 0; color: var(--text-muted); }
-
-  .field-input {
-    width: 100%;
-    background: var(--bg-input);
-    border: 2px solid var(--line);
-    border-radius: 6px;
-    color: #fff;
-    padding: 0.9rem 1.2rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-  
-  select.field-input {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1.2rem top 50%;
-    background-size: 0.65rem auto;
-    padding-right: 2.5rem;
-  }
-
+  .field-input { width: 100%; background: var(--bg-input); border: 2px solid var(--line); border-radius: 6px; color: #fff; padding: 0.9rem 1.2rem; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 500; transition: all 0.2s ease; }
   .field-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); }
   .field-input::placeholder { color: #4A505C; }
-  .help-text { font-size: 0.7rem; font-weight: 500; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; }
   .error-text { color: var(--error); font-size: 0.85rem; font-weight: 500; margin-top: 1rem; min-height: 1.2rem; }
 
-  .nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .btn {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    padding: 0.9rem 2rem;
-    border-radius: 6px;
-    border: 2px solid var(--gold-border);
-    background: transparent;
-    color: var(--gold);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
+  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .btn { font-family: 'Montserrat', sans-serif; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.8rem; padding: 0.9rem 2rem; border-radius: 6px; border: 2px solid var(--gold-border); background: transparent; color: var(--gold); cursor: pointer; transition: all 0.2s ease; }
   .btn:hover:not(:disabled) { border-color: var(--gold); background: var(--gold-soft); }
   .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
   .btn-primary { background: var(--gold); color: var(--bg); border-color: var(--gold); }
-  .btn-primary:hover:not(:disabled) { background: #45E6DB; border-color: #45E6DB; color: var(--bg); box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); }
+  .btn-primary:hover:not(:disabled) { background: #45E6DB; border-color: #45E6DB; box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3); }
 
-  .loading-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--bg-card);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    border-radius: 12px;
-  }
+  .loading-overlay { position: absolute; inset: 0; background: var(--bg-card); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; border-radius: 12px; }
   .loading-overlay.active { opacity: 1; pointer-events: all; }
-
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid var(--line);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1.5rem;
-  }
-
+  .loading-spinner { width: 50px; height: 50px; border: 3px solid var(--line); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1.5rem; }
   @keyframes spin { 100% { transform: rotate(360deg); } }
-
-  .loading-text { font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; margin-bottom: 1rem; font-size: 0.9rem; }
   .loading-bar-wrapper { width: 200px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
   .loading-bar-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 3px; transition: width 0.2s ease; }
 
   .success-screen { text-align: center; padding: 1rem 0; }
-  .success-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(69, 182, 156, 0.1);
-    color: var(--success);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    margin: 0 auto 1.5rem;
-  }
+  .success-icon { width: 60px; height: 60px; background: rgba(69, 182, 156, 0.1); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.5rem; }
   .success-heading { font-size: 1.8rem; font-weight: 700; letter-spacing: 0.05em; color: #fff; text-transform: uppercase; margin-bottom: 0.5rem; }
   .success-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-width: 460px; margin: 0 auto 2rem; }
-
-  .reg-id-box {
-    background: rgba(102, 252, 241, 0.05);
-    border: 2px dashed var(--gold);
-    border-radius: 8px;
-    padding: 1.5rem 1rem;
-    margin-bottom: 2rem;
-  }
-  .reg-id-label { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
-  .reg-id-value { font-weight: 700; font-size: clamp(1.4rem, 4vw, 1.8rem); letter-spacing: 0.1em; color: var(--gold); word-break: break-all; }
+  .reg-id-box { background: rgba(102, 252, 241, 0.05); border: 2px dashed var(--gold); border-radius: 8px; padding: 1.5rem 1rem; margin-bottom: 2rem; }
+  .reg-id-value { font-weight: 700; font-size: clamp(1.4rem, 4vw, 1.8rem); color: var(--gold); }
 
   .site-footer { text-align: center; padding: 2rem 1rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #4A505C; }
-
 </style>
 </head>
 <body>
@@ -689,218 +293,149 @@
   <header class="site-header">
     <h1 class="site-title">KAMA Arts Fest</h1>
     <div class="title-divider"></div>
-    <p class="site-subtitle">Official Registration Portal</p>
+    <p class="site-subtitle">House Workstation Portal</p>
   </header>
 
   <div class="container">
 
-    <div class="progress-bar" id="progressBar">
-      <div class="step-item" data-step="1">
-        <div class="step-circle">1</div>
-        <div class="step-label">House</div>
-      </div>
-      <div class="step-item" data-step="2">
-        <div class="step-circle">2</div>
-        <div class="step-label">Section</div>
-      </div>
-      <div class="step-item" data-step="3">
-        <div class="step-circle">3</div>
-        <div class="step-label">Program</div>
-      </div>
-      <div class="step-item" data-step="4">
-        <div class="step-circle">4</div>
-        <div class="step-label">Details</div>
-      </div>
-    </div>
-
     <div class="form-card">
       
-      <!-- LOADING OVERLAY -->
+      <!-- SUBMISSION LOADING OVERLAY -->
       <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingTextStatus">Submitting Registration...</div>
-        <div class="loading-bar-wrapper">
-          <div class="loading-bar-fill" id="loadingBarFill"></div>
-        </div>
+        <div class="loading-bar-wrapper"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
       </div>
 
-      <!-- CLOSED REGISTRATION OVERLAY -->
+      <!-- MASTER SYSTEM SWITCH CLOSED OVERLAY -->
       <div class="closed-overlay" id="closedOverlay">
         <div class="closed-icon">🛑</div>
-        <div class="closed-heading">Registration Closed</div>
-        <div class="closed-text">The admin has temporarily paused or closed all registrations. Please contact your house captain or admin for more details.</div>
+        <div class="closed-heading">Registrations Suspended</div>
+        <div class="closed-text">The central admin panel has paused all submission flows. You can still monitor data via the Dashboard.</div>
       </div>
 
-      <!-- HOUSE BADGE -->
+      <!-- ACTIVE SESSION BADGE -->
       <div id="houseBadge" class="house-badge" style="display:none;">
         <div>
-          <span style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Active House</span><br>
+          <span style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Active Workspace</span><br>
           <strong id="houseNameDisplay" style="color:var(--gold); font-size:1rem; letter-spacing: 0.05em;">Hormuz</strong>
         </div>
-        <button onclick="logoutHouse()" class="logout-house-btn">Change House / Logout</button>
+        <button onclick="logoutHouse()" class="logout-house-btn">Exit Workspace</button>
       </div>
 
-      <!-- STEP 1: TEAM -->
+      <!-- STEP 1: AUTHENTICATION / HOUSE ACCESS -->
       <div class="step-content active" id="step1">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-          <div>
-            <div class="step-eyebrow">Step 1 of 4</div>
-            <div class="step-heading">Select Your House</div>
-          </div>
-          <button onclick="enableDemoMode()" class="demo-sm-btn">Test / Demo Mode</button>
-        </div>
-        <p class="step-desc">Choose the House you belong to for this entry.</p>
+        <div class="step-eyebrow">Authentication</div>
+        <div class="step-heading">Open Workspace</div>
+        <p class="step-desc">Select your designated House and input the corresponding security passcode.</p>
 
-        <div class="options-grid">
-          <div class="option-card" onclick="selectTeam(this, 'Hormuz')">
-            <div class="option-title">Hormuz</div>
-          </div>
-          <div class="option-card" onclick="selectTeam(this, 'Bosphorus')">
-            <div class="option-title">Bosphorus</div>
-          </div>
-          <div class="option-card" onclick="selectTeam(this, 'Malacca')">
-            <div class="option-title">Malacca</div>
-          </div>
-          <div class="option-card" onclick="selectTeam(this, 'Gibraltar')">
-            <div class="option-title">Gibraltar</div>
-          </div>
+        <div class="options-grid" style="margin-bottom: 1.5rem;">
+          <div class="option-card" onclick="selectTeam(this, 'Hormuz')"><div class="option-title">Hormuz</div></div>
+          <div class="option-card" onclick="selectTeam(this, 'Bosphorus')"><div class="option-title">Bosphorus</div></div>
+          <div class="option-card" onclick="selectTeam(this, 'Malacca')"><div class="option-title">Malacca</div></div>
+          <div class="option-card" onclick="selectTeam(this, 'Gibraltar')"><div class="option-title">Gibraltar</div></div>
         </div>
 
-        <!-- Security Passcode -->
         <div class="passcode-wrapper" id="passcodeWrapper">
           <label class="field-label" for="housePasscode">House Passcode <span class="req">*</span></label>
           <input type="password" id="housePasscode" class="field-input" placeholder="Enter 6-digit passcode">
-          <p class="help-text">Please enter your secure House Passcode to verify identity.</p>
-        </div>
-
-        <!-- View My Registrations Button -->
-        <div class="view-regs-wrapper" id="viewRegsWrapper">
-          <button class="btn-view-regs" onclick="openViewRegistrations()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View My House Registrations
-          </button>
+          <button class="btn btn-primary" style="width: 100%; margin-top: 1.25rem;" onclick="loginHouseWorkspace()">Enter Workstation</button>
         </div>
       </div>
 
-      <!-- STEP 2: SECTION -->
-      <div class="step-content" id="step2">
-        <div class="step-eyebrow">Step 2 of 4</div>
-        <div class="step-heading">Select Section</div>
-        <p class="step-desc">Choose the category section applicable to the participant.</p>
+      <!-- ===== ADVANCED HOUSE DASHBOARD VIEW ===== -->
+      <div class="step-content" id="viewDashboardTab">
+        <div class="step-eyebrow">Overview Engine</div>
+        <div class="step-heading" id="dashboardHouseTitle">House Station</div>
+        <p class="step-desc" style="margin-bottom: 1.5rem;">Real-time diagnostics and item tracking for your entries.</p>
 
-        <div class="options-grid">
-          <div class="option-card" onclick="selectSection(this, 'bidayah')">
-            <div class="option-title">bidayah</div>
+        <!-- Dynamic Allocation Meter -->
+        <div class="house-progress-container">
+          <div class="hp-header">
+            <div class="hp-title">Quota Progress</div>
+            <div class="hp-percent" id="hpPercent">0%</div>
           </div>
-          <div class="option-card" onclick="selectSection(this, 'Ula')">
-            <div class="option-title">Ula</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'thaniya')">
-            <div class="option-title">thaniya</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'thanawiyya')">
-            <div class="option-title">thanawiyya</div>
-          </div>
-          <div class="option-card" onclick="selectSection(this, 'aliyah')">
-            <div class="option-title">aliyah</div>
+          <div class="hp-bar-bg"><div class="hp-bar-fill" id="hpBarFillMeter"></div></div>
+          <div class="hp-details">
+            <span>Allocated Quota: <strong id="hpTotal" style="color:#fff;">0</strong></span>
+            <span>Submitted: <strong id="hpReg" style="color:#fff;">0</strong></span>
+            <span>Available Slots: <strong id="hpRem" style="color:var(--gold);">0</strong></span>
           </div>
         </div>
-      </div>
 
-      <!-- STEP 3: PROGRAM -->
-      <div class="step-content" id="step3">
-        <div class="step-eyebrow">Step 3 of 4</div>
-        <div class="step-heading">Select Program</div>
-        <p class="step-desc">Available programs for the section you selected.</p>
-        <div class="options-grid" id="programOptions"></div>
-      </div>
+        <!-- Tab Switch for Submitted vs Not Entered -->
+        <div class="dash-tabs">
+          <button class="dash-tab-btn active" id="btnDashSubmitted" onclick="toggleDashView('submitted')">Submitted Entries</button>
+          <button class="dash-tab-btn" id="btnDashMissing" onclick="toggleDashView('missing')">Not Entered (Pending)</button>
+        </div>
 
-      <!-- STEP 4: DETAILS -->
-      <div class="step-content" id="step4">
-        <div class="step-eyebrow">Step 4 of 4</div>
-        <div class="step-heading">Participant Details</div>
-        <p class="step-desc">Review your selection and complete the participant information.</p>
-
-        <div class="summary-box" id="summaryBox"></div>
-
-        <div class="field-group">
-          <label class="field-label" for="candidateSelect">Select Candidate <span class="req">*</span></label>
-          <select id="candidateSelect" class="field-input">
-            <option value="">Loading candidates...</option>
+        <div class="filter-bar">
+          <select class="filter-select" id="filterSection" onchange="applyDashboardFilters()"><option value="">All Categories</option></select>
+          <select class="filter-select" id="filterProgram" onchange="applyDashboardFilters()"><option value="">All Programs</option></select>
+          <select class="filter-select" id="filterStatus" onchange="applyDashboardFilters()">
+            <option value="">All Statuses</option>
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+            <option value="Rejected">Rejected</option>
           </select>
-          <p class="help-text">Dropdown populates automatically based on your House, Category, and Program choice.</p>
+        </div>
+
+        <div id="regsTableContainer" style="margin-top: 1.25rem;">
+          <div class="loading-regs"><span class="spinner-sm"></span> Syncing with Cloud Registry...</div>
+        </div>
+      </div>
+
+      <!-- ===== DIRECT ENTRY FORM (Replaces Step 2,3,4) ===== -->
+      <div class="step-content" id="registrationForm">
+        <div class="step-eyebrow">Target Registration</div>
+        <div class="step-heading">Provide Details</div>
+        <p class="step-desc">Enter the topic and reference link for the selected candidate.</p>
+
+        <div class="summary-box">
+          <div class="summary-item"><div class="summary-label">Category</div><div class="summary-value" id="dispCategory">—</div></div>
+          <div class="summary-item"><div class="summary-label">Program</div><div class="summary-value" id="dispProgram">—</div></div>
+          <div class="summary-item"><div class="summary-label">Chest No</div><div class="summary-value" id="dispChest">—</div></div>
+          <div class="summary-item"><div class="summary-label">Name</div><div class="summary-value" id="dispName">—</div></div>
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="topicTitle">Topic / Title <span class="req">*</span></label>
-          <input type="text" id="topicTitle" class="field-input" placeholder="Title of the entry / topic chosen">
+          <label class="field-label" for="topicTitle">Topic / Structural Title <span class="req">*</span></label>
+          <input type="text" id="topicTitle" class="field-input" placeholder="Enter the topic or title of the entry">
         </div>
-
         <div class="field-group">
-          <label class="field-label" for="referenceLink">Reference Link <span class="opt">(optional)</span></label>
+          <label class="field-label" for="referenceLink">External Cloud Reference <span class="opt">(optional)</span></label>
           <input type="url" id="referenceLink" class="field-input" placeholder="https://...">
         </div>
-
         <p class="error-text" id="formError"></p>
+
+        <div class="nav-buttons">
+          <button class="btn" onclick="cancelRegistration()">Back to Dashboard</button>
+          <button class="btn btn-primary" id="submitRegBtn" onclick="submitDirectRegistration()">Submit Entry</button>
+        </div>
       </div>
 
-      <!-- SUCCESS SCREEN -->
+      <!-- SUCCESS COMPLETION SCREEN -->
       <div class="step-content" id="successScreen">
         <div class="success-screen">
           <div class="success-icon">✓</div>
-          <h2 class="success-heading" id="successTitleText">Registration Confirmed</h2>
-          <p class="success-text" id="successSubText">
-            The entry has been successfully recorded in the Master Database. Please save the Registration ID below for future reference.
-          </p>
-
-          <div class="reg-id-box">
-            <span class="reg-id-label">Registration ID</span>
-            <span class="reg-id-value" id="successRegId">—</span>
-          </div>
-
-          <button class="btn btn-primary" id="newRegBtn" onclick="resetForm(false)" style="width: 100%; margin-top: 1rem;">Register Another Entry</button>
+          <h2 class="success-heading">Pushed Successfully</h2>
+          <p class="success-text">Structural item successfully parsed and added to remote databases. Monitoring can continue inside the log view.</p>
+          <div class="reg-id-box"><span id="successRegId" class="reg-id-value">—</span></div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="returnToDashboard()">Return to Dashboard</button>
         </div>
-      </div>
-
-      <!-- ===== VIEW REGISTRATIONS SCREEN ===== -->
-      <div id="viewRegsScreen">
-        <div class="regs-header">
-          <div>
-            <div class="step-eyebrow">Read-Only View</div>
-            <div class="step-heading" id="viewRegsTitle">My Registrations</div>
-            <p class="step-desc" style="margin-bottom:0;">All entries registered under your House.</p>
-          </div>
-          <button class="btn" onclick="closeViewRegistrations()" style="flex-shrink:0;">← Back</button>
-        </div>
-        <div class="regs-stats" id="regsStats"></div>
-        <div class="filter-bar">
-          <select class="filter-select" id="filterSection" onchange="applyFilters()"><option value="">All Sections</option></select>
-          <select class="filter-select" id="filterProgram" onchange="applyFilters()"><option value="">All Programs</option></select>
-        </div>
-        <div id="regsTableContainer">
-          <div class="loading-regs"><span class="spinner-sm"></span> Loading registrations...</div>
-        </div>
-      </div>
-
-      <!-- NAV BUTTONS -->
-      <div class="nav-buttons" id="navButtons">
-        <button class="btn" id="backBtn" onclick="goBack()">Back</button>
-        <button class="btn btn-primary" id="nextBtn" onclick="goNext()" disabled>Next Step</button>
       </div>
 
     </div>
   </div>
 
-  <footer class="site-footer">
-    KAMA Arts Fest © 2026 — Secure Registration Portal
-  </footer>
+  <footer class="site-footer">KAMA Arts Fest © 2026 — Advanced Workstation Ecosystem</footer>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <script>
-    /* ============ Firebase Setup ============ */
+    /* ============ Firebase Configuration ============ */
     const firebaseConfig = {
       apiKey: "AIzaSyAMd9or0SMQHcxMxb0q7KvvXJqHR61GUy0",
       authDomain: "registration-e5924.firebaseapp.com",
@@ -913,436 +448,348 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Listen to Global Settings (Registration Master Switch)
+    /* ============ System Access Mappings ============ */
+    const PASSCODES = { "Hormuz": "794325", "Bosphorus": "542809", "Malacca": "437527", "Gibraltar": "102355" };
+
+    /* ============ State Space Management ============ */
+    const state = { team: null, section: null, program: null, chestNo: null, name: null };
+    let currentDashView = 'submitted'; // 'submitted' or 'missing'
+    
+    let cachedRegistrations = [];
+    let houseMasterParticipants = []; 
+    let masterParticipantsCount = 0;
+    
+    let isRegistrationSystemOpen = true;
+    let unsubscribeRegistrations = null;
+    let unsubscribeQuotaMaster = null;
+
+    const errorEl = document.getElementById('formError');
+
+    // Central Master Switch Listener Flow
     db.collection('settings').doc('system').onSnapshot(doc => {
-      const overlay = document.getElementById('closedOverlay');
+      const systemOverlay = document.getElementById('closedOverlay');
       if (doc.exists && doc.data().registrationOpen === false) {
-        overlay.classList.add('active');
+        isRegistrationSystemOpen = false;
+        // Block form if they are inside it
+        if(document.getElementById('registrationForm').classList.contains('active')) {
+          systemOverlay.classList.add('active');
+        }
       } else {
-        overlay.classList.remove('active');
+        isRegistrationSystemOpen = true;
+        systemOverlay.classList.remove('active');
       }
     });
 
-    /* ============ Data & Passcodes ============ */
-    const PASSCODES = {
-      "Hormuz": "794325",
-      "Bosphorus": "542809",
-      "Malacca": "437527",
-      "Gibraltar": "102355"
-    };
-
-    const PROGRAMS = {
-      "bidayah": ["GROUP SONG", "KADHAKADHANAM", "SONG ARB", "SONG MALAYALAM"],
-      "Ula": ["GROUP SONG", "SONG MLM", "SONG ENGLISH", "SONG URDU", "SONG ARB", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM", "STORY NARRATION ENGLISH"],
-      "thaniya": ["HISTORY TALK ENGLISH", "BHAKTHI GANAM", "SONG ARABIC", "SONG ENGLISH", "SONG URDU", "SPEECH & SONG MALAYALAM", "PADHYAPARAYANAM"],
-      "thanawiyya": ["PADAPPATTU", "NASHĪD ARB", "SONG URD", "SPEECH & SONG URDU", "INSPIRING TALK", "TADRIS MLM"],
-      "aliyah": ["KHUṬBAH", "MAPPILAPPATTU", "NASHĪD ARB", "SONG ENG", "SPEECH & SONG ARB", "GAZAL", "LECTURING ENG", "PADAPPATTU", "ACADEMIC TALK ENG", "RJ TALKS"]
-    };
-
-    /* ============ State ============ */
-    const state = { team: null, section: null, program: null };
-    let currentStep = 1;
-    const TOTAL_STEPS = 4;
-    let allRegistrations = [];
-
-    const nextBtn = document.getElementById('nextBtn');
-    const backBtn = document.getElementById('backBtn');
-    const navButtons = document.getElementById('navButtons');
-    const errorEl = document.getElementById('formError');
-
-    /* ============ Step Navigation ============ */
-    function showStep(step) {
-      errorEl.textContent = ''; 
-      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-      document.getElementById('viewRegsScreen').classList.remove('active');
-      document.getElementById('viewRegsScreen').style.display = 'none';
-      document.getElementById('step' + step).classList.add('active');
-
-      updateProgressBar(step);
-
-      if(step > 1) {
-        document.getElementById('houseBadge').style.display = 'flex';
-        document.getElementById('houseNameDisplay').textContent = (state.team === 'Demo') ? 'TEST / DEMO MODE' : state.team;
-      } else {
-        document.getElementById('houseBadge').style.display = 'none';
-      }
-
-      backBtn.style.visibility = (step <= 2) ? 'hidden' : 'visible';
-      navButtons.style.display = 'flex';
-      document.getElementById('progressBar').style.display = 'flex';
-
-      if (step === 1) {
-        nextBtn.textContent = 'Next Step';
-        nextBtn.disabled = !state.team;
-      } else if (step === 2) {
-        nextBtn.textContent = 'Next Step';
-        nextBtn.disabled = !state.section;
-      } else if (step === 3) {
-        nextBtn.textContent = 'Next Step';
-        renderProgramOptions();
-      } else if (step === 4) {
-        nextBtn.textContent = (state.team === 'Demo') ? 'Test Submission' : 'Submit Registration';
-        nextBtn.disabled = false;
-        renderSummary();
-        loadCandidates(); 
-      }
+    function toggleDashView(viewMode) {
+      currentDashView = viewMode;
+      document.getElementById('btnDashSubmitted').classList.toggle('active', viewMode === 'submitted');
+      document.getElementById('btnDashMissing').classList.toggle('active', viewMode === 'missing');
+      
+      document.getElementById('filterStatus').style.display = (viewMode === 'submitted') ? 'block' : 'none';
+      fetchAndRenderDashboardRecords();
     }
 
-    function updateProgressBar(step) {
-      document.querySelectorAll('.step-item').forEach(el => {
-        const num = parseInt(el.dataset.step, 10);
-        el.classList.remove('active', 'completed');
-        if (num < step) el.classList.add('completed');
-        else if (num === step) el.classList.add('active');
-      });
-    }
-
-    function enableDemoMode() {
-      state.team = 'Demo';
-      document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('housePasscode').value = '';
-      document.getElementById('passcodeWrapper').classList.remove('active');
-      document.getElementById('viewRegsWrapper').classList.remove('active');
-      currentStep = 2;
-      showStep(2);
-    }
-
-    function logoutHouse() {
-      state.team = null;
-      resetForm(true);
-    }
-
-    function goNext() {
-      if (currentStep === 1 && state.team !== 'Demo') {
-        const inputCode = document.getElementById('housePasscode').value.trim();
-        if (inputCode !== PASSCODES[state.team]) {
-          alert('Incorrect House Passcode. Please contact your captain.');
-          return;
-        }
-      }
-
-      if (currentStep === TOTAL_STEPS) { submitRegistration(); return; }
-      if (!validateStep(currentStep)) return;
-      currentStep++;
-      showStep(currentStep);
-    }
-
-    function goBack() {
-      if (currentStep <= 2) return;
-      currentStep--;
-      showStep(currentStep);
-    }
-
-    function validateStep(step) {
-      if (step === 1) return !!state.team;
-      if (step === 2) return !!state.section;
-      if (step === 3) return !!state.program;
-      return true;
-    }
-
-    /* ============ Steps 1-3 ============ */
+    /* ============ Workspace Initialization ============ */
     function selectTeam(el, team) {
       document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
       el.classList.add('selected');
       state.team = team;
       document.getElementById('passcodeWrapper').classList.add('active');
-      document.getElementById('housePasscode').value = '';
-      document.getElementById('viewRegsWrapper').classList.add('active');
-      nextBtn.disabled = false;
+      document.getElementById('housePasscode').focus();
     }
 
     document.getElementById('housePasscode').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') goNext();
+      if (e.key === 'Enter') loginHouseWorkspace();
     });
 
-    function selectSection(el, section) {
-      if (state.section !== section) { state.program = null; }
-      document.querySelectorAll('#step2 .option-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      state.section = section;
-      nextBtn.disabled = false;
+    function loginHouseWorkspace() {
+      const passcodeVal = document.getElementById('housePasscode').value.trim();
+      if(passcodeVal !== PASSCODES[state.team]) { alert('Invalid entry parameters. Access vector denied.'); return; }
+      
+      document.getElementById('step1').classList.remove('active');
+      document.getElementById('houseBadge').style.display = 'flex';
+      document.getElementById('houseNameDisplay').textContent = state.team;
+      document.getElementById('dashboardHouseTitle').textContent = state.team + ' Command Station';
+
+      initializeRealtimeStreams();
+      openDashboard();
     }
 
-    function renderProgramOptions() {
-      const container = document.getElementById('programOptions');
-      container.innerHTML = '';
-      const programs = PROGRAMS[state.section] || [];
+    function logoutHouse() {
+      if(unsubscribeRegistrations) unsubscribeRegistrations();
+      if(unsubscribeQuotaMaster) unsubscribeQuotaMaster();
+      
+      state.team = null; state.section = null; state.program = null; state.chestNo = null; state.name = null;
+      currentDashView = 'submitted';
+      
+      document.getElementById('houseBadge').style.display = 'none';
+      document.getElementById('closedOverlay').classList.remove('active');
+      document.getElementById('housePasscode').value = '';
+      document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('passcodeWrapper').classList.remove('active');
 
-      if (programs.length === 0) {
-        container.innerHTML = '<div class="empty-note">No programs available for this section.</div>';
-        nextBtn.disabled = true;
-        return;
-      }
+      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+      document.getElementById('step1').classList.add('active');
+    }
 
-      programs.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'option-card';
-        if (state.program === p) card.classList.add('selected');
-        card.innerHTML = `<div class="option-title">${escapeHtml(p)}</div>`;
-        card.addEventListener('click', () => selectProgram(card, p));
-        container.appendChild(card);
+    function openDashboard() {
+      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+      document.getElementById('viewDashboardTab').classList.add('active');
+      fetchAndRenderDashboardRecords();
+    }
+
+    /* ============ Real-time Pipeline Infrastructure ============ */
+    function initializeRealtimeStreams() {
+      unsubscribeQuotaMaster = db.collection('participants').where('team', '==', state.team).onSnapshot(snap => {
+        houseMasterParticipants = snap.docs.map(d => d.data());
+        masterParticipantsCount = houseMasterParticipants.length;
+        recalculateAllocationMeters();
+        if(currentDashView === 'missing') fetchAndRenderDashboardRecords();
       });
 
-      nextBtn.disabled = !state.program;
+      unsubscribeRegistrations = db.collection('registrations').where('team', '==', state.team).onSnapshot(snap => {
+        cachedRegistrations = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        cachedRegistrations.sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+        recalculateAllocationMeters();
+        fetchAndRenderDashboardRecords();
+      });
     }
 
-    function selectProgram(el, program) {
-      document.querySelectorAll('#programOptions .option-card').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      state.program = program;
-      nextBtn.disabled = false;
+    function recalculateAllocationMeters() {
+      const activeSize = cachedRegistrations.length;
+      const metricsRem = Math.max(0, masterParticipantsCount - activeSize);
+      const allocationRatio = masterParticipantsCount > 0 ? Math.round((activeSize / masterParticipantsCount) * 100) : 0;
+
+      document.getElementById('hpTotal').textContent = masterParticipantsCount;
+      document.getElementById('hpReg').textContent = activeSize;
+      document.getElementById('hpRem').textContent = metricsRem;
+      document.getElementById('hpPercent').textContent = allocationRatio + '%';
+      document.getElementById('hpBarFillMeter').style.width = allocationRatio + '%';
     }
 
-    /* ============ Step 4: Summary & Candidates ============ */
-    function renderSummary() {
-      const box = document.getElementById('summaryBox');
-      box.innerHTML = `
-        <div class="summary-item"><div class="summary-label">House</div><div class="summary-value">${escapeHtml(state.team || '—')}</div></div>
-        <div class="summary-item"><div class="summary-label">Section</div><div class="summary-value">${escapeHtml(state.section || '—')}</div></div>
-        <div class="summary-item"><div class="summary-label">Program</div><div class="summary-value">${escapeHtml(state.program || '—')}</div></div>
-      `;
-    }
-
-    async function loadCandidates() {
-      const selectEl = document.getElementById('candidateSelect');
-      
-      if (state.team === 'Demo') {
-        selectEl.innerHTML = '<option value="" selected>-- Select Demo Candidate --</option>' +
-                             '<option value=\'{"chestNo":"000", "name":"John Doe (Demo)"}\'>Chest No: 000 — John Doe (Demo)</option>' +
-                             '<option value=\'{"chestNo":"999", "name":"Jane Smith (Demo)"}\'>Chest No: 999 — Jane Smith (Demo)</option>';
-        selectEl.disabled = false;
-        return;
-      }
-
-      selectEl.innerHTML = '<option value="">Loading candidates from database...</option>';
-      selectEl.disabled = true;
-
-      try {
-        const snapshot = await db.collection('participants').where('category', '==', state.section).get();
-        const docs = snapshot.docs.map(d => d.data()).filter(d => d.program === state.program && d.team === state.team);
-
-        if(docs.length === 0) {
-          selectEl.innerHTML = '<option value="" disabled selected>No Candidates Available for your House in this Program</option>';
-        } else {
-          selectEl.innerHTML = '<option value="" selected>-- Select Candidate --</option>';
-          docs.forEach(data => {
-            if(data.chestNo && data.name) {
-              const opt = document.createElement('option');
-              opt.value = JSON.stringify({ chestNo: data.chestNo, name: data.name });
-              opt.textContent = `Chest No: ${data.chestNo} — ${data.name}`;
-              selectEl.appendChild(opt);
-            }
-          });
-        }
-        selectEl.disabled = false;
-      } catch (err) {
-        selectEl.innerHTML = '<option value="">Error loading candidates. Contact Admin.</option>';
+    /* ============ Log & Status Engine UI ============ */
+    function fetchAndRenderDashboardRecords() {
+      if (currentDashView === 'submitted') {
+        populateSubmittedStructure(cachedRegistrations);
+      } else {
+        populateMissingStructure();
       }
     }
 
-    /* ============ VIEW REGISTRATIONS ============ */
-    function openViewRegistrations() {
-      if (state.team !== 'Demo') {
-        const inputCode = document.getElementById('housePasscode').value.trim();
-        if (!inputCode) { alert('Please enter your House Passcode first to view registrations.'); document.getElementById('housePasscode').focus(); return; }
-        if (inputCode !== PASSCODES[state.team]) { alert('Incorrect House Passcode. Please contact your captain.'); return; }
-      }
-
-      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-      navButtons.style.display = 'none';
-      document.getElementById('progressBar').style.display = 'none';
-      document.getElementById('houseBadge').style.display = 'none';
-
-      const screen = document.getElementById('viewRegsScreen');
-      screen.style.display = 'block';
-      requestAnimationFrame(() => screen.classList.add('active'));
-
-      document.getElementById('viewRegsTitle').textContent = (state.team === 'Demo') ? 'Demo House Registrations' : state.team + ' — Registrations';
-      fetchAndRenderRegistrations();
+    function applyDashboardFilters() {
+      fetchAndRenderDashboardRecords(); 
     }
 
-    function closeViewRegistrations() {
-      const screen = document.getElementById('viewRegsScreen');
-      screen.classList.remove('active');
-      screen.style.display = 'none';
-      navButtons.style.display = 'flex';
-      document.getElementById('progressBar').style.display = 'flex';
-      showStep(1);
-    }
-
-    async function fetchAndRenderRegistrations() {
-      const container = document.getElementById('regsTableContainer');
-      container.innerHTML = '<div class="loading-regs"><span class="spinner-sm"></span> Loading registrations...</div>';
-      document.getElementById('regsStats').innerHTML = '';
-
-      if (state.team === 'Demo') {
-        allRegistrations = [
-          { registrationId: 'DEMO-111111', section: 'bidayah', program: 'GROUP SONG', chestNumber: '000', participantName: 'John Doe (Demo)', topicTitle: 'Sample Song Title', timestamp: null },
-          { registrationId: 'DEMO-222222', section: 'Ula', program: 'SONG MLM', chestNumber: '999', participantName: 'Jane Smith (Demo)', topicTitle: 'Another Demo Topic', timestamp: null },
-        ];
-        renderRegsTable(allRegistrations);
-        return;
-      }
-
-      try {
-        const snapshot = await db.collection('registrations').where('team', '==', state.team).orderBy('timestamp', 'desc').get();
-        allRegistrations = snapshot.docs.map(d => d.data());
-        renderRegsTable(allRegistrations);
-      } catch (err) {
-        try {
-          const snapshot2 = await db.collection('registrations').where('team', '==', state.team).get();
-          allRegistrations = snapshot2.docs.map(d => d.data());
-          renderRegsTable(allRegistrations);
-        } catch(err2) {
-          container.innerHTML = `<div class="no-regs-msg"><div class="no-regs-icon">⚠️</div>Error loading registrations.<br><small style="color:var(--error)">${escapeHtml(err2.message)}</small></div>`;
-        }
-      }
-    }
-
-    function renderRegsTable(data) {
-      const container = document.getElementById('regsTableContainer');
-      const statsEl = document.getElementById('regsStats');
-
-      statsEl.innerHTML = `
-        <div class="stat-pill">Total Entries <span>${data.length}</span></div>
-        <div class="stat-pill">Sections <span>${[...new Set(data.map(r => r.section))].length}</span></div>
-        <div class="stat-pill">Programs <span>${[...new Set(data.map(r => r.program))].length}</span></div>
-      `;
-
-      const secFilter = document.getElementById('filterSection');
+    function populateSubmittedStructure(dataset) {
+      const catFilter = document.getElementById('filterSection');
       const progFilter = document.getElementById('filterProgram');
-      const sections = [...new Set(allRegistrations.map(r => r.section))].filter(Boolean);
-      const programs = [...new Set(allRegistrations.map(r => r.program))].filter(Boolean);
 
-      secFilter.innerHTML = '<option value="">All Sections</option>' + sections.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
-      progFilter.innerHTML = '<option value="">All Programs</option>' + programs.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
+      const distinctCategories = [...new Set(dataset.map(r => r.section))].filter(Boolean);
+      const distinctPrograms = [...new Set(dataset.map(r => r.program))].filter(Boolean);
 
-      buildTable(data, container);
-    }
+      const cachedCat = catFilter.value;
+      const cachedProg = progFilter.value;
 
-    function buildTable(data, container) {
-      if (data.length === 0) {
-        container.innerHTML = `<div class="no-regs-msg"><div class="no-regs-icon">📋</div>No registrations found for the selected filters.</div>`;
+      catFilter.innerHTML = '<option value="">All Categories</option>' + distinctCategories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      progFilter.innerHTML = '<option value="">All Programs</option>' + distinctPrograms.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
+      
+      catFilter.value = distinctCategories.includes(cachedCat) ? cachedCat : '';
+      progFilter.value = distinctPrograms.includes(cachedProg) ? cachedProg : '';
+
+      const activeCat = catFilter.value;
+      const activeProg = progFilter.value;
+      const activeStat = document.getElementById('filterStatus').value;
+
+      let filteredDataset = dataset;
+      if (activeCat) filteredDataset = filteredDataset.filter(r => r.section === activeCat);
+      if (activeProg) filteredDataset = filteredDataset.filter(r => r.program === activeProg);
+      if (activeStat) filteredDataset = filteredDataset.filter(r => (r.status || 'Pending') === activeStat);
+
+      const targetElement = document.getElementById('regsTableContainer');
+      if (filteredDataset.length === 0) {
+        targetElement.innerHTML = `<div class="no-regs-msg"><div class="no-regs-icon">📋</div>No verified items match the current criteria.</div>`;
         return;
       }
-      const rows = data.map((r, i) => {
-        const ts = r.timestamp ? new Date(r.timestamp.seconds * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
-        return `<tr><td class="reg-id-cell">${escapeHtml(r.registrationId || '—')}</td><td><span class="section-badge">${escapeHtml(r.section || '—')}</span></td><td>${escapeHtml(r.program || '—')}</td><td class="chest-cell">${escapeHtml(r.chestNumber || '—')}</td><td>${escapeHtml(r.participantName || '—')}</td><td>${escapeHtml(r.topicTitle || '—')}</td><td style="color:var(--text-muted); font-size:0.75rem; white-space:nowrap;">${ts}</td></tr>`;
+
+      const builtRows = filteredDataset.map(record => {
+        const parsedStatus = record.status || 'Pending'; 
+        let structuralClass = 'status-pending';
+        if(parsedStatus === 'Approved') structuralClass = 'status-approved';
+        if(parsedStatus === 'Rejected') structuralClass = 'status-rejected';
+
+        return `
+          <tr>
+            <td class="reg-id-cell">${escapeHtml(record.registrationId || '—')}</td>
+            <td><span class="section-badge">${escapeHtml(record.section || '—')}</span></td>
+            <td>${escapeHtml(record.program || '—')}</td>
+            <td class="chest-cell">${escapeHtml(record.chestNumber || '—')}</td>
+            <td>${escapeHtml(record.participantName || '—')}</td>
+            <td>${escapeHtml(record.topicTitle || '—')}</td>
+            <td><span class="status-badge ${structuralClass}">${parsedStatus}</span></td>
+          </tr>`;
       }).join('');
 
-      container.innerHTML = `<div class="regs-table-wrapper"><table class="regs-table"><thead><tr><th>Reg ID</th><th>Section</th><th>Program</th><th>Chest No</th><th>Participant</th><th>Topic / Title</th><th>Time</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      targetElement.innerHTML = `
+        <div class="regs-table-wrapper">
+          <table class="regs-table">
+            <thead>
+              <tr>
+                <th>Reg ID</th>
+                <th>Category</th>
+                <th>Program</th>
+                <th>Chest No</th>
+                <th>Participant</th>
+                <th>Topic Reference</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>${builtRows}</tbody>
+          </table>
+        </div>`;
     }
 
-    function applyFilters() {
-      const sec = document.getElementById('filterSection').value;
-      const prog = document.getElementById('filterProgram').value;
-      let filtered = allRegistrations;
-      if (sec) filtered = filtered.filter(r => r.section === sec);
-      if (prog) filtered = filtered.filter(r => r.program === prog);
-      buildTable(filtered, document.getElementById('regsTableContainer'));
-    }
-
-    /* ============ Loading UI & Submission ============ */
-    function animateLoadingBar(durationMs, isDemo = false) {
-      const overlay = document.getElementById('loadingOverlay');
-      const fill = document.getElementById('loadingBarFill');
-      const text = document.getElementById('loadingTextStatus');
+    function populateMissingStructure() {
+      const activeCat = document.getElementById('filterSection').value;
+      const activeProg = document.getElementById('filterProgram').value;
       
-      text.textContent = isDemo ? "Testing Submission Flow..." : "Submitting Registration...";
-      overlay.classList.add('active');
-      fill.style.transition = 'none';
-      fill.style.width = '0%';
-      void fill.offsetWidth; 
-      fill.style.transition = `width ${durationMs}ms ease-in-out`;
-      fill.style.width = '90%'; 
+      let missingList = houseMasterParticipants.filter(masterItem => {
+        return !cachedRegistrations.some(reg => 
+          reg.section === masterItem.category && 
+          reg.program === masterItem.program && 
+          reg.chestNumber === masterItem.chestNo
+        );
+      });
+
+      if (activeCat) missingList = missingList.filter(m => m.category === activeCat);
+      if (activeProg) missingList = missingList.filter(m => m.program === activeProg);
+
+      const targetElement = document.getElementById('regsTableContainer');
+      if (missingList.length === 0) {
+        targetElement.innerHTML = `<div class="no-regs-msg" style="border-color:var(--success);"><div class="no-regs-icon">🎉</div>All entries for this criteria have been submitted!</div>`;
+        return;
+      }
+
+      const builtRows = missingList.map(m => `
+        <tr>
+          <td><span class="section-badge">${escapeHtml(m.category || '—')}</span></td>
+          <td>${escapeHtml(m.program || '—')}</td>
+          <td class="chest-cell">${escapeHtml(m.chestNo || '—')}</td>
+          <td>${escapeHtml(m.name || '—')}</td>
+          <td><span class="status-badge status-notentered">Not Entered</span></td>
+          <td>
+            <button class="btn btn-primary" style="padding: 0.35rem 0.6rem; font-size: 0.65rem;" onclick="directRegister('${escapeJs(m.category)}', '${escapeJs(m.program)}', '${escapeJs(m.chestNo)}', '${escapeJs(m.name)}')">Enter Details</button>
+          </td>
+        </tr>
+      `).join('');
+
+      targetElement.innerHTML = `
+        <div class="regs-table-wrapper">
+          <table class="regs-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Program</th>
+                <th>Chest No</th>
+                <th>Participant Name</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>${builtRows}</tbody>
+          </table>
+        </div>`;
     }
 
-    function stopLoadingBar() {
-      const fill = document.getElementById('loadingBarFill');
-      fill.style.transition = `width 0.3s ease-out`;
-      fill.style.width = '100%';
-      setTimeout(() => { document.getElementById('loadingOverlay').classList.remove('active'); }, 400);
-    }
+    /* ============ Direct Entry Workflow ============ */
+    function directRegister(category, program, chestNo, name) {
+      if (!isRegistrationSystemOpen) {
+        document.getElementById('closedOverlay').classList.add('active');
+        return;
+      }
 
-    async function submitRegistration() {
-      const candidateSelectVal = document.getElementById('candidateSelect').value;
-      const topicTitle = document.getElementById('topicTitle').value.trim();
-      const referenceLink = document.getElementById('referenceLink').value.trim();
+      state.section = category;
+      state.program = program;
+      state.chestNo = chestNo;
+      state.name = name;
 
+      document.getElementById('dispCategory').textContent = category;
+      document.getElementById('dispProgram').textContent = program;
+      document.getElementById('dispChest').textContent = chestNo;
+      document.getElementById('dispName').textContent = name;
+      
+      document.getElementById('topicTitle').value = '';
+      document.getElementById('referenceLink').value = '';
       errorEl.textContent = '';
-      if (!candidateSelectVal || !topicTitle) { errorEl.textContent = 'Please select a candidate and provide a Topic / Title.'; return; }
-
-      const candidateData = JSON.parse(candidateSelectVal);
-      const payload = {
-        registrationId: generateRegId(), team: state.team, section: state.section, program: state.program,
-        chestNumber: candidateData.chestNo, participantName: candidateData.name, topicTitle, referenceLink
-      };
-
-      if (state.team === 'Demo') {
-        nextBtn.disabled = true; backBtn.disabled = true; animateLoadingBar(1000, true);
-        setTimeout(() => { stopLoadingBar(); setTimeout(() => { showSuccess('DEMO-123456', payload, true); }, 400); }, 1200); return;
-      }
-
-      nextBtn.disabled = true; backBtn.disabled = true; nextBtn.textContent = 'Submitting...';
-      payload.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-      animateLoadingBar(1500, false); 
-
-      try {
-        await db.collection('registrations').add(payload);
-        stopLoadingBar();
-        setTimeout(() => { showSuccess(payload.registrationId, payload, false); }, 400);
-      } catch (err) {
-        stopLoadingBar();
-        setTimeout(() => { errorEl.textContent = 'Submission failed: ' + err.message; nextBtn.disabled = false; backBtn.disabled = false; nextBtn.textContent = 'Submit Registration'; }, 400);
-      }
-    }
-
-    function generateRegId() { return 'KAMA-' + Math.floor(100000 + Math.random() * 900000); }
-
-    function showSuccess(regId, payload, isDemo = false) {
-      document.getElementById('successRegId').textContent = regId;
-      if(isDemo) {
-        document.getElementById('successTitleText').textContent = "Demo Test Complete!";
-        document.getElementById('successSubText').innerHTML = "This was a test. <strong style='color:var(--error);'>No data was saved to the database.</strong>";
-        document.getElementById('successTitleText').style.color = "var(--success)";
-      } else {
-        document.getElementById('successTitleText').textContent = "Registration Confirmed";
-        document.getElementById('successSubText').textContent = "The entry has been successfully recorded in the Master Database. Please save the Registration ID below for future reference.";
-        document.getElementById('successTitleText').style.color = "#fff";
-      }
 
       document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-      document.getElementById('successScreen').classList.add('active');
-      navButtons.style.display = 'none';
-      document.getElementById('progressBar').style.display = 'none';
+      document.getElementById('registrationForm').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ============ Reset ============ */
-    function resetForm(fullReset = false) {
-      state.section = null; state.program = null; currentStep = fullReset ? 1 : 2;
+    function cancelRegistration() {
+      openDashboard();
+    }
 
-      if(fullReset) {
-        state.team = null;
-        document.querySelectorAll('#step1 .option-card').forEach(c => c.classList.remove('selected'));
-        document.getElementById('passcodeWrapper').classList.remove('active');
-        document.getElementById('viewRegsWrapper').classList.remove('active');
-        document.getElementById('housePasscode').value = '';
+    function returnToDashboard() {
+      openDashboard();
+    }
+
+    /* ============ Cloud Mutation Subroutines ============ */
+    async function submitDirectRegistration() {
+      const titleReference = document.getElementById('topicTitle').value.trim();
+      const refLink = document.getElementById('referenceLink').value.trim();
+      const submitBtn = document.getElementById('submitRegBtn');
+
+      errorEl.textContent = '';
+      if (!titleReference) { errorEl.textContent = 'Topic / Structural Title is strictly required.'; return; }
+
+      const generatedId = 'KAMA-' + Math.floor(100000 + Math.random() * 900000);
+
+      const schemaPayload = {
+        registrationId: generatedId, 
+        team: state.team, 
+        section: state.section, 
+        program: state.program,
+        chestNumber: state.chestNo, 
+        participantName: state.name, 
+        topicTitle: titleReference,
+        referenceLink: refLink, 
+        status: 'Pending', 
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      submitBtn.disabled = true;
+      const overlay = document.getElementById('loadingOverlay');
+      const fill = document.getElementById('loadingBarFill');
+      overlay.classList.add('active'); fill.style.transition = 'none'; fill.style.width = '0%';
+      void fill.offsetWidth; fill.style.transition = 'width 1500ms ease-in-out'; fill.style.width = '90%';
+
+      try {
+        await db.collection('registrations').add(schemaPayload);
+        fill.style.transition = 'width 0.2s ease-out'; fill.style.width = '100%';
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          document.getElementById('successRegId').textContent = generatedId;
+          document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+          document.getElementById('successScreen').classList.add('active');
+          submitBtn.disabled = false;
+        }, 300);
+      } catch (err) {
+        overlay.classList.remove('active');
+        errorEl.textContent = 'Transmission block crash: ' + err.message;
+        submitBtn.disabled = false;
       }
-
-      document.querySelectorAll('#step2 .option-card, #step3 .option-card').forEach(c => c.classList.remove('selected'));
-      document.getElementById('candidateSelect').innerHTML = '<option value="">Loading candidates...</option>';
-      document.getElementById('topicTitle').value = ''; document.getElementById('referenceLink').value = ''; errorEl.textContent = ''; document.getElementById('programOptions').innerHTML = '';
-
-      navButtons.style.display = 'flex'; document.getElementById('progressBar').style.display = 'flex';
-      backBtn.disabled = false; nextBtn.disabled = false; showStep(currentStep);
     }
 
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
-
-    showStep(1);
+    
+    function escapeJs(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+    }
   </script>
 </body>
 </html>
