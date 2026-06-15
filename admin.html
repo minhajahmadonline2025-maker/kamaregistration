@@ -23,6 +23,7 @@
     --text-muted: #8A909D;
     --error: #FF6B6B;
     --success: #45B69C;
+    --warning: #FFA500;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,6 +35,21 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
   }
+
+  /* Status Badges */
+  .status-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .status-approved { background: rgba(69, 182, 156, 0.15); border: 1px solid var(--success); color: var(--success); }
+  .status-rejected { background: rgba(255, 107, 107, 0.15); border: 1px solid var(--error); color: var(--error); }
+  .status-pending { background: rgba(255, 165, 0, 0.15); border: 1px solid var(--warning); color: var(--warning); }
 
   /* ============ Login Overlay ============ */
   .login-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1.5rem; }
@@ -100,15 +116,6 @@
   .breakdown-row .b-label { color: var(--text-muted); font-weight: 500; }
   .breakdown-row .b-value { color: #fff; font-weight: 700; }
 
-  /* ===== House Specific Progress Bar ===== */
-  .house-progress-container { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 8px; padding: 2rem; margin-bottom: 2rem; }
-  .hp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-  .hp-title { font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
-  .hp-percent { font-size: 1.5rem; font-weight: 700; color: var(--success); }
-  .hp-bar-bg { width: 100%; height: 14px; background: var(--bg-input); border-radius: 7px; overflow: hidden; margin-bottom: 1rem; }
-  .hp-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 1s ease-in-out; }
-  .hp-details { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
-
   /* ============ Filters Bar ============ */
   .filters-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: stretch; }
   .filters-bar input, .filters-bar select { background: var(--bg-input); border: 2px solid var(--line); border-radius: 6px; color: #fff; padding: 0.85rem 1.2rem; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 500; }
@@ -124,7 +131,7 @@
 
   /* ============ Table ============ */
   .table-wrapper { border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; background: var(--bg-panel); }
-  table { width: 100%; border-collapse: collapse; min-width: 980px; }
+  table { width: 100%; border-collapse: collapse; min-width: 1050px; }
   thead th { text-align: left; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); padding: 1.2rem 1rem; border-bottom: 1px solid var(--gold-border); white-space: nowrap; background: rgba(102, 252, 241, 0.02); }
   tbody td { padding: 1rem; border-bottom: 1px solid var(--line); font-size: 0.85rem; font-weight: 500; color: #fff; vertical-align: middle; }
   tbody tr:last-child td { border-bottom: none; }
@@ -162,7 +169,7 @@
       <div class="login-divider"></div>
       <div class="login-subtitle">Secure Login</div>
       <div class="login-field">
-        <label class="login-label" for="loginUser">Username (House / Admin)</label>
+        <label class="login-label" for="loginUser">Username (Admin)</label>
         <input type="text" id="loginUser" class="login-input" autocomplete="username">
       </div>
       <div class="login-field">
@@ -196,26 +203,8 @@
         <div class="page-eyebrow">Overview</div>
         <div class="page-title" id="dashboardTitle">Dashboard</div>
 
-        <!-- ONLY FOR HOUSE LOGIN -->
-        <div id="houseDashboardView" style="display:none;">
-          <div class="house-progress-container">
-            <div class="hp-header">
-              <div class="hp-title">Registration Progress</div>
-              <div class="hp-percent" id="hpPercent">0%</div>
-            </div>
-            <div class="hp-bar-bg">
-              <div class="hp-bar-fill" id="hpBarFill"></div>
-            </div>
-            <div class="hp-details">
-              <span>Total Slots: <strong id="hpTotal" style="color:#fff;">0</strong></span>
-              <span>Registered: <strong id="hpReg" style="color:#fff;">0</strong></span>
-              <span>Remaining: <strong id="hpRem" style="color:var(--error);">0</strong></span>
-            </div>
-          </div>
-        </div>
-
         <!-- ONLY FOR ADMIN LOGIN -->
-        <div id="adminDashboardView" style="display:none;">
+        <div id="adminDashboardView">
           
           <!-- GLOBAL REGISTRATION STOP BUTTON -->
           <div style="margin-bottom: 2.5rem; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
@@ -272,10 +261,10 @@
         <div class="table-wrapper">
           <table>
             <thead>
-              <tr><th>Reg. ID</th><th>Chest No.</th><th>Participant</th><th>House</th><th>Section</th><th>Program</th><th>Topic / Title</th><th>Submitted</th><th>Action</th></tr>
+              <tr><th>Reg. ID</th><th>Chest No.</th><th>Participant</th><th>House</th><th>Section</th><th>Program</th><th>Topic / Title</th><th>Status</th><th>Submitted</th><th>Action</th></tr>
             </thead>
             <tbody id="tableBody">
-              <tr class="empty-row"><td colspan="9">Loading registrations...</td></tr>
+              <tr class="empty-row"><td colspan="10">Loading registrations...</td></tr>
             </tbody>
           </table>
         </div>
@@ -319,6 +308,15 @@
       <div class="modal-title" style="text-align: center;">Edit Registration</div>
       <input type="hidden" id="editRegId">
       
+      <div class="login-field">
+        <label class="login-label">Approval Status</label>
+        <select id="editRegStatus" class="login-input">
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
       <div class="login-field">
         <label class="login-label">Chest Number</label>
         <input type="text" id="editRegChest" class="login-input">
@@ -427,11 +425,7 @@
     };
 
     const USERS = {
-      'admin': { role: 'admin', pass: 'kama2025', team: 'Admin' },
-      'hormuz': { role: 'house', pass: '794325', team: 'Hormuz' },
-      'bosphorus': { role: 'house', pass: '542809', team: 'Bosphorus' },
-      'malacca': { role: 'house', pass: '437527', team: 'Malacca' },
-      'gibraltar': { role: 'house', pass: '102355', team: 'Gibraltar' }
+      'admin': { role: 'admin', pass: 'kama2025', team: 'Admin' }
     };
 
     /* ============ State ============ */
@@ -446,7 +440,7 @@
     let unsubscribeMaster = null;
     let unsubscribeSettings = null;
     
-    let isRegOpen = true; // Global Master Switch State
+    let isRegOpen = true; 
 
     /* ============ Authentication ============ */
     const loginOverlay = document.getElementById('loginOverlay');
@@ -489,21 +483,6 @@
 
     function setupUserEnvironment() {
       document.getElementById('loginRoleDisplay').textContent = currentUser.team;
-
-      if(currentUser.role === 'house') {
-        document.getElementById('navMasterData').style.display = 'none';
-        document.getElementById('adminDashboardView').style.display = 'none';
-        document.getElementById('houseDashboardView').style.display = 'block';
-        document.getElementById('dashboardTitle').textContent = currentUser.team + ' Dashboard';
-
-        const teamFilter = document.getElementById('teamFilter');
-        teamFilter.value = currentUser.team;
-        teamFilter.disabled = true;
-      } else {
-        document.getElementById('adminDashboardView').style.display = 'block';
-        document.getElementById('houseDashboardView').style.display = 'none';
-        document.getElementById('dashboardTitle').textContent = 'Admin Dashboard';
-      }
     }
 
     /* ============ Sidebar Navigation ============ */
@@ -518,7 +497,6 @@
 
     /* ============ Init: Real-time Listeners ============ */
     function initDashboard() {
-      // Global Settings Listener for Admin Switch
       if (currentUser.role === 'admin') {
         unsubscribeSettings = db.collection('settings').doc('system').onSnapshot(doc => {
           if (doc.exists) {
@@ -541,16 +519,11 @@
       });
 
       unsubscribeRegs = db.collection('registrations').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        rawRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        if(currentUser.role === 'house') {
-          allRegistrations = rawRegistrations.filter(r => r.team === currentUser.team);
-        } else {
-          allRegistrations = [...rawRegistrations];
-        }
+        allRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         updateDashboardStats();
         renderTable();
       }, err => {
-        document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="9">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+        document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="10">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
       });
     }
 
@@ -607,17 +580,6 @@
           row.innerHTML = `<span class="b-label">${escapeHtml(section)}</span><span class="b-value">${count}</span>`;
           breakdownEl.appendChild(row);
         });
-      } else {
-        const houseTotalSlots = masterParticipants.filter(p => p.team === currentUser.team).length;
-        const houseRegs = allRegistrations.length; 
-        const houseRem = Math.max(0, houseTotalSlots - houseRegs);
-        const percent = houseTotalSlots > 0 ? Math.round((houseRegs / houseTotalSlots) * 100) : 0;
-
-        document.getElementById('hpTotal').textContent = houseTotalSlots;
-        document.getElementById('hpReg').textContent = houseRegs;
-        document.getElementById('hpRem').textContent = houseRem;
-        document.getElementById('hpPercent').textContent = percent + '%';
-        document.getElementById('hpBarFill').style.width = percent + '%';
       }
     }
 
@@ -654,7 +616,7 @@
       resultsCount.textContent = `Showing ${data.length} of ${allRegistrations.length} registrations.`;
 
       if (data.length === 0) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No registrations found.</td></tr>';
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="10">No registrations found.</td></tr>';
         return;
       }
 
@@ -662,6 +624,13 @@
       data.forEach(r => {
         const tr = document.createElement('tr');
         const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toLocaleString() : '—';
+        
+        // Status parsing
+        const st = r.status || 'Pending';
+        let badgeCls = 'status-pending';
+        if(st === 'Approved') badgeCls = 'status-approved';
+        if(st === 'Rejected') badgeCls = 'status-rejected';
+
         tr.innerHTML = `
           <td>${escapeHtml(r.registrationId || '—')}</td>
           <td>${escapeHtml(r.chestNumber || '—')}</td>
@@ -670,6 +639,7 @@
           <td>${escapeHtml(r.section || '—')}</td>
           <td>${escapeHtml(r.program || '—')}</td>
           <td>${escapeHtml(r.topicTitle || '—')}</td>
+          <td><span class="status-badge ${badgeCls}">${st}</span></td>
           <td>${escapeHtml(dateStr)}</td>
           <td>
             <div class="action-btns">
@@ -689,6 +659,7 @@
       const reg = allRegistrations.find(r => r.id === id);
       if(!reg) return;
       document.getElementById('editRegId').value = reg.id;
+      document.getElementById('editRegStatus').value = reg.status || 'Pending';
       document.getElementById('editRegChest').value = reg.chestNumber || '';
       document.getElementById('editRegName').value = reg.participantName || '';
       document.getElementById('editRegTopic').value = reg.topicTitle || '';
@@ -699,6 +670,7 @@
 
     document.getElementById('saveEditBtn').addEventListener('click', async () => {
       const id = document.getElementById('editRegId').value;
+      const status = document.getElementById('editRegStatus').value;
       const chestNumber = document.getElementById('editRegChest').value.trim();
       const participantName = document.getElementById('editRegName').value.trim();
       const topicTitle = document.getElementById('editRegTopic').value.trim();
@@ -706,7 +678,7 @@
       
       btn.disabled = true; btn.textContent = 'Saving...';
       try {
-        await db.collection('registrations').doc(id).update({ chestNumber, participantName, topicTitle });
+        await db.collection('registrations').doc(id).update({ chestNumber, participantName, topicTitle, status });
         editRegModal.classList.remove('active');
       } catch(err) { alert("Failed to update: " + err.message); } 
       finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
@@ -891,10 +863,10 @@
       const data = getFilteredData();
       if (data.length === 0) { alert('No data available to export.'); return; }
 
-      const headers = ['Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Submitted At'];
+      const headers = ['Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Status', 'Submitted At'];
       const rows = data.map(r => {
         const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toISOString() : '';
-        return [ r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', dateStr ];
+        return [ r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', r.status || 'Pending', dateStr ];
       });
 
       let csv = headers.map(csvEscape).join(',') + '\r\n';
