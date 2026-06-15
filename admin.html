@@ -36,20 +36,32 @@
     min-height: 100vh;
   }
 
-  /* Status Badges */
-  .status-badge {
-    display: inline-block;
+  /* Status Select Dropdown (Inline Edit) */
+  .inline-status-select {
+    font-family: 'Montserrat', sans-serif;
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 0.25rem 0.6rem;
+    padding: 0.3rem 1.2rem 0.3rem 0.6rem;
     border-radius: 4px;
-    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid transparent;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 0.5rem auto;
   }
-  .status-approved { background: rgba(69, 182, 156, 0.15); border: 1px solid var(--success); color: var(--success); }
-  .status-rejected { background: rgba(255, 107, 107, 0.15); border: 1px solid var(--error); color: var(--error); }
-  .status-pending { background: rgba(255, 165, 0, 0.15); border: 1px solid var(--warning); color: var(--warning); }
+  .inline-status-select:hover { filter: brightness(1.2); }
+  .inline-status-select:disabled { opacity: 0.5; cursor: not-allowed; }
+  .inline-status-select option { background: var(--bg-panel); color: #fff; }
+
+  .status-approved { background-color: rgba(69, 182, 156, 0.15); border-color: var(--success); color: var(--success); }
+  .status-rejected { background-color: rgba(255, 107, 107, 0.15); border-color: var(--error); color: var(--error); }
+  .status-pending { background-color: rgba(255, 165, 0, 0.15); border-color: var(--warning); color: var(--warning); }
 
   /* ============ Login Overlay ============ */
   .login-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1.5rem; }
@@ -137,6 +149,9 @@
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: rgba(255,255,255,0.02); }
 
+  .ref-link { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-border); font-size: 0.8rem; font-weight: 600; transition: all 0.2s; padding-bottom: 2px; }
+  .ref-link:hover { border-bottom-color: var(--gold); color: #fff; }
+
   .action-btns { display: flex; gap: 0.5rem; }
   .edit-btn { background: none; border: 1px solid var(--gold-border); border-radius: 4px; color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 0.8rem; cursor: pointer; transition: all 0.2s ease; }
   .edit-btn:hover { background: var(--gold-soft); border-color: var(--gold); }
@@ -203,7 +218,6 @@
         <div class="page-eyebrow">Overview</div>
         <div class="page-title" id="dashboardTitle">Dashboard</div>
 
-        <!-- ONLY FOR ADMIN LOGIN -->
         <div id="adminDashboardView">
           
           <!-- GLOBAL REGISTRATION STOP BUTTON -->
@@ -261,10 +275,22 @@
         <div class="table-wrapper">
           <table>
             <thead>
-              <tr><th>Reg. ID</th><th>Chest No.</th><th>Participant</th><th>House</th><th>Section</th><th>Program</th><th>Topic / Title</th><th>Status</th><th>Submitted</th><th>Action</th></tr>
+              <tr>
+                <th>Reg. ID</th>
+                <th>Chest No.</th>
+                <th>Participant</th>
+                <th>House</th>
+                <th>Section</th>
+                <th>Program</th>
+                <th>Topic / Title</th>
+                <th>Link</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
             </thead>
             <tbody id="tableBody">
-              <tr class="empty-row"><td colspan="10">Loading registrations...</td></tr>
+              <tr class="empty-row"><td colspan="11">Loading registrations...</td></tr>
             </tbody>
           </table>
         </div>
@@ -302,21 +328,12 @@
     </main>
   </div>
 
-  <!-- ============ EDIT REGISTRATION MODAL ============ -->
+  <!-- ============ EDIT REGISTRATION MODAL (Only for Text Details now) ============ -->
   <div class="modal-overlay" id="editRegModal">
     <div class="modal-box" style="text-align: left;">
-      <div class="modal-title" style="text-align: center;">Edit Registration</div>
+      <div class="modal-title" style="text-align: center;">Edit Entry Details</div>
       <input type="hidden" id="editRegId">
       
-      <div class="login-field">
-        <label class="login-label">Approval Status</label>
-        <select id="editRegStatus" class="login-input">
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-      </div>
-
       <div class="login-field">
         <label class="login-label">Chest Number</label>
         <input type="text" id="editRegChest" class="login-input">
@@ -328,6 +345,10 @@
       <div class="login-field">
         <label class="login-label">Topic / Title</label>
         <input type="text" id="editRegTopic" class="login-input">
+      </div>
+      <div class="login-field">
+        <label class="login-label">Reference Link</label>
+        <input type="url" id="editRegLink" class="login-input">
       </div>
 
       <div class="modal-actions">
@@ -523,7 +544,7 @@
         updateDashboardStats();
         renderTable();
       }, err => {
-        document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="10">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+        document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="11">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
       });
     }
 
@@ -616,7 +637,7 @@
       resultsCount.textContent = `Showing ${data.length} of ${allRegistrations.length} registrations.`;
 
       if (data.length === 0) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="10">No registrations found.</td></tr>';
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="11">No registrations found.</td></tr>';
         return;
       }
 
@@ -625,11 +646,14 @@
         const tr = document.createElement('tr');
         const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toLocaleString() : '—';
         
-        // Status parsing
+        // Inline Status Dropdown Logic
         const st = r.status || 'Pending';
         let badgeCls = 'status-pending';
         if(st === 'Approved') badgeCls = 'status-approved';
         if(st === 'Rejected') badgeCls = 'status-rejected';
+
+        // Check if Link Exists
+        const linkHtml = r.referenceLink ? `<a href="${escapeHtml(r.referenceLink)}" target="_blank" class="ref-link" title="${escapeHtml(r.referenceLink)}">View Link</a>` : '<span style="color:var(--text-muted); font-size:0.8rem;">—</span>';
 
         tr.innerHTML = `
           <td>${escapeHtml(r.registrationId || '—')}</td>
@@ -639,11 +663,18 @@
           <td>${escapeHtml(r.section || '—')}</td>
           <td>${escapeHtml(r.program || '—')}</td>
           <td>${escapeHtml(r.topicTitle || '—')}</td>
-          <td><span class="status-badge ${badgeCls}">${st}</span></td>
+          <td>${linkHtml}</td>
+          <td>
+            <select class="inline-status-select ${badgeCls}" onchange="updateInlineStatus('${r.id}', this)">
+              <option value="Pending" ${st === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Approved" ${st === 'Approved' ? 'selected' : ''}>Approved</option>
+              <option value="Rejected" ${st === 'Rejected' ? 'selected' : ''}>Rejected</option>
+            </select>
+          </td>
           <td>${escapeHtml(dateStr)}</td>
           <td>
             <div class="action-btns">
-              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit</button>
+              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit Details</button>
               <button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Del</button>
             </div>
           </td>
@@ -652,17 +683,38 @@
       });
     }
 
-    /* ============ EDIT REGISTRATION Logic ============ */
+    /* ============ INLINE STATUS UPDATE LOGIC ============ */
+    window.updateInlineStatus = async function(id, selectEl) {
+      const newStatus = selectEl.value;
+      const originalClass = selectEl.className;
+      
+      // Temporarily disable to prevent double clicking
+      selectEl.disabled = true;
+      selectEl.style.opacity = '0.5';
+
+      try {
+        await db.collection('registrations').doc(id).update({ status: newStatus });
+        // The real-time listener will automatically re-render the table with the new colors
+      } catch(err) {
+        alert('Failed to update status: ' + err.message);
+        // Reset if failed
+        selectEl.disabled = false;
+        selectEl.style.opacity = '1';
+        selectEl.value = originalClass.includes('approved') ? 'Approved' : (originalClass.includes('rejected') ? 'Rejected' : 'Pending');
+      }
+    };
+
+    /* ============ EDIT REGISTRATION DETAILS MODAL ============ */
     const editRegModal = document.getElementById('editRegModal');
     
     function openEditRegModal(id) {
       const reg = allRegistrations.find(r => r.id === id);
       if(!reg) return;
       document.getElementById('editRegId').value = reg.id;
-      document.getElementById('editRegStatus').value = reg.status || 'Pending';
       document.getElementById('editRegChest').value = reg.chestNumber || '';
       document.getElementById('editRegName').value = reg.participantName || '';
       document.getElementById('editRegTopic').value = reg.topicTitle || '';
+      document.getElementById('editRegLink').value = reg.referenceLink || '';
       editRegModal.classList.add('active');
     }
 
@@ -670,15 +722,15 @@
 
     document.getElementById('saveEditBtn').addEventListener('click', async () => {
       const id = document.getElementById('editRegId').value;
-      const status = document.getElementById('editRegStatus').value;
       const chestNumber = document.getElementById('editRegChest').value.trim();
       const participantName = document.getElementById('editRegName').value.trim();
       const topicTitle = document.getElementById('editRegTopic').value.trim();
+      const referenceLink = document.getElementById('editRegLink').value.trim();
       const btn = document.getElementById('saveEditBtn');
       
       btn.disabled = true; btn.textContent = 'Saving...';
       try {
-        await db.collection('registrations').doc(id).update({ chestNumber, participantName, topicTitle, status });
+        await db.collection('registrations').doc(id).update({ chestNumber, participantName, topicTitle, referenceLink });
         editRegModal.classList.remove('active');
       } catch(err) { alert("Failed to update: " + err.message); } 
       finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
@@ -863,10 +915,10 @@
       const data = getFilteredData();
       if (data.length === 0) { alert('No data available to export.'); return; }
 
-      const headers = ['Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Status', 'Submitted At'];
+      const headers = ['Registration ID', 'House (Team)', 'Section', 'Program', 'Chest Number', 'Participant Name', 'Topic / Title', 'Reference Link', 'Status', 'Submitted At'];
       const rows = data.map(r => {
         const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toISOString() : '';
-        return [ r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', r.status || 'Pending', dateStr ];
+        return [ r.registrationId || '', r.team || '', r.section || '', r.program || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', r.referenceLink || '', r.status || 'Pending', dateStr ];
       });
 
       let csv = headers.map(csvEscape).join(',') + '\r\n';
