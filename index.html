@@ -69,10 +69,11 @@
     color: var(--text-muted);
   }
 
+  /* SYSTEM VIEW ENHANCEMENT: Increased max-width to 1150px for full table view */
   .container {
     flex: 1;
     width: 100%;
-    max-width: 850px;
+    max-width: 1150px; 
     margin: 0 auto;
     padding: 1.5rem 1.25rem 4rem;
   }
@@ -148,7 +149,9 @@
   .step-heading { font-size: 1.6rem; font-weight: 700; letter-spacing: 0.02em; color: #fff; text-transform: uppercase; margin-bottom: 0.5rem; }
   .step-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
 
-  .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  /* UPDATED: 4 columns on Desktop, 2 on Tablet, 1 on Mobile */
+  .options-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  @media (max-width: 768px) { .options-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 540px) { .options-grid { grid-template-columns: 1fr; } }
 
   .option-card {
@@ -193,6 +196,7 @@
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--line);
     padding-bottom: 0.5rem;
+    overflow-x: auto;
   }
   .dash-tab-btn {
     background: none;
@@ -207,6 +211,7 @@
     padding: 0.5rem 0.5rem;
     border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
+    white-space: nowrap;
   }
   .dash-tab-btn:hover { color: #fff; }
   .dash-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
@@ -243,6 +248,9 @@
   .reg-id-cell { font-size: 0.72rem; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; white-space: nowrap; }
   .chest-cell { font-weight: 700; color: #fff; }
   .section-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 3px; background: rgba(102, 252, 241, 0.08); border: 1px solid var(--gold-border); color: var(--gold); white-space: nowrap; }
+
+  /* New rule to ensure long topics wrap text instead of stretching the table */
+  .topic-cell { max-width: 300px; white-space: normal; word-wrap: break-word; line-height: 1.4; }
 
   .loading-regs, .no-regs-msg { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 0.85rem; }
   .no-regs-msg { border: 1px dashed var(--line); border-radius: 8px; }
@@ -363,10 +371,11 @@
           </div>
         </div>
 
-        <!-- Tab Switch for Submitted vs Not Entered -->
+        <!-- Tab Switch for Submitted vs Not Entered vs History -->
         <div class="dash-tabs">
           <button class="dash-tab-btn active" id="btnDashSubmitted" onclick="toggleDashView('submitted')">Submitted Entries</button>
           <button class="dash-tab-btn" id="btnDashMissing" onclick="toggleDashView('missing')">Not Entered (Pending)</button>
+          <button class="dash-tab-btn" id="btnDashHistory" onclick="toggleDashView('history')">Global History (Approved)</button>
         </div>
 
         <div class="filter-bar">
@@ -453,15 +462,19 @@
 
     /* ============ State Space Management ============ */
     const state = { team: null, section: null, program: null, chestNo: null, name: null };
-    let currentDashView = 'submitted'; // 'submitted' or 'missing'
+    let currentDashView = 'submitted'; // 'submitted', 'missing', or 'history'
     
     let cachedRegistrations = [];
     let houseMasterParticipants = []; 
     let masterParticipantsCount = 0;
     
+    // Global History Variable
+    let globalHistoryRegistrations = [];
+
     let isRegistrationSystemOpen = true;
     let unsubscribeRegistrations = null;
     let unsubscribeQuotaMaster = null;
+    let unsubscribeGlobalHistory = null;
 
     const errorEl = document.getElementById('formError');
 
@@ -484,7 +497,9 @@
       currentDashView = viewMode;
       document.getElementById('btnDashSubmitted').classList.toggle('active', viewMode === 'submitted');
       document.getElementById('btnDashMissing').classList.toggle('active', viewMode === 'missing');
+      document.getElementById('btnDashHistory').classList.toggle('active', viewMode === 'history');
       
+      // Hide status filter if we are in missing or history (since history only has Approved)
       document.getElementById('filterStatus').style.display = (viewMode === 'submitted') ? 'block' : 'none';
       fetchAndRenderDashboardRecords();
     }
@@ -518,6 +533,7 @@
     function logoutHouse() {
       if(unsubscribeRegistrations) unsubscribeRegistrations();
       if(unsubscribeQuotaMaster) unsubscribeQuotaMaster();
+      if(unsubscribeGlobalHistory) unsubscribeGlobalHistory();
       
       state.team = null; state.section = null; state.program = null; state.chestNo = null; state.name = null;
       currentDashView = 'submitted';
@@ -540,6 +556,7 @@
 
     /* ============ Real-time Pipeline Infrastructure ============ */
     function initializeRealtimeStreams() {
+      // 1. Quota Master Listener
       unsubscribeQuotaMaster = db.collection('participants').where('team', '==', state.team).onSnapshot(snap => {
         houseMasterParticipants = snap.docs.map(d => d.data());
         masterParticipantsCount = houseMasterParticipants.length;
@@ -547,11 +564,20 @@
         if(currentDashView === 'missing') fetchAndRenderDashboardRecords();
       });
 
+      // 2. Logged-in House Registrations Listener
       unsubscribeRegistrations = db.collection('registrations').where('team', '==', state.team).onSnapshot(snap => {
         cachedRegistrations = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         cachedRegistrations.sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
         recalculateAllocationMeters();
-        fetchAndRenderDashboardRecords();
+        if(currentDashView === 'submitted') fetchAndRenderDashboardRecords();
+      });
+
+      // 3. Global Approved History Listener (All Teams)
+      unsubscribeGlobalHistory = db.collection('registrations').where('status', '==', 'Approved').onSnapshot(snap => {
+        globalHistoryRegistrations = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Sorting chronologically to match admin
+        globalHistoryRegistrations.sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+        if(currentDashView === 'history') fetchAndRenderDashboardRecords();
       });
     }
 
@@ -571,8 +597,10 @@
     function fetchAndRenderDashboardRecords() {
       if (currentDashView === 'submitted') {
         populateSubmittedStructure(cachedRegistrations);
-      } else {
+      } else if (currentDashView === 'missing') {
         populateMissingStructure();
+      } else if (currentDashView === 'history') {
+        populateHistoryStructure(globalHistoryRegistrations);
       }
     }
 
@@ -624,7 +652,7 @@
             <td>${escapeHtml(record.program || '—')}</td>
             <td class="chest-cell">${escapeHtml(record.chestNumber || '—')}</td>
             <td>${escapeHtml(record.participantName || '—')}</td>
-            <td>${escapeHtml(record.topicTitle || '—')}</td>
+            <td class="topic-cell">${escapeHtml(record.topicTitle || '—')}</td>
             <td><span class="status-badge ${structuralClass}">${parsedStatus}</span></td>
           </tr>`;
       }).join('');
@@ -693,6 +721,64 @@
                 <th>Participant Name</th>
                 <th>Status</th>
                 <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>${builtRows}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function populateHistoryStructure(dataset) {
+      const catFilter = document.getElementById('filterSection');
+      const progFilter = document.getElementById('filterProgram');
+
+      const distinctCategories = [...new Set(dataset.map(r => r.section))].filter(Boolean);
+      const distinctPrograms = [...new Set(dataset.map(r => r.program))].filter(Boolean);
+
+      const cachedCat = catFilter.value;
+      const cachedProg = progFilter.value;
+
+      catFilter.innerHTML = '<option value="">All Categories</option>' + distinctCategories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+      progFilter.innerHTML = '<option value="">All Programs</option>' + distinctPrograms.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('');
+      
+      catFilter.value = distinctCategories.includes(cachedCat) ? cachedCat : '';
+      progFilter.value = distinctPrograms.includes(cachedProg) ? cachedProg : '';
+
+      const activeCat = catFilter.value;
+      const activeProg = progFilter.value;
+
+      let filteredDataset = dataset;
+      if (activeCat) filteredDataset = filteredDataset.filter(r => r.section === activeCat);
+      if (activeProg) filteredDataset = filteredDataset.filter(r => r.program === activeProg);
+
+      const targetElement = document.getElementById('regsTableContainer');
+      if (filteredDataset.length === 0) {
+        targetElement.innerHTML = `<div class="no-regs-msg"><div class="no-regs-icon">🕰️</div>No approved history available for these criteria.</div>`;
+        return;
+      }
+
+      const builtRows = filteredDataset.map(record => `
+        <tr>
+          <td><span class="section-badge" style="color: #fff; border-color: var(--text-muted); background: rgba(255,255,255,0.1);">${escapeHtml(record.team || '—')}</span></td>
+          <td><span class="section-badge">${escapeHtml(record.section || '—')}</span></td>
+          <td>${escapeHtml(record.program || '—')}</td>
+          <td class="chest-cell">${escapeHtml(record.chestNumber || '—')}</td>
+          <td>${escapeHtml(record.participantName || '—')}</td>
+          <td class="topic-cell" style="color: var(--gold); font-weight: 600;">${escapeHtml(record.topicTitle || '—')}</td>
+        </tr>
+      `).join('');
+
+      targetElement.innerHTML = `
+        <div class="regs-table-wrapper">
+          <table class="regs-table">
+            <thead>
+              <tr>
+                <th>House</th>
+                <th>Category</th>
+                <th>Program</th>
+                <th>Chest No</th>
+                <th>Participant Name</th>
+                <th>Topic Reference</th>
               </tr>
             </thead>
             <tbody>${builtRows}</tbody>
