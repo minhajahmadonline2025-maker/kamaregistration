@@ -69,7 +69,6 @@
     color: var(--text-muted);
   }
 
-  /* SYSTEM VIEW ENHANCEMENT: Increased max-width to 1150px for full table view */
   .container {
     flex: 1;
     width: 100%;
@@ -89,7 +88,6 @@
 
   @media (max-width: 540px) { .form-card { padding: 2rem 1.25rem; } }
 
-  /* CLOSED REGISTRATIONS MASTER SWITCH OVERLAY */
   .closed-overlay {
     position: absolute;
     inset: 0;
@@ -149,7 +147,6 @@
   .step-heading { font-size: 1.6rem; font-weight: 700; letter-spacing: 0.02em; color: #fff; text-transform: uppercase; margin-bottom: 0.5rem; }
   .step-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
 
-  /* 4 columns on Desktop, 2 on Tablet, 1 on Mobile */
   .options-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
   @media (max-width: 768px) { .options-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 540px) { .options-grid { grid-template-columns: 1fr; } }
@@ -174,7 +171,6 @@
   .passcode-wrapper { margin-top: 1.5rem; display: none; animation: fadeIn 0.3s ease; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--line); }
   .passcode-wrapper.active { display: block; }
 
-  /* ===== ADVANCED STATS VIEWS ===== */
   .house-progress-container {
     background: rgba(0,0,0,0.2);
     border: 1px solid var(--line);
@@ -189,7 +185,6 @@
   .hp-bar-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.8s ease-in-out; }
   .hp-details { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
-  /* Dashboard Sub-Tabs */
   .dash-tabs {
     display: flex;
     gap: 1rem;
@@ -216,7 +211,6 @@
   .dash-tab-btn:hover { color: #fff; }
   .dash-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-  /* Status Badges */
   .status-badge {
     display: inline-block;
     font-size: 0.65rem;
@@ -231,12 +225,12 @@
   .status-rejected { background: rgba(255, 107, 107, 0.15); border: 1px solid var(--error); color: var(--error); }
   .status-pending { background: rgba(255, 165, 0, 0.15); border: 1px solid var(--warning); color: var(--warning); }
   .status-notentered { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--text-muted); color: var(--text-muted); }
+  .status-prev-rejected { background: rgba(255, 107, 107, 0.1); border: 1px dashed var(--error); color: var(--error); margin-bottom: 4px; }
 
   .filter-bar { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
   .filter-select { flex: 1; min-width: 130px; background: var(--bg-input); border: 1px solid var(--line); border-radius: 6px; color: var(--text); padding: 0.6rem 1rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 500; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2366FCF1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 0.8rem top 50%; background-size: 0.6rem auto; padding-right: 2rem; transition: border-color 0.2s ease; }
   .filter-select:focus { outline: none; border-color: var(--gold); }
 
-  /* Table styling overrides */
   .regs-table-wrapper { overflow-x: auto; border-radius: 8px; border: 1px solid var(--line); background: rgba(0,0,0,0.15); }
   .regs-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 520px; }
   .regs-table thead tr { background: rgba(102, 252, 241, 0.06); border-bottom: 1px solid var(--gold-border); }
@@ -250,7 +244,6 @@
   .section-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 3px; background: rgba(102, 252, 241, 0.08); border: 1px solid var(--gold-border); color: var(--gold); white-space: nowrap; }
   .time-cell { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; letter-spacing: 0.02em; }
 
-  /* Rule to ensure long topics wrap text instead of stretching the table */
   .topic-cell { max-width: 300px; white-space: normal; word-wrap: break-word; line-height: 1.4; }
 
   .loading-regs, .no-regs-msg { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: 0.85rem; }
@@ -309,21 +302,18 @@
 
     <div class="form-card">
       
-      <!-- SUBMISSION LOADING OVERLAY -->
       <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingTextStatus">Submitting Registration...</div>
         <div class="loading-bar-wrapper"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
       </div>
 
-      <!-- MASTER SYSTEM SWITCH CLOSED OVERLAY -->
       <div class="closed-overlay" id="closedOverlay">
         <div class="closed-icon">🛑</div>
         <div class="closed-heading">Registrations Suspended</div>
         <div class="closed-text">The central admin panel has paused all submission flows. You can still monitor data via the Dashboard.</div>
       </div>
 
-      <!-- ACTIVE SESSION BADGE -->
       <div id="houseBadge" class="house-badge" style="display:none;">
         <div>
           <span style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Active Workspace</span><br>
@@ -332,7 +322,6 @@
         <button onclick="logoutHouse()" class="logout-house-btn">Exit Workspace</button>
       </div>
 
-      <!-- STEP 1: AUTHENTICATION / HOUSE ACCESS -->
       <div class="step-content active" id="step1">
         <div class="step-eyebrow">Authentication</div>
         <div class="step-heading">Open Workspace</div>
@@ -352,13 +341,11 @@
         </div>
       </div>
 
-      <!-- ===== ADVANCED HOUSE DASHBOARD VIEW ===== -->
       <div class="step-content" id="viewDashboardTab">
         <div class="step-eyebrow">Overview Engine</div>
         <div class="step-heading" id="dashboardHouseTitle">House Station</div>
         <p class="step-desc" style="margin-bottom: 1.5rem;">Real-time diagnostics and item tracking for your entries.</p>
 
-        <!-- Dynamic Allocation Meter -->
         <div class="house-progress-container">
           <div class="hp-header">
             <div class="hp-title">Quota Progress</div>
@@ -372,7 +359,6 @@
           </div>
         </div>
 
-        <!-- Tab Switch for Submitted vs Not Entered vs History -->
         <div class="dash-tabs">
           <button class="dash-tab-btn active" id="btnDashSubmitted" onclick="toggleDashView('submitted')">Submitted Entries</button>
           <button class="dash-tab-btn" id="btnDashMissing" onclick="toggleDashView('missing')">Not Entered (Pending)</button>
@@ -395,7 +381,6 @@
         </div>
       </div>
 
-      <!-- ===== DIRECT ENTRY FORM (Replaces Step 2,3,4) ===== -->
       <div class="step-content" id="registrationForm">
         <div class="step-eyebrow">Target Registration</div>
         <div class="step-heading">Provide Details</div>
@@ -424,7 +409,6 @@
         </div>
       </div>
 
-      <!-- SUCCESS COMPLETION SCREEN -->
       <div class="step-content" id="successScreen">
         <div class="success-screen">
           <div class="success-icon">✓</div>
@@ -440,7 +424,6 @@
 
   <footer class="site-footer">KAMA Arts Fest © 2026 — Advanced Workstation Ecosystem</footer>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -582,8 +565,11 @@
       });
     }
 
+    // UPDATED FUNCTION: Avoid counting 'Rejected' items in Quota
     function recalculateAllocationMeters() {
-      const activeSize = cachedRegistrations.length;
+      const activeRegistrations = cachedRegistrations.filter(r => r.status !== 'Rejected');
+      const activeSize = activeRegistrations.length;
+      
       const metricsRem = Math.max(0, masterParticipantsCount - activeSize);
       const allocationRatio = masterParticipantsCount > 0 ? Math.round((activeSize / masterParticipantsCount) * 100) : 0;
 
@@ -677,15 +663,18 @@
         </div>`;
     }
 
+    // UPDATED FUNCTION: Shows previously rejected entries with a hint
     function populateMissingStructure() {
       const activeCat = document.getElementById('filterSection').value;
       const activeProg = document.getElementById('filterProgram').value;
       
       let missingList = houseMasterParticipants.filter(masterItem => {
+        // Only ignore items if they are registered AND status is NOT Rejected
         return !cachedRegistrations.some(reg => 
           reg.section === masterItem.category && 
           reg.program === masterItem.program && 
-          reg.chestNumber === masterItem.chestNo
+          reg.chestNumber === masterItem.chestNo &&
+          reg.status !== 'Rejected'
         );
       });
 
@@ -698,18 +687,39 @@
         return;
       }
 
-      const builtRows = missingList.map(m => `
-        <tr>
-          <td><span class="section-badge">${escapeHtml(m.category || '—')}</span></td>
-          <td>${escapeHtml(m.program || '—')}</td>
-          <td class="chest-cell">${escapeHtml(m.chestNo || '—')}</td>
-          <td>${escapeHtml(m.name || '—')}</td>
-          <td><span class="status-badge status-notentered">Not Entered</span></td>
-          <td>
-            <button class="btn btn-primary" style="padding: 0.35rem 0.6rem; font-size: 0.65rem;" onclick="directRegister('${escapeJs(m.category)}', '${escapeJs(m.program)}', '${escapeJs(m.chestNo)}', '${escapeJs(m.name)}')">Enter Details</button>
-          </td>
-        </tr>
-      `).join('');
+      const builtRows = missingList.map(m => {
+        // Check if this specific item was rejected in the past
+        const isPrevRejected = cachedRegistrations.some(reg => 
+          reg.section === m.category && 
+          reg.program === m.program && 
+          reg.chestNumber === m.chestNo &&
+          reg.status === 'Rejected'
+        );
+
+        // Build the status display logic
+        let statusHtml = `<span class="status-badge status-notentered">Not Entered</span>`;
+        if (isPrevRejected) {
+          statusHtml = `
+            <div style="display:flex; flex-direction:column; align-items:flex-start;">
+              <span class="status-badge status-prev-rejected" title="This entry was rejected by admin. Re-enter the correct details.">Prev. Rejected</span>
+              <span class="status-badge status-notentered">Pending Re-entry</span>
+            </div>
+          `;
+        }
+
+        return `
+          <tr>
+            <td><span class="section-badge">${escapeHtml(m.category || '—')}</span></td>
+            <td>${escapeHtml(m.program || '—')}</td>
+            <td class="chest-cell">${escapeHtml(m.chestNo || '—')}</td>
+            <td>${escapeHtml(m.name || '—')}</td>
+            <td>${statusHtml}</td>
+            <td>
+              <button class="btn btn-primary" style="padding: 0.35rem 0.6rem; font-size: 0.65rem;" onclick="directRegister('${escapeJs(m.category)}', '${escapeJs(m.program)}', '${escapeJs(m.chestNo)}', '${escapeJs(m.name)}')">Enter Details</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       targetElement.innerHTML = `
         <div class="regs-table-wrapper">
