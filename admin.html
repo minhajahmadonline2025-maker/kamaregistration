@@ -177,7 +177,6 @@
 </head>
 <body>
 
-  <!-- ============ LOGIN OVERLAY ============ -->
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
       <div class="login-title">KAMA Arts Fest</div>
@@ -196,14 +195,13 @@
     </div>
   </div>
 
-  <!-- ============ ADMIN LAYOUT ============ -->
   <div class="admin-layout">
     <aside class="sidebar">
       <div class="sidebar-logo">KAMA<br>ARTS FEST</div>
       <nav class="sidebar-nav">
         <button class="nav-item active" data-tab="dashboard">Dashboard</button>
         <button class="nav-item" data-tab="table">Registrations</button>
-        <button class="nav-item" id="navMasterData" data-tab="master">Master Data</button>
+        <button class="nav-item" data-tab="program">Program View</button> <button class="nav-item" id="navMasterData" data-tab="master">Master Data</button>
       </nav>
       <div class="sidebar-footer">
         <div style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin-bottom:1rem;">Logged in as: <span id="loginRoleDisplay" style="color:var(--gold); font-weight:bold;"></span></div>
@@ -213,14 +211,12 @@
 
     <main class="main-content">
 
-      <!-- DASHBOARD TAB -->
       <div class="tab-content active" id="dashboardTab">
         <div class="page-eyebrow">Overview</div>
         <div class="page-title" id="dashboardTitle">Dashboard</div>
 
         <div id="adminDashboardView">
           
-          <!-- GLOBAL REGISTRATION STOP BUTTON -->
           <div style="margin-bottom: 2.5rem; background: var(--bg-panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <div>
               <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.3rem;">Global Registration Status</h3>
@@ -245,7 +241,6 @@
 
       </div>
 
-      <!-- TABLE TAB (Registrations) -->
       <div class="tab-content" id="tableTab">
         <div class="page-eyebrow">All Entries</div>
         <div class="page-title">Registrations</div>
@@ -296,7 +291,49 @@
         </div>
       </div>
 
-      <!-- MASTER DATA TAB (Admin Only) -->
+      <div class="tab-content" id="programTab">
+        <div class="page-eyebrow">Program-wise Filter</div>
+        <div class="page-title">Program View</div>
+
+        <div class="filters-bar">
+          <select id="pvCategorySelect">
+            <option value="">Select Category (Section)</option>
+            <option value="bidayah">bidayah</option>
+            <option value="Ula">Ula</option>
+            <option value="thaniya">thaniya</option>
+            <option value="thanawiyya">thanawiyya</option>
+            <option value="aliyah">aliyah</option>
+          </select>
+          <select id="pvProgramSelect">
+            <option value="">Select Program</option>
+          </select>
+          <button class="export-btn" id="pvExportBtn">Export to CSV</button>
+        </div>
+
+        <p class="results-count" id="pvResultsCount"></p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Reg. ID</th>
+                <th>Chest No.</th>
+                <th>Participant</th>
+                <th>House</th>
+                <th>Topic / Title</th>
+                <th>Link</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="pvTableBody">
+              <tr class="empty-row"><td colspan="9">Select a category and program to view registrations.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="tab-content" id="masterTab">
         <div class="page-eyebrow">Participant Auto-fill Data</div>
         <div class="page-title">Master Candidate List</div>
@@ -328,7 +365,6 @@
     </main>
   </div>
 
-  <!-- ============ EDIT REGISTRATION MODAL (Only for Text Details now) ============ -->
   <div class="modal-overlay" id="editRegModal">
     <div class="modal-box" style="text-align: left;">
       <div class="modal-title" style="text-align: center;">Edit Entry Details</div>
@@ -358,7 +394,6 @@
     </div>
   </div>
 
-  <!-- ============ EDIT MASTER DATA MODAL ============ -->
   <div class="modal-overlay" id="editMasterModal">
     <div class="modal-box" style="text-align: left;">
       <div class="modal-title" style="text-align: center;">Edit Master Data</div>
@@ -403,7 +438,6 @@
     </div>
   </div>
 
-  <!-- ============ DELETE CONFIRMATION MODAL ============ -->
   <div class="modal-overlay" id="deleteModal">
     <div class="modal-box">
       <div class="modal-title">Confirm Deletion</div>
@@ -415,7 +449,6 @@
     </div>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -451,7 +484,6 @@
 
     /* ============ State ============ */
     let currentUser = null;
-    let rawRegistrations = []; 
     let allRegistrations = []; 
     let masterParticipants = [];
     
@@ -543,6 +575,7 @@
         allRegistrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         updateDashboardStats();
         renderTable();
+        renderProgramViewTable(); // Update new tab when data changes
       }, err => {
         document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="11">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
       });
@@ -646,13 +679,11 @@
         const tr = document.createElement('tr');
         const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toLocaleString() : '—';
         
-        // Inline Status Dropdown Logic
         const st = r.status || 'Pending';
         let badgeCls = 'status-pending';
         if(st === 'Approved') badgeCls = 'status-approved';
         if(st === 'Rejected') badgeCls = 'status-rejected';
 
-        // Check if Link Exists
         const linkHtml = r.referenceLink ? `<a href="${escapeHtml(r.referenceLink)}" target="_blank" class="ref-link" title="${escapeHtml(r.referenceLink)}">View Link</a>` : '<span style="color:var(--text-muted); font-size:0.8rem;">—</span>';
 
         tr.innerHTML = `
@@ -674,7 +705,7 @@
           <td>${escapeHtml(dateStr)}</td>
           <td>
             <div class="action-btns">
-              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit Details</button>
+              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit</button>
               <button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Del</button>
             </div>
           </td>
@@ -683,21 +714,113 @@
       });
     }
 
+    /* ============ NEW: PROGRAM VIEW TAB LOGIC ============ */
+    const pvCategorySelect = document.getElementById('pvCategorySelect');
+    const pvProgramSelect = document.getElementById('pvProgramSelect');
+    const pvTableBody = document.getElementById('pvTableBody');
+    const pvResultsCount = document.getElementById('pvResultsCount');
+
+    pvCategorySelect.addEventListener('change', () => {
+      const category = pvCategorySelect.value;
+      pvProgramSelect.innerHTML = '<option value="">Select Program</option>';
+      
+      if (category && PROGRAMS[category]) {
+        PROGRAMS[category].forEach(prog => {
+          pvProgramSelect.innerHTML += `<option value="${escapeHtml(prog)}">${escapeHtml(prog)}</option>`;
+        });
+      }
+      renderProgramViewTable();
+    });
+
+    pvProgramSelect.addEventListener('change', renderProgramViewTable);
+
+    function renderProgramViewTable() {
+      const category = pvCategorySelect.value;
+      const program = pvProgramSelect.value;
+
+      if (!category || !program) {
+        pvTableBody.innerHTML = '<tr class="empty-row"><td colspan="9">Select a category and program to view registrations.</td></tr>';
+        pvResultsCount.textContent = '';
+        return;
+      }
+
+      const data = allRegistrations.filter(r => r.section === category && r.program === program);
+      pvResultsCount.textContent = `Showing ${data.length} registration(s) for ${escapeHtml(program)} (${escapeHtml(category)}).`;
+
+      if (data.length === 0) {
+        pvTableBody.innerHTML = '<tr class="empty-row"><td colspan="9">No registrations found for this program.</td></tr>';
+        return;
+      }
+
+      pvTableBody.innerHTML = '';
+      data.forEach(r => {
+        const tr = document.createElement('tr');
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toLocaleString() : '—';
+        
+        const st = r.status || 'Pending';
+        let badgeCls = 'status-pending';
+        if(st === 'Approved') badgeCls = 'status-approved';
+        if(st === 'Rejected') badgeCls = 'status-rejected';
+
+        const linkHtml = r.referenceLink ? `<a href="${escapeHtml(r.referenceLink)}" target="_blank" class="ref-link" title="${escapeHtml(r.referenceLink)}">View Link</a>` : '<span style="color:var(--text-muted); font-size:0.8rem;">—</span>';
+
+        tr.innerHTML = `
+          <td>${escapeHtml(r.registrationId || '—')}</td>
+          <td>${escapeHtml(r.chestNumber || '—')}</td>
+          <td>${escapeHtml(r.participantName || '—')}</td>
+          <td>${escapeHtml(r.team || '—')}</td>
+          <td>${escapeHtml(r.topicTitle || '—')}</td>
+          <td>${linkHtml}</td>
+          <td>
+            <select class="inline-status-select ${badgeCls}" onchange="updateInlineStatus('${r.id}', this)">
+              <option value="Pending" ${st === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Approved" ${st === 'Approved' ? 'selected' : ''}>Approved</option>
+              <option value="Rejected" ${st === 'Rejected' ? 'selected' : ''}>Rejected</option>
+            </select>
+          </td>
+          <td>${escapeHtml(dateStr)}</td>
+          <td>
+            <div class="action-btns">
+              <button class="edit-btn" onclick="openEditRegModal('${r.id}')">Edit</button>
+              <button class="delete-btn" onclick="openDeleteModal('${r.id}', 'registration')">Del</button>
+            </div>
+          </td>
+        `;
+        pvTableBody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('pvExportBtn').addEventListener('click', () => {
+      const category = pvCategorySelect.value;
+      const program = pvProgramSelect.value;
+      if(!category || !program) { alert('Please select a Category and Program first.'); return; }
+      
+      const data = allRegistrations.filter(r => r.section === category && r.program === program);
+      if (data.length === 0) { alert('No data available to export.'); return; }
+
+      const headers = ['Registration ID', 'House', 'Chest Number', 'Participant Name', 'Topic / Title', 'Reference Link', 'Status', 'Submitted At'];
+      const rows = data.map(r => {
+        const dateStr = (r.timestamp && typeof r.timestamp.toDate === 'function') ? r.timestamp.toDate().toISOString() : '';
+        return [ r.registrationId || '', r.team || '', r.chestNumber || '', r.participantName || '', r.topicTitle || '', r.referenceLink || '', r.status || 'Pending', dateStr ];
+      });
+
+      let csv = headers.map(csvEscape).join(',') + '\r\n';
+      rows.forEach(row => { csv += row.map(csvEscape).join(',') + '\r\n'; });
+      downloadCSV(csv, `KAMA_${category}_${program}_Registrations.csv`);
+    });
+
     /* ============ INLINE STATUS UPDATE LOGIC ============ */
     window.updateInlineStatus = async function(id, selectEl) {
       const newStatus = selectEl.value;
       const originalClass = selectEl.className;
       
-      // Temporarily disable to prevent double clicking
       selectEl.disabled = true;
       selectEl.style.opacity = '0.5';
 
       try {
         await db.collection('registrations').doc(id).update({ status: newStatus });
-        // The real-time listener will automatically re-render the table with the new colors
       } catch(err) {
         alert('Failed to update status: ' + err.message);
-        // Reset if failed
         selectEl.disabled = false;
         selectEl.style.opacity = '1';
         selectEl.value = originalClass.includes('approved') ? 'Approved' : (originalClass.includes('rejected') ? 'Rejected' : 'Pending');
