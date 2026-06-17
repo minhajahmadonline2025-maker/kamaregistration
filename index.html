@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAMA Arts Fest — Portal</title>
+<title>KAMA Registration — Portal</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -395,8 +395,20 @@
 
         <div class="field-group">
           <label class="field-label" for="topicTitle">Topic / Structural Title <span class="req">*</span></label>
-          <input type="text" id="topicTitle" class="field-input" placeholder="Enter the topic or title of the entry">
+          <input type="text" id="topicTitle" class="field-input" placeholder="Enter the topic or title of the entry" autocomplete="off">
+          
+          <div id="topicWarning" style="color: var(--error); font-size: 0.75rem; font-weight: 600; margin-top: 0.5rem; display: none;">
+            ⚠️ This topic is already registered by another participant!
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.8rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 6px; border: 1px solid var(--line);">
+            <strong style="color: #fff; margin-bottom: 0.5rem; display: block; letter-spacing: 0.05em;">PREVIOUSLY REGISTERED TOPICS:</strong>
+            <ul id="existingTopicsList" style="padding-left: 1.2rem; list-style-type: square; line-height: 1.5; margin: 0; color: var(--text);">
+              <li>Loading...</li>
+            </ul>
+          </div>
         </div>
+
         <div class="field-group">
           <label class="field-label" for="referenceLink">External Cloud Reference <span class="opt">(optional)</span></label>
           <input type="url" id="referenceLink" class="field-input" placeholder="https://...">
@@ -446,14 +458,14 @@
 
     /* ============ State Space Management ============ */
     const state = { team: null, section: null, program: null, chestNo: null, name: null };
-    let currentDashView = 'submitted'; // 'submitted', 'missing', or 'history'
+    let currentDashView = 'submitted'; 
     
     let cachedRegistrations = [];
     let houseMasterParticipants = []; 
     let masterParticipantsCount = 0;
     
-    // Global History Variable
     let globalHistoryRegistrations = [];
+    let currentProgramTopics = []; // New variable for topic validation
 
     let isRegistrationSystemOpen = true;
     let unsubscribeRegistrations = null;
@@ -467,7 +479,6 @@
       const systemOverlay = document.getElementById('closedOverlay');
       if (doc.exists && doc.data().registrationOpen === false) {
         isRegistrationSystemOpen = false;
-        // Block form if they are inside it
         if(document.getElementById('registrationForm').classList.contains('active')) {
           systemOverlay.classList.add('active');
         }
@@ -483,7 +494,6 @@
       document.getElementById('btnDashMissing').classList.toggle('active', viewMode === 'missing');
       document.getElementById('btnDashHistory').classList.toggle('active', viewMode === 'history');
       
-      // Hide status filter if we are in missing or history (since history only has Approved)
       document.getElementById('filterStatus').style.display = (viewMode === 'submitted') ? 'block' : 'none';
       fetchAndRenderDashboardRecords();
     }
@@ -540,7 +550,6 @@
 
     /* ============ Real-time Pipeline Infrastructure ============ */
     function initializeRealtimeStreams() {
-      // 1. Quota Master Listener
       unsubscribeQuotaMaster = db.collection('participants').where('team', '==', state.team).onSnapshot(snap => {
         houseMasterParticipants = snap.docs.map(d => d.data());
         masterParticipantsCount = houseMasterParticipants.length;
@@ -548,7 +557,6 @@
         if(currentDashView === 'missing') fetchAndRenderDashboardRecords();
       });
 
-      // 2. Logged-in House Registrations Listener
       unsubscribeRegistrations = db.collection('registrations').where('team', '==', state.team).onSnapshot(snap => {
         cachedRegistrations = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         cachedRegistrations.sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
@@ -556,16 +564,13 @@
         if(currentDashView === 'submitted') fetchAndRenderDashboardRecords();
       });
 
-      // 3. Global Approved History Listener (All Teams)
       unsubscribeGlobalHistory = db.collection('registrations').where('status', '==', 'Approved').onSnapshot(snap => {
         globalHistoryRegistrations = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        // Sorting chronologically to match admin
         globalHistoryRegistrations.sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
         if(currentDashView === 'history') fetchAndRenderDashboardRecords();
       });
     }
 
-    // UPDATED FUNCTION: Avoid counting 'Rejected' items in Quota
     function recalculateAllocationMeters() {
       const activeRegistrations = cachedRegistrations.filter(r => r.status !== 'Rejected');
       const activeSize = activeRegistrations.length;
@@ -582,13 +587,9 @@
 
     /* ============ Log & Status Engine UI ============ */
     function fetchAndRenderDashboardRecords() {
-      if (currentDashView === 'submitted') {
-        populateSubmittedStructure(cachedRegistrations);
-      } else if (currentDashView === 'missing') {
-        populateMissingStructure();
-      } else if (currentDashView === 'history') {
-        populateHistoryStructure(globalHistoryRegistrations);
-      }
+      if (currentDashView === 'submitted') populateSubmittedStructure(cachedRegistrations);
+      else if (currentDashView === 'missing') populateMissingStructure();
+      else if (currentDashView === 'history') populateHistoryStructure(globalHistoryRegistrations);
     }
 
     function applyDashboardFilters() {
@@ -663,13 +664,11 @@
         </div>`;
     }
 
-    // UPDATED FUNCTION: Shows previously rejected entries with a hint
     function populateMissingStructure() {
       const activeCat = document.getElementById('filterSection').value;
       const activeProg = document.getElementById('filterProgram').value;
       
       let missingList = houseMasterParticipants.filter(masterItem => {
-        // Only ignore items if they are registered AND status is NOT Rejected
         return !cachedRegistrations.some(reg => 
           reg.section === masterItem.category && 
           reg.program === masterItem.program && 
@@ -688,7 +687,6 @@
       }
 
       const builtRows = missingList.map(m => {
-        // Check if this specific item was rejected in the past
         const isPrevRejected = cachedRegistrations.some(reg => 
           reg.section === m.category && 
           reg.program === m.program && 
@@ -696,7 +694,6 @@
           reg.status === 'Rejected'
         );
 
-        // Build the status display logic
         let statusHtml = `<span class="status-badge status-notentered">Not Entered</span>`;
         if (isPrevRejected) {
           statusHtml = `
@@ -769,7 +766,6 @@
       }
 
       const builtRows = filteredDataset.map(record => {
-        // Formatting Timestamp
         let timeString = '—';
         if (record.timestamp) {
           try {
@@ -811,7 +807,7 @@
         </div>`;
     }
 
-    /* ============ Direct Entry Workflow ============ */
+    /* ============ Direct Entry Workflow & Topic Validation ============ */
     function directRegister(category, program, chestNo, name) {
       if (!isRegistrationSystemOpen) {
         document.getElementById('closedOverlay').classList.add('active');
@@ -831,10 +827,60 @@
       document.getElementById('topicTitle').value = '';
       document.getElementById('referenceLink').value = '';
       errorEl.textContent = '';
+      document.getElementById('topicWarning').style.display = 'none';
+      document.getElementById('submitRegBtn').disabled = false;
 
       document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
       document.getElementById('registrationForm').classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Fetch Existing Topics
+      currentProgramTopics = [];
+      const existingListEl = document.getElementById('existingTopicsList');
+      existingListEl.innerHTML = '<li style="color:var(--text-muted);">Fetching existing topics from cloud...</li>';
+
+      db.collection('registrations')
+        .where('program', '==', program)
+        .get()
+        .then(snap => {
+          existingListEl.innerHTML = '';
+          let found = false;
+          snap.forEach(doc => {
+            const data = doc.data();
+            // Filter by category in JS to avoid index requirement, exclude rejected items
+            if(data.section === category && data.status !== 'Rejected' && data.topicTitle) {
+              found = true;
+              currentProgramTopics.push(data.topicTitle.toLowerCase().trim());
+              const li = document.createElement('li');
+              li.innerHTML = `<strong>${escapeHtml(data.topicTitle)}</strong> <span style="font-size:0.7rem; color:var(--text-muted);">- ${escapeHtml(data.team || 'Unknown')}</span>`;
+              existingListEl.appendChild(li);
+            }
+          });
+          if(!found) {
+            existingListEl.innerHTML = '<li style="color:var(--gold);">No topics registered yet. The floor is yours!</li>';
+          }
+          validateTopicInput(); // Initial check
+        })
+        .catch(err => {
+          existingListEl.innerHTML = '<li style="color:var(--error);">Failed to load existing topics.</li>';
+        });
+    }
+
+    // Input Validation Listener
+    document.getElementById('topicTitle').addEventListener('input', validateTopicInput);
+
+    function validateTopicInput() {
+      const typedTopic = document.getElementById('topicTitle').value.toLowerCase().trim();
+      const warningMsg = document.getElementById('topicWarning');
+      const submitBtn = document.getElementById('submitRegBtn');
+      
+      if (currentProgramTopics.includes(typedTopic) && typedTopic !== "") {
+        warningMsg.style.display = 'block';
+        submitBtn.disabled = true;
+      } else {
+        warningMsg.style.display = 'none';
+        submitBtn.disabled = false;
+      }
     }
 
     function cancelRegistration() {
@@ -853,6 +899,12 @@
 
       errorEl.textContent = '';
       if (!titleReference) { errorEl.textContent = 'Topic / Structural Title is strictly required.'; return; }
+
+      // Final safety check for duplicate
+      if (currentProgramTopics.includes(titleReference.toLowerCase())) {
+        errorEl.textContent = 'This topic is already registered by another participant.';
+        return;
+      }
 
       const generatedId = 'KAMA-' + Math.floor(100000 + Math.random() * 900000);
 
